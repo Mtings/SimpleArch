@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -32,6 +33,9 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     // 依赖 libs 目录下所有 aar 包
     implementation fileTree(include: ['*.aar'], dir: 'libs')
+    
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     // ViewModel and LiveData
     api("androidx.lifecycle:lifecycle-extensions:${lifecycle_version}") {
         exclude 'group': 'com.android.support'
