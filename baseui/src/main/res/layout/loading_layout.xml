@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:background="@color/color_transparent_half"
+             android:descendantFocusability="blocksDescendants"
+             android:gravity="center"
+             android:orientation="vertical">
+
+    <ProgressBar
+            android:id="@+id/login_progress"
+            style="?android:attr/progressBarStyle"
+            android:layout_gravity="center"
+            android:indeterminateDuration="1000"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            />
+    <!--<com.wang.avi.AVLoadingIndicatorView xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_width="wrap_content"-->
+
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--app:indicatorName="com.b2c1919.app.widget.avloading.KuaiLoaderIndicator"-->
+    <!--app:indicatorColor="@color/base_color"-->
+    <!--&gt;-->
+
+    <!--</com.wang.avi.AVLoadingIndicatorView>-->
+
+</FrameLayout>

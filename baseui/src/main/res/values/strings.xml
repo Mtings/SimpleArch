@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">baseui</string>
+    <string name="text_error_permission">请在应用程序管理里设置权限</string>
+    <string name="text_error_permission_photo">请在应用程序管理里设置拍照权限</string>
+    <string name="text_error_permission_storage">请在应用程序管理里设置存储权限</string>
+    <string name="text_copied">已经复制到粘贴板</string>
+    <string name="text_checkstr_toast">不能输入特殊字符</string>
+
+    <string name="btn_cancel">取消</string>
+    <string name="btn_confirm">确定</string>
+    <string name="btn_dial">拨打</string>
+
+    <string name="btn_re">重试</string>
+    <string name="text_network_error"></string>
+</resources>

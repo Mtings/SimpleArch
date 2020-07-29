@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">SimpleArch</string>
+    <string name="text_tab_recently">热   门</string>
+    <string name="text_tab_其他">其   他</string>
+
+    <string name="common_network">当前没有网络连接，请检查网络设置</string>
+
+    <string name="common_confirm">确定</string>
+    <string name="common_cancel">取消</string>
+
+    <!-- 支付密码对话框 -->
+    <string name="pay_title">请输入支付密码</string>
+
+    <!-- 支付密码对话框 -->
+    <string name="select_min_hint">至少要选择 %d 项</string>
+    <string name="select_max_hint">最多只能选择 %d 项</string>
+</resources>

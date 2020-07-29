@@ -1,0 +1,2 @@
+include ':app', ':basehttp', ':baseui'
+rootProject.name='ACGPlayer'
