@@ -15,6 +15,7 @@ import com.song.sakura.R
 import com.song.sakura.route.Router
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.base.IBaseViewModel
+import com.song.sakura.ui.base.ShareDialogFragment
 import com.song.sakura.util.*
 import kotlinx.android.synthetic.main.activity_webview.*
 
@@ -31,6 +32,13 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
         articleId = intent.getIntExtra("articleId", 0)
         collect = intent.getBooleanExtra("collect", false)
         link = intent.getStringExtra("link")
+        mToolbar?.apply {
+            inflateMenu(R.menu.share_menu)
+            setOnMenuItemClickListener {
+                ShareDialogFragment().showDialog(this@WebViewActivity, link ?: "")
+                return@setOnMenuItemClickListener true
+            }
+        }
 
         initWebView()
         webView.loadUrl(link)
@@ -104,6 +112,8 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
                 if (!isHttp) {
                     //拦截非http，https地址
                     return true
+                } else {
+                    link = url
                 }
                 return false
             }

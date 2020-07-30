@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AppCompatResource">
+    <item
+        android:id="@+id/action_share"
+        android:enabled="true"
+        android:icon="@drawable/ic_share"
+        android:title="分享"
+        app:showAsAction="always" />
+
+</menu>
