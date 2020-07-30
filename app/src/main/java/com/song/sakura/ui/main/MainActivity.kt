@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.gyf.immersionbar.ImmersionBar
 import com.song.sakura.R
 import com.song.sakura.event.OpenDrawerEvent
 import com.song.sakura.ui.base.IBaseActivity
@@ -65,7 +64,20 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
         window.setBackgroundDrawableResource(R.color.color_background)
         setContentView(R.layout.activity_main)
         initViewModel(this, HomeViewModel::class.java)
+        initView()
 
+        bindUi(RxUtil.clickNoEnable(fab)) {
+            val centerItemId = bottomNav.menu.getItem(2).itemId
+            if (bottomNav.selectedItemId != centerItemId) {
+                changeBadgeVisible(centerItemId, true)
+                fab.setImageResource(R.drawable.ic_camera_black_24dp)
+                viewPager.currentItem = 2
+                bottomNav.menu.getItem(2).isChecked = true
+            }
+        }
+    }
+
+    fun initView() {
         mPagerAdapter = BaseFragmentAdapter(this)
         mPagerAdapter.addFragment(HomeFragment())
         mPagerAdapter.addFragment(MessageFragment())
@@ -81,16 +93,6 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
         bottomNav.getOrCreateBadge(bottomNav.menu.getItem(1).itemId).number = 2
         bottomNav.getOrCreateBadge(bottomNav.menu.getItem(3).itemId).number = 11
         bottomNav.getOrCreateBadge(bottomNav.menu.getItem(4).itemId).number = 3
-
-        bindUi(RxUtil.clickNoEnable(fab)) {
-            val centerItemId = bottomNav.menu.getItem(2).itemId
-            if (bottomNav.selectedItemId != centerItemId) {
-                changeBadgeVisible(centerItemId, true)
-                fab.setImageResource(R.drawable.ic_camera_black_24dp)
-                viewPager.currentItem = 2
-                bottomNav.menu.getItem(2).isChecked = true
-            }
-        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

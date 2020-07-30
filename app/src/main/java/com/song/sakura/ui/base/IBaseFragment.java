@@ -21,8 +21,6 @@ import com.ui.base.BaseViewModel;
 
 public class IBaseFragment<T extends BaseViewModel> extends BaseFragment {
 
-    private ImmersionBar mImmersionBar;
-
     public static <B> Boolean isSuccess(ApiResponse<B> it) {
         return null != it && it.getErrorCode() == 0;
     }

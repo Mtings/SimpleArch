@@ -7,15 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import com.song.sakura.R
 import com.song.sakura.entity.response.ArticleBean
+import com.song.sakura.event.HomeRefreshEvent
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewHolder
 import com.song.sakura.util.RouterUtil
 import kotlinx.android.synthetic.main.item_article.view.*
-import kotlinx.android.synthetic.main.refresh_list.*
+import kotlinx.android.synthetic.main.list.*
+import org.greenrobot.eventbus.EventBus
+
 
 /**
  * Title: com.song.sakura.ui.home
@@ -39,7 +40,7 @@ class HomeListChildFragment : IBaseFragment<HomeViewModel>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.refresh_list, container, false)
+        return inflater.inflate(R.layout.list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,33 +49,17 @@ class HomeListChildFragment : IBaseFragment<HomeViewModel>() {
         val mAdapter = ListAdapter()
         list.adapter = mAdapter
 
-        refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
-
-            override fun onRefresh(refreshLayout: RefreshLayout) {
-                mViewModel.refresh()
-            }
-
-            override fun onLoadMore(refreshLayout: RefreshLayout) {
-                mViewModel.loadMore()
-            }
-        })
-
         mAdapter.setOnItemClickListener { _, _, position ->
             RouterUtil.navWebView(mAdapter.getItem(position), getBaseActivity())
         }
 
-        mViewModel.refresh()
         mViewModel.articlePage.observe(viewLifecycleOwner, Observer {
             if (it?.curPage == 1) {
                 mAdapter.setNewInstance(it.datas)
-                refreshLayout.finishRefresh()
+                EventBus.getDefault().post(HomeRefreshEvent(true, it.over))
             } else if (it?.curPage!! > 1) {
                 mAdapter.addData(it.datas)
-                if (it.over) {
-                    refreshLayout.finishLoadMoreWithNoMoreData()
-                } else {
-                    refreshLayout.finishLoadMore()
-                }
+                EventBus.getDefault().post(HomeRefreshEvent(false, it.over))
             }
         })
     }

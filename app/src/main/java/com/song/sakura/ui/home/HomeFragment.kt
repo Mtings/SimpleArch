@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
 import com.network.api.ApiResponse
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
 import com.song.sakura.R
 import com.song.sakura.entity.response.ArticleBean
 import com.song.sakura.entity.response.BannerVO
-import com.song.sakura.event.OpenDrawerEvent
+import com.song.sakura.event.HomeRefreshEvent
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.util.LiveDataUtil
@@ -27,6 +29,8 @@ import com.youth.banner.adapter.BannerAdapter
 import com.youth.banner.indicator.CircleIndicator
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class HomeFragment : IBaseFragment<HomeViewModel>() {
 
@@ -45,7 +49,26 @@ class HomeFragment : IBaseFragment<HomeViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
+        initImmersionBar()
+        ImmersionBar.setTitleBar(getBaseActivity(), titleBar)
+        mViewModel.refresh()
 
+        mViewModel.bannerList.observe(viewLifecycleOwner, Observer {
+            if (!it.data.isNullOrEmpty()) {
+                val adapter = BannerImageAdapter(it.data!!)
+                banner.apply {
+                    addBannerLifecycleObserver(viewLifecycleOwner)
+                    indicator = CircleIndicator(getBaseActivity())
+//                    setBannerRound(20f)
+                    this.adapter = adapter
+                }
+            }
+        })
+
+    }
+
+    private fun initView() {
         val titles = ArrayList<String>()
         titles.add("热门")
         titles.add("其他")
@@ -60,20 +83,30 @@ class HomeFragment : IBaseFragment<HomeViewModel>() {
         )
         tabLayout.setupWithViewPager(viewPager)
 
-        mViewModel.bannerList.observe(viewLifecycleOwner, Observer {
-            if (!it.data.isNullOrEmpty()) {
-                val adapter = BannerImageAdapter(it.data!!)
-                banner.apply {
-                    addBannerLifecycleObserver(viewLifecycleOwner)
-                    indicator = CircleIndicator(getBaseActivity())
-//                    setBannerRound(20f)
-                    this.adapter = adapter
-                }
+        refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
+
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                mViewModel.refresh()
+            }
+
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                mViewModel.loadMore()
             }
         })
+    }
 
-        initImmersionBar()
-        ImmersionBar.setTitleBar(getBaseActivity(), titleBar)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: HomeRefreshEvent?) {
+        if (null != event) {
+            if (event.isRefresh) {
+                refreshLayout.finishRefresh()
+                if (event.isOver) {
+                    refreshLayout.setNoMoreData(event.isOver)
+                }
+            } else {
+                if (event.isOver) refreshLayout.finishLoadMoreWithNoMoreData() else refreshLayout.finishLoadMore()
+            }
+        }
     }
 
 
@@ -82,6 +115,16 @@ class HomeFragment : IBaseFragment<HomeViewModel>() {
             .statusBarDarkFont(true)
             .titleBar(R.id.topBar)
             .init()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this);
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this);
     }
 
 }
