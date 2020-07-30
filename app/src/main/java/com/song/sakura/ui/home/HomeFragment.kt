@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
 import com.network.api.ApiResponse
-import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import com.song.sakura.R
 import com.song.sakura.entity.response.ArticleBean
 import com.song.sakura.entity.response.BannerVO
@@ -23,6 +23,7 @@ import com.song.sakura.event.HomeRefreshEvent
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.util.LiveDataUtil
+import com.song.sakura.util.RouterUtil
 import com.ui.base.FragmentAdapter
 import com.ui.model.AbsentLiveData
 import com.youth.banner.adapter.BannerAdapter
@@ -62,6 +63,9 @@ class HomeFragment : IBaseFragment<HomeViewModel>() {
                     indicator = CircleIndicator(getBaseActivity())
 //                    setBannerRound(20f)
                     this.adapter = adapter
+                    setOnBannerListener { _, position ->
+                        RouterUtil.navWebView(it.data!![position].url, getBaseActivity())
+                    }
                 }
             }
         })

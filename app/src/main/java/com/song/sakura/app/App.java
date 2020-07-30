@@ -17,11 +17,12 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.hjq.toast.ToastInterceptor;
 import com.hjq.toast.ToastUtils;
-import com.scwang.smartrefresh.header.MaterialHeader;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.MaterialHeader;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.song.sakura.BuildConfig;
 
+import com.song.sakura.R;
 import com.song.sakura.helper.ActivityStackManager;
 import com.ui.util.DrawableHelper;
 import com.ui.util.LogUtil;
@@ -34,7 +35,10 @@ public class App extends Application implements ViewModelStoreOwner {
     private ViewModelProvider.Factory mFactory;
 
     static {
-        SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, refreshLayout) -> new MaterialHeader(context));
+        SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, refreshLayout) -> {
+            refreshLayout.setEnableHeaderTranslationContent(true);
+            return new MaterialHeader(context).setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent);
+        });
         SmartRefreshLayout.setDefaultRefreshFooterCreator((context, refreshLayout) -> new ClassicsFooter(context));
     }
 

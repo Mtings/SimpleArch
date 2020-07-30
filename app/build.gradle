@@ -148,10 +148,15 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.6"
     //BaseRecyclerViewAdapterHelper RecyclerView库 https://github.com/CymChad/BaseRecyclerViewAdapterHelper
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
-    //SmartRefreshLayout 上拉刷新下拉加载
-    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.2'
-    // SmartRefreshLayout 刷新样式集合库
-    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.2'
+
+    //SmartRefreshLayout 上拉刷新下拉加载, 核心必须依赖
+    //https://github.com/scwang90/SmartRefreshLayout/tree/master
+    implementation  'com.scwang.smart:refresh-layout-kernel:2.0.1'
+    //谷歌刷新头
+    implementation 'com.scwang.smart:refresh-header-material:2.0.0'
+    //经典加载
+    implementation  'com.scwang.smart:refresh-footer-classics:2.0.1'
+
     // 状态栏沉浸：https://github.com/gyf-dev/ImmersionBar
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     // fragment快速实现（可选）
@@ -191,6 +196,9 @@ dependencies {
 
     // banner：https://github.com/youth5201314/banner
     implementation 'com.youth.banner:banner:2.1.0'
+
+    // VasSonic: https://github.com/Tencent/VasSonic
+    implementation 'com.tencent.sonic:sdk:3.1.0'
 }
 
 //import org.aspectj.bridge.IMessage
