@@ -36,10 +36,13 @@ public class App extends Application implements ViewModelStoreOwner {
 
     static {
         SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, refreshLayout) -> {
-            refreshLayout.setEnableHeaderTranslationContent(true);
-            return new MaterialHeader(context).setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent);
+            //设置内容不偏移
+            refreshLayout.setEnableHeaderTranslationContent(false);
+            return new MaterialHeader(context)
+                    .setProgressBackgroundColorSchemeResource(R.color.colorAccent)
+                    .setColorSchemeResources(R.color.white, R.color.white, R.color.white);
         });
-        SmartRefreshLayout.setDefaultRefreshFooterCreator((context, refreshLayout) -> new ClassicsFooter(context));
+        SmartRefreshLayout.setDefaultRefreshFooterCreator((context, refreshLayout) -> new ClassicsFooter(context).setDrawableSize(20));
     }
 
     @Override

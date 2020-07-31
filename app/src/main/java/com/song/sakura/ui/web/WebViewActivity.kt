@@ -268,6 +268,14 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
         }
     }
 
+    override fun onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack()
+        } else {
+            finish()
+        }
+    }
+
     override fun onDestroy() {
         webView.destroy()
         sonicSession?.destroy()
