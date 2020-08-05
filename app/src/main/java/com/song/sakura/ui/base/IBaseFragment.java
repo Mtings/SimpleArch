@@ -25,11 +25,6 @@ public class IBaseFragment<T extends BaseViewModel> extends BaseFragment {
         return null != it && it.getErrorCode() == 0;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
     public void initImmersionBar() {
         try {
             ImmersionBar.with(this).keyboardEnable(true).statusBarDarkFont(true)

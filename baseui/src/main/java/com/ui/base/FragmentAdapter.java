@@ -16,7 +16,7 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
     private List<String> mTitles;
 
     public FragmentAdapter(FragmentManager fm, List<Fragment> fragments, List<String> titles) {
-        super(fm);
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mFragments = fragments;
         mTitles = titles;
         mPool = new RecyclerView.RecycledViewPool();
@@ -27,6 +27,7 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
         return mFragments;
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int position) {
         if (mFragments.get(position) instanceof BaseFragment) {
@@ -39,13 +40,14 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
     }
 
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         return super.instantiateItem(container, position);
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         super.destroyItem(container, position, object);
     }
 

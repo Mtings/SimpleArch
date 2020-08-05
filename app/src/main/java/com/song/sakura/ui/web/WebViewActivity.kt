@@ -18,8 +18,7 @@ import com.song.sakura.app.App
 import com.song.sakura.route.Router
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.base.IBaseViewModel
-import com.song.sakura.ui.base.ShareDialogFragment
-import com.song.sakura.util.*
+import com.song.sakura.ui.share.ShareDialogFragment
 import com.song.sakura.vassonic.OfflinePkgSessionConnection
 import com.song.sakura.vassonic.SonicJavaScriptInterface
 import com.song.sakura.vassonic.SonicRuntimeImpl
@@ -59,7 +58,8 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
         mToolbar?.apply {
             inflateMenu(R.menu.share_menu)
             setOnMenuItemClickListener {
-                ShareDialogFragment().showDialog(this@WebViewActivity, link ?: "")
+                ShareDialogFragment()
+                    .showDialog(this@WebViewActivity, link ?: "")
                 return@setOnMenuItemClickListener true
             }
         }

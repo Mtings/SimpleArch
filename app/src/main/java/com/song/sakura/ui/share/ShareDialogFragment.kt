@@ -1,4 +1,4 @@
-package com.song.sakura.ui.base
+package com.song.sakura.ui.share
 
 import android.app.Activity
 import android.os.Bundle

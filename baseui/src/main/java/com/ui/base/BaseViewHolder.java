@@ -139,16 +139,6 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-//    public void setIconView(@IdRes int resId, Uri url) {
-//        CustomDraweeView icon = getView(resId);
-//        if (icon != null) {
-//            ImageLoadUtil.Builder().load(url)
-//                    .build().imageOptions(R.color.color_divider)
-//                    .displayImage(icon);
-//        }
-//    }
-
-
     public void setViewVisible(@IdRes int resId, int visible) {
         View view = getView(resId);
         if (view != null) {

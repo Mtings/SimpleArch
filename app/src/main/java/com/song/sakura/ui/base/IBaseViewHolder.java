@@ -110,15 +110,6 @@ public class IBaseViewHolder extends BaseViewHolder {
         return str;
     }
 
-//    public void setIconView(@IdRes int resId, String url) {
-//        CustomDraweeView icon = getView(resId);
-//        if (icon != null) {
-//            BaseImageLoadUtil.Builder().load(url)
-//                    .build().imageOptions(R.color.color_999999)
-//                    .displayImage(icon);
-//        }
-//    }
-
     public void setViewSize(@IdRes int resId, int w, int h) {
         View view = getView(resId);
         if (view != null) {
