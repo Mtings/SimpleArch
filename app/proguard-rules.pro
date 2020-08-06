@@ -57,6 +57,15 @@
 -keep public class * extends android.preference.Preference
 -keep public class com.android.vending.licensing.ILicensingService
 
+# 保留R下面的资源
+-keep class **.R$* {*;}
+
+# 对于带有回调函数的onXXEvent、**On*Listener的，不能被混淆
+-keepclassmembers class * {
+    void *(**On*Event);
+    void *(**On*Listener);
+}
+
 # 保留本地native方法不被混淆
 -keepclasseswithmembernames class * {
     native <methods>;
@@ -133,15 +142,8 @@
    public void openFileChooser(...);
 }
 # webView处理，项目中没有使用到webView忽略即可
--keepclassmembers class fqcn.of.javascript.interface.for.Webview {
+-keepclassmembers class com.song.sakura.ui.web.WebViewActivity$* {
    public *;
-}
--keepclassmembers class * extends android.webkit.WebViewClient {
-    public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
-    public boolean *(android.webkit.WebView, java.lang.String);
-}
--keepclassmembers class * extends android.webkit.WebViewClient {
-    public void *(android.webkit.WebView, java.lang.String);
 }
 -keepclassmembers class ** {
     public void onEvent*(**);
@@ -220,6 +222,14 @@
 -keep interface okhttp3.** { *; }
 -dontwarn okhttp3.**
 -dontwarn okio.**
+
+# BaseRecyclerViewAdapterHelper
+-keep class com.chad.library.adapter.** {*;}
+-keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
+-keep public class * extends com.chad.library.adapter.base.viewholder.BaseViewHolder
+-keepclassmembers  class **$** extends com.chad.library.adapter.base.viewholder.BaseViewHolder {
+     <init>(...);
+}
 
 # 不混淆bean类
 -keep class com.song.sakura.entity.** {*;}
