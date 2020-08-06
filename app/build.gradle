@@ -47,20 +47,16 @@ android {
     buildTypes {
         debug {
             debuggable true
-            // 移除无用的资源文件
             shrinkResources false
-            // ZipAlign 优化
             zipAlignEnabled false
             minifyEnabled false
             signingConfig signingConfigs.release
             buildConfigField 'String', 'BASE_URL', '"https://www.wanandroid.com/"'
         }
         release {
-            // 移除无用的资源文件
-            shrinkResources true
-            // ZipAlign 优化
+            shrinkResources false
             zipAlignEnabled true
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             buildConfigField 'String', 'BASE_URL', '"https://www.wanandroid.com/"'

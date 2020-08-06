@@ -55,9 +55,6 @@
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
--keep public class * extends android.support.v4.**
--keep public class * extends android.support.v7.**
--keep public class * extends android.support.v13.**
 -keep public class com.android.vending.licensing.ILicensingService
 
 # 保留本地native方法不被混淆
@@ -136,15 +133,15 @@
    public void openFileChooser(...);
 }
 # webView处理，项目中没有使用到webView忽略即可
--keepclassmembers class fqcn.of.javascript.interface.for.webview {
-    public *;
+-keepclassmembers class fqcn.of.javascript.interface.for.Webview {
+   public *;
 }
--keepclassmembers class * extends android.webkit.webViewClient {
+-keepclassmembers class * extends android.webkit.WebViewClient {
     public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
     public boolean *(android.webkit.WebView, java.lang.String);
 }
--keepclassmembers class * extends android.webkit.webViewClient {
-    public void *(android.webkit.webView, jav.lang.String);
+-keepclassmembers class * extends android.webkit.WebViewClient {
+    public void *(android.webkit.WebView, java.lang.String);
 }
 -keepclassmembers class ** {
     public void onEvent*(**);
@@ -193,12 +190,8 @@
 -dontwarn com.sothree.slidinguppanel.**
 
 # smartrefresh
--keep class com.scwang.smartrefresh.** {*;}
+-keep class com.scwang.smart.refresh.** {*;}
 -dontwarn com.scwang.smartrefresh.**
-
-# rxpermissions2
--keep class com.tbruyelle.rxpermissions2.** {*;}
--dontwarn com.tbruyelle.rxpermissions2.**
 
 # EventBus3
 -keepattributes *Annotation*
@@ -231,6 +224,14 @@
 # 不混淆bean类
 -keep class com.song.sakura.entity.** {*;}
 -dontwarn com.song.sakura.entity.**
+
+# 不混淆util类
+-keep class com.song.sakura.util.** {*;}
+-dontwarn com.song.sakura.util.**
+
+# 不混淆widget
+-keep class com.song.sakura.widget.** {*;}
+-dontwarn com.song.sakura.widget.**
 
 
 

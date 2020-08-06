@@ -2,9 +2,7 @@ package com.song.sakura.ui.center
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.song.sakura.event.OpenDrawerEvent
 import com.song.sakura.ui.base.IBaseViewModel
-import org.greenrobot.eventbus.EventBus
 
 /**
  * Title: com.song.sakura.ui.home

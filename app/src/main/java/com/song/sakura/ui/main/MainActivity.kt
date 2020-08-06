@@ -9,7 +9,6 @@ import androidx.core.app.ActivityCompat
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.song.sakura.R
-import com.song.sakura.event.OpenDrawerEvent
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.center.CenterFragment
 import com.song.sakura.ui.favorite.FavoriteFragment
@@ -23,10 +22,6 @@ import com.ui.util.IntentBuilder
 import com.ui.util.RxUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.viewPager
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
-
 
 class MainActivity : IBaseActivity<HomeViewModel>(),
     BottomNavigationView.OnNavigationItemSelectedListener {
@@ -52,11 +47,6 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -144,16 +134,6 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
                 bottomNav.getOrCreateBadge(itemId)?.isVisible = isVisible
             }
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public fun onEvent(event: OpenDrawerEvent) {
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
     }
 
     private var isFirst = true
