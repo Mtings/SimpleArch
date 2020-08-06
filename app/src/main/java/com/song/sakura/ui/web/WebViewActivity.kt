@@ -15,6 +15,8 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.hjq.toast.ToastUtils
 import com.song.sakura.R
 import com.song.sakura.app.App
+import com.song.sakura.extension.checkAppInstalled
+import com.song.sakura.extension.openBrowser
 import com.song.sakura.route.Router
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.base.IBaseViewModel
@@ -138,8 +140,8 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
                     && !title.contains("/")
                     && !title.contains("?")
                 ) {
-                    if (s.length > 10) {
-                        mToolbar?.title = s.substring(0, 10) + "..."
+                    if (s.length > 15) {
+                        mToolbar?.title = s.substring(0, 15) + "..."
                     }
                 }
             }
@@ -166,8 +168,12 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
 
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 if (url.startsWith("scheme:") || url.startsWith("scheme:")) {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    startActivity(intent)
+                    url.openBrowser(this@WebViewActivity)
+                    return true
+                }
+                if (url.checkAppInstalled(this@WebViewActivity) && url.startsWith("bilibili://video")) {
+                    url.openBrowser(this@WebViewActivity)
+                    return true
                 }
                 val isHttp =
                     url.startsWith("http://") || url.startsWith("https://")
@@ -200,16 +206,6 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
                 handler?.proceed()
             }
 
-            override fun onReceivedError(
-                view: WebView,
-                errorCode: Int,
-                description: String,
-                failingUrl: String
-            ) {
-                ToastUtils.show("加载失败")
-                super.onReceivedError(view, errorCode, description, failingUrl)
-            }
-
         }
 
         webView.setDownloadListener { url, _, _, _, _ ->
@@ -228,7 +224,10 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
 
         // init sonic engine if necessary, or maybe u can do this when application created
         if (!SonicEngine.isGetInstanceAllowed()) {
-            SonicEngine.createInstance(SonicRuntimeImpl(App.getApplication()), SonicConfig.Builder().build())
+            SonicEngine.createInstance(
+                SonicRuntimeImpl(App.getApplication()),
+                SonicConfig.Builder().build()
+            )
         }
 
         // if it's sonic mode , startup sonic session at first time

@@ -5,15 +5,19 @@ import android.os.Bundle
 import com.alibaba.android.arouter.launcher.ARouter
 import com.song.sakura.entity.response.ArticleBean
 import com.song.sakura.route.Router
+import com.song.sakura.ui.web.WebViewActivity.Companion.MODE_DEFAULT
 import com.song.sakura.ui.web.WebViewActivity.Companion.MODE_SONIC
 import com.song.sakura.ui.web.WebViewActivity.Companion.PARAM_MODE
 
 object RouterUtil {
+    /**
+     * 暂时不启用MODE_SONIC
+     */
     @JvmOverloads
     fun navWebView(
         item: ArticleBean,
         context: Context,
-        model: Int = MODE_SONIC,
+        model: Int = MODE_DEFAULT,
         callback: ((Boolean) -> Unit)? = null //回调
     ) {
         val bundle = Bundle()
@@ -26,11 +30,14 @@ object RouterUtil {
             .navigation(context)
     }
 
+    /**
+     * 暂时不启用MODE_SONIC
+     */
     @JvmOverloads
     fun navWebView(
         link: String,
         context: Context,
-        model: Int = MODE_SONIC
+        model: Int = MODE_DEFAULT
     ) {
         val bundle = Bundle()
         bundle.putString("link", link)
