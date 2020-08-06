@@ -55,7 +55,7 @@ class HomeListChildFragment : IBaseFragment<HomeViewModel>() {
 
         mViewModel.articlePage.observe(viewLifecycleOwner, Observer {
             if (it?.curPage == 1) {
-                mAdapter.setNewInstance(it.datas)
+                mAdapter.setList(it.datas)
                 EventBus.getDefault().post(HomeRefreshEvent(true, it.over))
             } else if (it?.curPage!! > 1) {
                 mAdapter.addData(it.datas)
