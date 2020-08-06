@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStore;
@@ -17,7 +18,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.hjq.toast.ToastInterceptor;
 import com.hjq.toast.ToastUtils;
-import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.footer.BallPulseFooter;
 import com.scwang.smart.refresh.header.MaterialHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.song.sakura.BuildConfig;
@@ -42,7 +43,12 @@ public class App extends Application implements ViewModelStoreOwner {
                     .setProgressBackgroundColorSchemeResource(R.color.colorAccent)
                     .setColorSchemeResources(R.color.white, R.color.white, R.color.white);
         });
-        SmartRefreshLayout.setDefaultRefreshFooterCreator((context, refreshLayout) -> new ClassicsFooter(context).setDrawableSize(20));
+        SmartRefreshLayout.setDefaultRefreshFooterCreator((context, refreshLayout) -> {
+            refreshLayout.setEnableFooterTranslationContent(false);
+            return new BallPulseFooter(context)
+                    .setNormalColor(ContextCompat.getColor(getApplication(), R.color.colorAccent))
+                    .setAnimatingColor(ContextCompat.getColor(getApplication(), R.color.colorAccent));
+        });
     }
 
     @Override

@@ -64,7 +64,7 @@ public final class MenuDialog {
                     // 不显示取消按钮
                     setCancel(null);
                     // 重新设置动画
-                    setAnimStyle(AnimAction.SCALE);
+                    setAnimStyle(AnimAction.TOAST);
                     break;
                 default:
                     break;

@@ -154,6 +154,8 @@ dependencies {
     implementation 'com.scwang.smart:refresh-header-material:2.0.0'
     //经典加载
     implementation  'com.scwang.smart:refresh-footer-classics:2.0.1'
+    //球脉冲加载
+    implementation  'com.scwang.smart:refresh-footer-ball:2.0.1'
 
     // 状态栏沉浸：https://github.com/gyf-dev/ImmersionBar
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
