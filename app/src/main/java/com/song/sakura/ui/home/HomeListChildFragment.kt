@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.song.sakura.R
 import com.song.sakura.entity.response.ArticleBean
-import com.song.sakura.event.HomeRefreshEvent
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewHolder
 import com.song.sakura.util.RouterUtil
@@ -20,7 +19,6 @@ import com.ui.decoration.Y_DividerBuilder
 import com.ui.decoration.Y_DividerItemDecoration
 import kotlinx.android.synthetic.main.item_article.view.*
 import kotlinx.android.synthetic.main.list.*
-import org.greenrobot.eventbus.EventBus
 
 
 /**
@@ -62,10 +60,10 @@ class HomeListChildFragment : IBaseFragment<HomeViewModel>() {
         mViewModel.articlePage.observe(viewLifecycleOwner, Observer {
             if (it?.curPage == 1) {
                 mAdapter.setList(it.datas)
-                EventBus.getDefault().post(HomeRefreshEvent(true, it.over))
+                mViewModel.refreshControlSwitch(true, it.over)
             } else if (it?.curPage!! > 1) {
                 mAdapter.addData(it.datas)
-                EventBus.getDefault().post(HomeRefreshEvent(false, it.over))
+                mViewModel.refreshControlSwitch(false, it.over)
             }
         })
     }
@@ -114,9 +112,6 @@ class ListAdapter() : BaseQuickAdapter<ArticleBean, IBaseViewHolder>(R.layout.it
                 visibility = View.VISIBLE
                 text = item.chapterName ?: ""
             }
-        }
-        if (holder.layoutPosition == 0) {
-
         }
     }
 }

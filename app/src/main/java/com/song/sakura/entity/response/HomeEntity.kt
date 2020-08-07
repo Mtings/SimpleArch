@@ -68,3 +68,8 @@ class ArticleBean(
         }
     }
 }
+
+class HomeRefreshControl(
+    var isRefresh: Boolean = false,
+    var isOver: Boolean = false
+)

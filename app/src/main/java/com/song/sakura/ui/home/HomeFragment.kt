@@ -19,7 +19,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import com.song.sakura.R
 import com.song.sakura.entity.response.ArticleBean
 import com.song.sakura.entity.response.BannerVO
-import com.song.sakura.event.HomeRefreshEvent
+import com.song.sakura.entity.response.HomeRefreshControl
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.util.LiveDataUtil
@@ -29,9 +29,6 @@ import com.ui.model.AbsentLiveData
 import com.youth.banner.adapter.BannerAdapter
 import com.youth.banner.indicator.CircleIndicator
 import kotlinx.android.synthetic.main.fragment_home.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 class HomeFragment : IBaseFragment<HomeViewModel>() {
 
@@ -70,6 +67,17 @@ class HomeFragment : IBaseFragment<HomeViewModel>() {
             }
         })
 
+        mViewModel.refreshControl.observe(viewLifecycleOwner, Observer {
+            if (it.isRefresh) {
+                refreshLayout.finishRefresh()
+                if (it.isOver) {
+                    refreshLayout.setNoMoreData(it.isOver)
+                }
+            } else {
+                if (it.isOver) refreshLayout.finishLoadMoreWithNoMoreData() else refreshLayout.finishLoadMore()
+            }
+        })
+
     }
 
     private fun initView() {
@@ -99,36 +107,11 @@ class HomeFragment : IBaseFragment<HomeViewModel>() {
         })
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: HomeRefreshEvent?) {
-        if (null != event) {
-            if (event.isRefresh) {
-                refreshLayout.finishRefresh()
-                if (event.isOver) {
-                    refreshLayout.setNoMoreData(event.isOver)
-                }
-            } else {
-                if (event.isOver) refreshLayout.finishLoadMoreWithNoMoreData() else refreshLayout.finishLoadMore()
-            }
-        }
-    }
-
-
     override fun initImmersionBar() {
         ImmersionBar.with(this).keyboardEnable(true)
             .statusBarDarkFont(true)
             .titleBar(R.id.topBar)
             .init()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this);
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this);
     }
 
 }
@@ -215,6 +198,12 @@ class HomeViewModel(app: Application) : IBaseViewModel(app) {
     fun loadMore() {
         currentPage++
         page.value = currentPage
+    }
+
+    val refreshControl = MutableLiveData<HomeRefreshControl>()
+
+    fun refreshControlSwitch(isRefresh: Boolean, isOver: Boolean) {
+        refreshControl.value = HomeRefreshControl(isRefresh = isRefresh, isOver = isOver)
     }
 
 }
