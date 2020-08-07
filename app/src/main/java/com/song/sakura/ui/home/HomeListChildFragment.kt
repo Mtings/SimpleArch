@@ -15,9 +15,9 @@ import com.song.sakura.event.HomeRefreshEvent
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewHolder
 import com.song.sakura.util.RouterUtil
-import com.ui.decoration.y_divideritemdecoration.Y_Divider
-import com.ui.decoration.y_divideritemdecoration.Y_DividerBuilder
-import com.ui.decoration.y_divideritemdecoration.Y_DividerItemDecoration
+import com.ui.decoration.Y_Divider
+import com.ui.decoration.Y_DividerBuilder
+import com.ui.decoration.Y_DividerItemDecoration
 import kotlinx.android.synthetic.main.item_article.view.*
 import kotlinx.android.synthetic.main.list.*
 import org.greenrobot.eventbus.EventBus

@@ -1,4 +1,4 @@
-package com.ui.decoration.y_divideritemdecoration;
+package com.ui.decoration;
 
 /**
  * Created by mac on 2017/5/17.

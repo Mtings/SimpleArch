@@ -1,4 +1,4 @@
-package com.ui.decoration.y_divideritemdecoration;
+package com.ui.decoration;
 
 import android.content.Context;
 import android.util.TypedValue;
