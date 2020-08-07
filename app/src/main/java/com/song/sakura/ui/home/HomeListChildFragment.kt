@@ -1,5 +1,7 @@
 package com.song.sakura.ui.home
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -13,6 +15,9 @@ import com.song.sakura.event.HomeRefreshEvent
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewHolder
 import com.song.sakura.util.RouterUtil
+import com.ui.decoration.y_divideritemdecoration.Y_Divider
+import com.ui.decoration.y_divideritemdecoration.Y_DividerBuilder
+import com.ui.decoration.y_divideritemdecoration.Y_DividerItemDecoration
 import kotlinx.android.synthetic.main.item_article.view.*
 import kotlinx.android.synthetic.main.list.*
 import org.greenrobot.eventbus.EventBus
@@ -48,6 +53,7 @@ class HomeListChildFragment : IBaseFragment<HomeViewModel>() {
 
         val mAdapter = ListAdapter()
         list.adapter = mAdapter
+        list.addItemDecoration(DividerItemDecoration(list.context))
 
         mAdapter.setOnItemClickListener { _, _, position ->
             RouterUtil.navWebView(mAdapter.getItem(position), getBaseActivity())
@@ -64,6 +70,24 @@ class HomeListChildFragment : IBaseFragment<HomeViewModel>() {
         })
     }
 
+}
+
+class DividerItemDecoration(context: Context) : Y_DividerItemDecoration(context) {
+
+    override fun getDivider(itemPosition: Int): Y_Divider? {
+        return when (itemPosition) {
+            0 ->
+                Y_DividerBuilder()
+                    .setTopSideLine(true, Color.TRANSPARENT, 10f, 0f, 0f)
+                    .setBottomSideLine(true, Color.TRANSPARENT, 10f, 0f, 0f)
+                    .create()
+            else -> {
+                Y_DividerBuilder()
+                    .setBottomSideLine(true, Color.TRANSPARENT, 10f, 0f, 0f)
+                    .create()
+            }
+        }
+    }
 }
 
 class ListAdapter() : BaseQuickAdapter<ArticleBean, IBaseViewHolder>(R.layout.item_article, null) {
@@ -90,6 +114,9 @@ class ListAdapter() : BaseQuickAdapter<ArticleBean, IBaseViewHolder>(R.layout.it
                 visibility = View.VISIBLE
                 text = item.chapterName ?: ""
             }
+        }
+        if (holder.layoutPosition == 0) {
+
         }
     }
 }
