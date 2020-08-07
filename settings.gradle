@@ -1,2 +1,2 @@
 include ':app', ':basehttp', ':baseui'
-rootProject.name='ACGPlayer'
+rootProject.name='SimpleArch'

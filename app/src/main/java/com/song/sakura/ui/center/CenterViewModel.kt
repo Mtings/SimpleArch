@@ -19,7 +19,7 @@ class CenterViewModel(app: Application) : IBaseViewModel(app) {
     val title = MutableLiveData<String>()
 
     fun initData() {
-        title.value = "ACGPlayer"
+        title.value = "SimpleArch"
     }
 
 
