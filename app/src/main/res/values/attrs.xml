@@ -4,6 +4,35 @@
         <attr name="android:foreground" />
     </declare-styleable>
 
+    <declare-styleable name="FlashTextView">
+        <attr name="corner_float" format="dimension" />
+        <attr name="text" format="string" />
+        <attr name="textType">
+            <!--字母-->
+            <enum name="letter" value="0x01" />
+            <!--数字-->
+            <enum name="number" value="0x02" />
+            <!--符号-->
+            <enum name="symbol" value="0x03" />
+            <!--中文-->
+            <enum name="chinese" value="0x04" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="FlashFrameView">
+        <attr name="child_text" format="string" />
+        <attr name="child_textType">
+            <!--字母-->
+            <enum name="letter" value="0x01" />
+            <!--数字-->
+            <enum name="number" value="0x02" />
+            <!--符号-->
+            <enum name="symbol" value="0x03" />
+            <!--中文-->
+            <enum name="chinese" value="0x04" />
+        </attr>
+    </declare-styleable>
+
     <declare-styleable name="DialogFragmentNavigator">
         <attr name="android:name" />
     </declare-styleable>
@@ -14,13 +43,6 @@
 
     <declare-styleable name="NavHostFragment">
         <attr name="defaultNavHost" format="boolean" />
-    </declare-styleable>
-
-    <declare-styleable name="PlayPause">
-        <attr name="isCircleDraw" format="boolean" />
-        <attr name="circleAlpha" format="integer" />
-        <attr name="backgroundColor" format="reference|color" />
-        <attr name="drawableColor" format="reference|color" />
     </declare-styleable>
 
 </resources>

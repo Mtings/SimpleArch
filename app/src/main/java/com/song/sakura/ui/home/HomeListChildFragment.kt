@@ -58,12 +58,14 @@ class HomeListChildFragment : IBaseFragment<HomeViewModel>() {
         }
 
         mViewModel.articlePage.observe(viewLifecycleOwner, Observer {
-            if (it?.curPage == 1) {
-                mAdapter.setList(it.datas)
-                mViewModel.refreshControlSwitch(true, it.over)
-            } else if (it?.curPage!! > 1) {
-                mAdapter.addData(it.datas)
-                mViewModel.refreshControlSwitch(false, it.over)
+            if (null != it?.curPage) {
+                if (it.curPage == 1) {
+                    mAdapter.setList(it.datas)
+                    mViewModel.refreshControlSwitch(true, it.over)
+                } else if (it.curPage > 1) {
+                    mAdapter.addData(it.datas)
+                    mViewModel.refreshControlSwitch(false, it.over)
+                }
             }
         })
     }

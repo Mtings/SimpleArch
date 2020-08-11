@@ -70,9 +70,7 @@ class HomeFragment : IBaseFragment<HomeViewModel>() {
         mViewModel.refreshControl.observe(viewLifecycleOwner, Observer {
             if (it.isRefresh) {
                 refreshLayout.finishRefresh()
-                if (it.isOver) {
-                    refreshLayout.setNoMoreData(it.isOver)
-                }
+                if (it.isOver) refreshLayout.setNoMoreData(it.isOver)
             } else {
                 if (it.isOver) refreshLayout.finishLoadMoreWithNoMoreData() else refreshLayout.finishLoadMore()
             }

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.song.sakura.R
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewModel
+import kotlinx.android.synthetic.main.fragment_favorite.*
 
 class FavoriteFragment : IBaseFragment<IBaseViewModel>() {
 
@@ -21,5 +22,11 @@ class FavoriteFragment : IBaseFragment<IBaseViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        flashGroup.setString("汉字WZ^89")
+        flashGroup.startAnim()
+
+        button.setOnClickListener {
+            flashGroup.startAnim()
+        }
     }
 }
