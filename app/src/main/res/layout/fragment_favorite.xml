@@ -11,6 +11,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="80dp"
+        android:maxLength="9"
+        android:hint="最大9字符"
+        android:layout_marginTop="30dp"
+        android:inputType="text" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button"
         android:layout_width="wrap_content"

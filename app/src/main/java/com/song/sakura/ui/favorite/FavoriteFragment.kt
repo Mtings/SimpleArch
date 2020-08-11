@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import com.song.sakura.R
 import com.song.sakura.ui.base.IBaseFragment
@@ -24,6 +25,11 @@ class FavoriteFragment : IBaseFragment<IBaseViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         flashGroup.setString("汉字WZ^89")
         flashGroup.startAnim()
+
+        edit.doAfterTextChanged {
+
+            flashGroup.setString(it.toString())
+        }
 
         button.setOnClickListener {
             flashGroup.startAnim()

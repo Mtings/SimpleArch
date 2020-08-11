@@ -24,6 +24,7 @@ public class FlashGroupView : FrameLayout {
     }
 
     public fun setString(text: String) {
+        layout.removeAllViews()
         this.string = text
         list = string.toCharArray().toMutableList().map {
             it.toString()
