@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.core.view.children
 import com.song.sakura.R
 import kotlinx.android.synthetic.main.layout_flash_group_view.view.*
@@ -37,6 +38,9 @@ public class FlashGroupView : FrameLayout {
         val view =
             View.inflate(context, R.layout.view_flash_frame, null) as FlashFrameView
         view.changeChildTextAndType(text)
+        val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        lp.setMargins(0,0,3,0)
+        view.layoutParams = lp
         layout.addView(view)
     }
 
