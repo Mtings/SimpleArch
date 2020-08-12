@@ -49,7 +49,7 @@
 
             <TextView
                 android:id="@+id/tvMakeTop"
-                android:layout_width="40dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginEnd="8dp"
                 android:gravity="center"
@@ -75,6 +75,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor"
+                android:maxLength="12"
+                android:ellipsize="end"
                 android:textSize="14sp"
                 tools:text="作者" />
 
