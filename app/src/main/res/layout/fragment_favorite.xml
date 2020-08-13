@@ -6,10 +6,24 @@
     android:gravity="center"
     android:layout_height="match_parent">
 
-    <com.song.sakura.widget.FlashGroupView
-        android:id="@+id/flashGroup"
+    <com.song.sakura.widget.CountDownText
+        android:id="@+id/countdownText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        app:animationDuration="600"
+        app:digitBottomDrawable="@drawable/background_bottom_green"
+        app:digitDividerColor="#795548"
+        app:digitPadding="5dp"
+        app:digitTextColor="#795548"
+        app:digitTextSize="40dp"
+        app:digitTopDrawable="@drawable/background_top_green_light"
+        app:halfDigitHeight="40dp"
+        app:digitWidth="200dp"
+        app:resetSymbol="" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/edit"

@@ -33,6 +33,30 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="AlignedTextView">
+        <attr name="alignment">
+            <!--上面-->
+            <enum name="top" value="0x01" />
+            <!--下面-->
+            <enum name="bottom" value="0x02" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="CountDownText">
+        <attr name="resetSymbol" format="string" />
+
+        <attr name="digitDividerColor" format="color" />
+        <attr name="digitTopDrawable" format="integer" />
+        <attr name="digitBottomDrawable" format="integer" />
+        <attr name="digitTextColor" format="color" />
+        <attr name="halfDigitHeight" format="dimension" />
+        <attr name="digitWidth" format="dimension" />
+        <attr name="digitTextSize" format="dimension" />
+        <attr name="digitPadding" format="dimension" />
+
+        <attr name="animationDuration" format="integer" />
+    </declare-styleable>
+
     <declare-styleable name="DialogFragmentNavigator">
         <attr name="android:name" />
     </declare-styleable>
