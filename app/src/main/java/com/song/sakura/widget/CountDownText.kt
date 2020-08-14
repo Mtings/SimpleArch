@@ -54,7 +54,7 @@ class CountDownText : LinearLayout {
                 typedArray.getDimensionPixelSize(R.styleable.CountDownText_halfDigitHeight, 0)
             val digitWidth =
                 typedArray.getDimensionPixelSize(R.styleable.CountDownText_digitWidth, 0)
-            setHalfDigitHeightAndDigitWidth(halfDigitHeight ?: 0, digitWidth ?: 0)
+            setHalfDigitHeightAndDigitWidth(halfDigitHeight, digitWidth)
 
             val animationDuration =
                 typedArray.getInt(R.styleable.CountDownText_animationDuration, 600)

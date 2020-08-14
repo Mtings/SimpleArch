@@ -19,10 +19,10 @@
         app:digitDividerColor="#795548"
         app:digitPadding="5dp"
         app:digitTextColor="#795548"
-        app:digitTextSize="40dp"
+        app:digitTextSize="30dp"
         app:digitTopDrawable="@drawable/background_top_green_light"
-        app:halfDigitHeight="40dp"
-        app:digitWidth="200dp"
+        app:halfDigitHeight="30dp"
+        app:digitWidth="100dp"
         app:resetSymbol="" />
 
     <androidx.appcompat.widget.AppCompatEditText

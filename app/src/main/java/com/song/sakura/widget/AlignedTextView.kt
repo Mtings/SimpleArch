@@ -45,10 +45,11 @@ class AlignedTextView : AppCompatTextView {
                 paint.color = this.currentTextColor
                 val drawX = width / 2f
                 var drawY = 0f
+                val offset = paint.textSize / 10
                 if (alignment == TYPE_TOP) {
-                    drawY = height / 2f - 8f
+                    drawY = height / 2f - offset
                 } else if (alignment == TYPE_BOTTOM) {
-                    drawY = height * 3 / 2f - 8f
+                    drawY = height * 3 / 2f - offset
                 }
                 canvas.drawText(this.text.toString(), drawX, drawY, paint)
 
