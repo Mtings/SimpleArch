@@ -1,13 +1,11 @@
 package com.song.sakura.widget
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.CountDownTimer
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import com.song.sakura.R

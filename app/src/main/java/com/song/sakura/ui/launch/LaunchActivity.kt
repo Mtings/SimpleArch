@@ -20,10 +20,11 @@ class LaunchActivity : IBaseActivity<IBaseViewModel>() {
             return
         }
 
-        GlobalScope.launch {
-            delay(1000L)
-            goMain(this@LaunchActivity)
-        }
+        CoroutineScope(Dispatchers.Main)
+            .launch {
+                delay(1000L)
+                goMain(this@LaunchActivity)
+            }
 
     }
 
