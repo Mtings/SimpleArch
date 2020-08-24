@@ -38,7 +38,7 @@ class AlignedTextView : AppCompatTextView {
 
     override fun onDraw(canvas: Canvas?) {
         canvas?.let {
-            if (isChineseStr(this.text.toString())) {
+            if (isChineseOrLowerCase(this.text.toString())) {
                 canvas.getClipBounds(textRect)
                 paint.getTextBounds(this.text.toString(), 0, this.text.length, textRect)
                 paint.textAlign = Paint.Align.CENTER
@@ -81,11 +81,11 @@ class AlignedTextView : AppCompatTextView {
         return c.toInt() in 0x4E00..0x9FA5 // 根据字节码判断
     }
 
-    // 判断一个字符串是否含有中文
-    private fun isChineseStr(str: String?): Boolean {
+    // 判断一个字符串是否含有中文或小写字母
+    private fun isChineseOrLowerCase(str: String?): Boolean {
         if (str == null) return false
         for (c in str.toCharArray()) {
-            if (isChinese(c)) return true
+            if (isChinese(c) || c.isLowerCase()) return true
         }
         return false
     }

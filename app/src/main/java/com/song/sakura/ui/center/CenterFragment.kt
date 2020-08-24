@@ -4,12 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.gyf.immersionbar.ImmersionBar
 import com.song.sakura.R
-import com.song.sakura.databinding.FragmentCenterBinding
-import com.song.sakura.databinding.FragmentMessageBinding
 import com.song.sakura.ui.base.IBaseFragment
-import com.song.sakura.ui.base.IBaseViewModel
 
 class CenterFragment : IBaseFragment<CenterViewModel>() {
 

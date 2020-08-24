@@ -50,7 +50,7 @@ public class PermissionsAspect {
                     public void noPermission(List<String> denied, boolean quick) {
                         if (quick) {
                             ToastUtils.show("授权失败，请手动授予权限");
-                            XXPermissions.startPermissionActivity(ActivityStackManager.getInstance().getTopActivity(), false);
+                            XXPermissions.startPermissionActivity(ActivityStackManager.getInstance().getTopActivity(), denied);
                         } else {
                             ToastUtils.show("请先授予权限");
                         }
