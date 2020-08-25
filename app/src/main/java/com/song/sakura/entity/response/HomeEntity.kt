@@ -73,3 +73,15 @@ class HomeRefreshControl(
     var isRefresh: Boolean = false,
     var isOver: Boolean = false
 )
+
+data class ProjectTree(
+    var courseId: Int,
+    var id: Int,
+    var name: String,
+    var order: Int,
+    var parentChapterId: Int,
+    var userControlSetTop: Boolean,
+    var visible: Int,
+    var icon: Int,
+    var select: Boolean
+)

@@ -3,6 +3,7 @@ package com.song.sakura.ui.home
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Html
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -93,7 +94,7 @@ class DividerItemDecoration(context: Context) : Y_DividerItemDecoration(context)
 class ListAdapter() : BaseQuickAdapter<ArticleBean, IBaseViewHolder>(R.layout.item_article, null) {
 
     override fun convert(holder: IBaseViewHolder, item: ArticleBean) {
-        holder.itemView.title.text = item.title ?: ""
+        holder.itemView.title.text = Html.fromHtml(item.title ?: "")
         holder.itemView.author.text = item.getFixedName()
         holder.itemView.image.setImageResource(item.getIcon())
         holder.itemView.tvMakeTop.visibility = if (item.top) View.VISIBLE else View.GONE

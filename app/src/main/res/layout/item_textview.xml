@@ -8,9 +8,7 @@
     android:background="@drawable/selector_transparent"
     android:textColor="@color/color_222222"
     android:textSize="14sp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="10dp">
 
 </androidx.appcompat.widget.AppCompatTextView>

@@ -6,6 +6,7 @@ import com.network.api.ApiResponse;
 import com.song.sakura.entity.response.ArticleBean;
 import com.song.sakura.entity.response.BannerVO;
 import com.song.sakura.entity.response.HomePageEntity;
+import com.song.sakura.entity.response.ProjectTree;
 
 import java.util.List;
 
@@ -44,4 +45,11 @@ public interface ApiService {
      */
     @GET("banner/json")
     LiveData<ApiResponse<List<BannerVO>>> bannerList();
+
+    /**
+     * 项目分类
+     */
+    @GET("project/tree/json")
+    LiveData<ApiResponse<List<ProjectTree>>> projectTree();
+
 }

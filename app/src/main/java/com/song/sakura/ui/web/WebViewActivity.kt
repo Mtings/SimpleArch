@@ -32,21 +32,6 @@ import kotlinx.android.synthetic.main.activity_webview.*
 @Route(path = Router.Main.webview)
 class WebViewActivity : IBaseActivity<WebViewModel>() {
 
-    companion object {
-        // 加载模式：MODE_DEFAULT 默认使用WebView加载；
-        // MODE_SONIC 使用VasSonic框架加载；
-        // MODE_SONIC_WITH_OFFLINE_CACHE 使用VasSonic框架离线加载
-        const val MODE_DEFAULT = 0
-        const val MODE_SONIC = 1
-        const val MODE_SONIC_WITH_OFFLINE_CACHE = 2
-        const val PARAM_MODE = "param_mode"
-
-    }
-
-    private var sonicSession: SonicSession? = null
-    private var sonicSessionClient: SonicSessionClientImpl? = null
-    private var mode: Int = MODE_DEFAULT
-
     var articleId = 0
     var collect = false
     var link: String? = ""
@@ -54,7 +39,6 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initParams()
-        preloadInitVasSonic()
         setContentView(R.layout.activity_webview)
 
         mToolbar?.apply {
@@ -67,20 +51,13 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
         }
 
         initWebView()
-
-        if (sonicSessionClient != null) {
-            sonicSessionClient?.bindWebView(webView)
-            sonicSessionClient?.clientReady()
-        } else {
-            webView.loadUrl(link)
-        }
+        webView.loadUrl(link)
     }
 
     private fun initParams() {
         articleId = intent.getIntExtra("articleId", 0)
         collect = intent.getBooleanExtra("collect", false)
         link = intent.getStringExtra("link")
-        mode = intent.getIntExtra(PARAM_MODE, MODE_DEFAULT)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -94,10 +71,6 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
                 SonicJavaScriptInterface.PARAM_LOAD_URL_TIME,
                 System.currentTimeMillis()
             );
-            webView.addJavascriptInterface(
-                SonicJavaScriptInterface(sonicSessionClient, intent),
-                "sonic"
-            )
             allowContentAccess = true
             databaseEnabled = true
             /* 大部分网页需要自己保存一些数据,这个时候就的设置下面这个属性 */
@@ -155,17 +128,6 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
         /* 同上,重写WebViewClient可以监听网页的跳转和资源加载等等... */
         webView.webViewClient = object : WebViewClient() {
 
-            override fun shouldInterceptRequest(
-                view: WebView?,
-                url: String?
-            ): WebResourceResponse? {
-                if (sonicSession != null) {
-                    val requestResponse = sonicSessionClient?.requestResource(url)
-                    if (requestResponse is WebResourceResponse) return requestResponse
-                }
-                return null
-            }
-
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 if (url.startsWith("scheme:") || url.startsWith("scheme:")) {
                     url.openBrowser(this@WebViewActivity)
@@ -195,7 +157,6 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
             override fun onPageFinished(view: WebView, url: String) {
                 progress.visibility = View.GONE
                 super.onPageFinished(view, url)
-                sonicSession?.sessionClient?.pageFinish(url)
             }
 
             override fun onReceivedSslError(
@@ -216,57 +177,6 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
         }
     }
 
-    /**
-     * 使用VasSonic框架提升H5首屏加载速度。
-     */
-    private fun preloadInitVasSonic() {
-        window.addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED)
-
-        // init sonic engine if necessary, or maybe u can do this when application created
-        if (!SonicEngine.isGetInstanceAllowed()) {
-            SonicEngine.createInstance(
-                SonicRuntimeImpl(App.getApplication()),
-                SonicConfig.Builder().build()
-            )
-        }
-
-        // if it's sonic mode , startup sonic session at first time
-        if (MODE_DEFAULT != mode) { // sonic mode
-            val sessionConfigBuilder = SonicSessionConfig.Builder()
-            sessionConfigBuilder.setSupportLocalServer(true)
-
-            // if it's offline pkg mode, we need to intercept the session connection
-            if (MODE_SONIC_WITH_OFFLINE_CACHE == mode) {
-                sessionConfigBuilder.setCacheInterceptor(object : SonicCacheInterceptor(null) {
-                    override fun getCacheData(session: SonicSession): String? {
-                        return null // offline pkg does not need cache
-                    }
-                })
-                sessionConfigBuilder.setConnectionInterceptor(object :
-                    SonicSessionConnectionInterceptor() {
-                    override fun getConnection(
-                        session: SonicSession,
-                        intent: Intent
-                    ): SonicSessionConnection {
-                        return OfflinePkgSessionConnection(this@WebViewActivity, session, intent)
-                    }
-                })
-            }
-
-            // create sonic session and run sonic flow
-            sonicSession =
-                SonicEngine.getInstance().createSession(link ?: "", sessionConfigBuilder.build())
-            if (null != sonicSession) {
-                sonicSession?.bindClient(SonicSessionClientImpl().also { sonicSessionClient = it })
-            } else {
-                // this only happen when a same sonic session is already running,
-                // u can comment following codes to feedback as a default mode.
-                // throw new UnknownError("create session fail!");
-                LogUtil.print("${title},${link ?: ""}:create sonic session fail!")
-            }
-        }
-    }
-
     override fun onBackPressed() {
         if (webView.canGoBack()) {
             webView.goBack()
@@ -277,8 +187,6 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
 
     override fun onDestroy() {
         webView.destroy()
-        sonicSession?.destroy()
-        sonicSession = null
         super.onDestroy()
     }
 }

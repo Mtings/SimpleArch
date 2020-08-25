@@ -17,12 +17,20 @@
             android:id="@+id/list"
             android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
+            android:background="@color/white"
+            android:scrollbars="vertical"
+            android:scrollbarSize="2dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/color_divider" />
 
         <com.ui.widget.layout.NoScrollViewPager
             android:id="@+id/viewPager"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent" />
 
     </LinearLayout>
