@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.gyf.immersionbar.ImmersionBar
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -185,5 +187,10 @@ class RightProjectAdapter :
         holder.itemView.tvTitle.text = item.title
         holder.itemView.tvDesc.text = item.desc
         holder.itemView.tvName.text = item.getFixedName()
+        holder.itemView.tvTime.text = item.niceDate
+
+        Glide.with(holder.itemView.context).load(item.envelopePic)
+            .transform(RoundedCorners(8))
+            .into(holder.itemView.img)
     }
 }
