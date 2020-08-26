@@ -74,7 +74,8 @@ class MessageFragment : IBaseFragment<MessageViewModel>() {
         mViewModel.projectLit.observe(viewLifecycleOwner, Observer {
             if (it.data?.curPage == 1) {
                 rightProjectAdapter.setList(it.data?.datas)
-                if (it.data!!.over) smartRefreshLayout.finishRefreshWithNoMoreData() else smartRefreshLayout.finishRefresh()
+                if (it.data!!.over) smartRefreshLayout.finishRefreshWithNoMoreData()
+                else smartRefreshLayout.finishRefresh()
             } else {
                 rightProjectAdapter.addData(it.data?.datas ?: Lists.newArrayList())
                 if (it.data?.over!!) smartRefreshLayout.finishLoadMoreWithNoMoreData()
@@ -93,6 +94,7 @@ class MessageFragment : IBaseFragment<MessageViewModel>() {
             data[position].select = true
             adapter.setList(data)
 
+            resetRefreshLayout()
             rightProjectAdapter.setList(Lists.newArrayList())
             mViewModel.refreshArticle(data[position].id)
         }
@@ -109,6 +111,11 @@ class MessageFragment : IBaseFragment<MessageViewModel>() {
         })
 
         mViewModel.refreshCategory()
+    }
+
+    private fun resetRefreshLayout() {
+        smartRefreshLayout.setEnableLoadMore(true)
+        smartRefreshLayout.setNoMoreData(false)
     }
 
     override fun initImmersionBar() {
