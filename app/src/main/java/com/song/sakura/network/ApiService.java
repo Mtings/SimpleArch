@@ -14,6 +14,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Title: com.song.sakura.network
@@ -28,6 +29,7 @@ public interface ApiService {
 
     /**
      * 首页文章列表
+     *
      * @param page 页数
      */
     @GET("article/list/{page}/json")
@@ -51,5 +53,11 @@ public interface ApiService {
      */
     @GET("project/tree/json")
     LiveData<ApiResponse<List<ProjectTree>>> projectTree();
+
+    /**
+     * 项目列表
+     */
+    @GET("project/list/{page}/json")
+    LiveData<ApiResponse<HomePageEntity>> projectList(@Path("page") int page, @Query("cid") int cid);
 
 }

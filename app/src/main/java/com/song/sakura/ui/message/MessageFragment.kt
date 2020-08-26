@@ -12,13 +12,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.gyf.immersionbar.ImmersionBar
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import com.song.sakura.R
+import com.song.sakura.entity.response.ArticleBean
 import com.song.sakura.entity.response.ProjectTree
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewHolder
 import com.song.sakura.ui.base.IBaseViewModel
+import com.song.sakura.util.RouterUtil
 import com.ui.model.AbsentLiveData
+import com.ui.util.Lists
 import kotlinx.android.synthetic.main.fragment_message.*
+import kotlinx.android.synthetic.main.item_project.view.*
 import kotlinx.android.synthetic.main.item_textview.view.*
 
 class MessageFragment : IBaseFragment<MessageViewModel>() {
@@ -59,7 +65,26 @@ class MessageFragment : IBaseFragment<MessageViewModel>() {
         mViewModel.categoryList.observe(viewLifecycleOwner, Observer {
             data = it
             adapter.setList(data)
+            mViewModel.refreshArticle(data[0].id)
         })
+
+        val rightProjectAdapter = RightProjectAdapter()
+        rightList.adapter = rightProjectAdapter
+
+        mViewModel.projectLit.observe(viewLifecycleOwner, Observer {
+            if (it.data?.curPage == 1) {
+                rightProjectAdapter.setList(it.data?.datas)
+                if (it.data!!.over) smartRefreshLayout.finishRefreshWithNoMoreData() else smartRefreshLayout.finishRefresh()
+            } else {
+                rightProjectAdapter.addData(it.data?.datas ?: Lists.newArrayList())
+                if (it.data?.over!!) smartRefreshLayout.finishLoadMoreWithNoMoreData()
+                else smartRefreshLayout.finishLoadMore()
+            }
+        })
+
+        rightProjectAdapter.setOnItemClickListener { _, _, position ->
+            RouterUtil.navWebView(rightProjectAdapter.getItem(position), getBaseActivity())
+        }
 
         adapter.setOnItemClickListener { _, _, position ->
             data.forEach {
@@ -67,7 +92,21 @@ class MessageFragment : IBaseFragment<MessageViewModel>() {
             }
             data[position].select = true
             adapter.setList(data)
+
+            rightProjectAdapter.setList(Lists.newArrayList())
+            mViewModel.refreshArticle(data[position].id)
         }
+
+        smartRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
+
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                mViewModel.refreshArticle(mViewModel.categoryId.value!!)
+            }
+
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                mViewModel.loadMoreArticle(mViewModel.categoryId.value!!)
+            }
+        })
 
         mViewModel.refreshCategory()
     }
@@ -81,8 +120,6 @@ class MessageFragment : IBaseFragment<MessageViewModel>() {
 }
 
 class MessageViewModel(app: Application) : IBaseViewModel(app) {
-    //选中项目分类
-    val selectCategory = MutableLiveData<ProjectTree>()
 
     private val refresh = MutableLiveData<Boolean>()
 
@@ -98,12 +135,29 @@ class MessageViewModel(app: Application) : IBaseViewModel(app) {
     var categoryList = Transformations.map(projectTree) {
         val list = it.data ?: ArrayList()
         if (list.isNotEmpty()) {
-            selectCategory.value = list[0]
             list[0].select = true
         }
         list
     }
 
+    private var page = 1
+
+    val categoryId = MutableLiveData<Int>()
+
+    var projectLit = Transformations.switchMap(categoryId) {
+        if (it == 0) AbsentLiveData.create()
+        else api.projectList(page, it)
+    }
+
+    fun refreshArticle(cid: Int) {
+        page = 1
+        categoryId.value = cid
+    }
+
+    fun loadMoreArticle(cid: Int) {
+        page++
+        categoryId.value = cid
+    }
 }
 
 class LeftCategoryAdapter :
@@ -114,5 +168,15 @@ class LeftCategoryAdapter :
             text = Html.fromHtml(item.name)
             isSelected = item.select
         }
+    }
+}
+
+class RightProjectAdapter :
+    BaseQuickAdapter<ArticleBean, IBaseViewHolder>(R.layout.item_project, null) {
+
+    override fun convert(holder: IBaseViewHolder, item: ArticleBean) {
+        holder.itemView.tvTitle.text = item.title
+        holder.itemView.tvDesc.text = item.desc
+        holder.itemView.tvName.text = item.getFixedName()
     }
 }

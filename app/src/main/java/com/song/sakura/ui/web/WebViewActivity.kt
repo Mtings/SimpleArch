@@ -66,11 +66,6 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             /* 设置支持Js,必须设置*/
             javaScriptEnabled = true
-            webView.removeJavascriptInterface("searchBoxJavaBridge_")
-            intent.putExtra(
-                SonicJavaScriptInterface.PARAM_LOAD_URL_TIME,
-                System.currentTimeMillis()
-            );
             allowContentAccess = true
             databaseEnabled = true
             /* 大部分网页需要自己保存一些数据,这个时候就的设置下面这个属性 */
