@@ -49,7 +49,7 @@ class CountDownDigit : FrameLayout {
         frontLower.pivotX =
             (frontUpper.right - ((frontUpper.right - frontUpper.left) / 2)).toFloat()
 
-        frontUpper.animate().setDuration(getHalfOfAnimationDuration()).rotationX(-90f)
+        frontUpper.animate().setDuration(getHalfOfAnimationDuration()).rotationX(-90f).withLayer()
             .setInterpolator(AccelerateInterpolator())
             .withEndAction {
                 frontUpperText.text = backUpperText.text
@@ -57,7 +57,7 @@ class CountDownDigit : FrameLayout {
 
                 frontLower.rotationX = 90f
                 frontLowerText.text = backUpperText.text
-                frontLower.animate().setDuration(getHalfOfAnimationDuration()).rotationX(0f)
+                frontLower.animate().setDuration(getHalfOfAnimationDuration()).rotationX(0f).withLayer()
                     .setInterpolator(DecelerateInterpolator())
                     .withEndAction {
                         backLowerText.text = frontLowerText.text

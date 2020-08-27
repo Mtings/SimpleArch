@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.view_countdown_digit.view.*
 
 class CountDownText : LinearLayout {
 
-    private var countDownTimer: CountDownTimer? = null
+//    private var countDownTimer: CountDownTimer? = null
     private var resetSymbol: String = ""
 
     constructor(context: Context) : super(context)
@@ -63,26 +63,27 @@ class CountDownText : LinearLayout {
     }
 
     fun startCountDown(text: String) {
-        countDownTimer?.cancel()
+//        countDownTimer?.cancel()
         if (resetSymbol == text) {
             return
         }
-        countDownTimer = object : CountDownTimer(1000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                setCountDownTime(text)
-            }
-
-            override fun onFinish() {
-                digit.setNewText(text)
-            }
-        }
-        countDownTimer?.start()
+        setCountDownTime(text)
+//        countDownTimer = object : CountDownTimer(1000, 1000) {
+//            override fun onTick(millisUntilFinished: Long) {
+//                setCountDownTime(text)
+//            }
+//
+//            override fun onFinish() {
+//                digit.setNewText(text)
+//            }
+//        }
+//        countDownTimer?.start()
         resetSymbol = text
     }
 
 
     fun resetCountdownTimer() {
-        countDownTimer?.cancel()
+//        countDownTimer?.cancel()
         digit.setNewText(resetSymbol)
     }
 

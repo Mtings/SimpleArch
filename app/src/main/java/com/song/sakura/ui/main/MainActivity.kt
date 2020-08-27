@@ -67,7 +67,7 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
         }
     }
 
-    fun initView() {
+    private fun initView() {
         mPagerAdapter = BaseFragmentAdapter(this)
         mPagerAdapter.addFragment(HomeFragment())
         mPagerAdapter.addFragment(MessageFragment())
