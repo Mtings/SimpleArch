@@ -61,7 +61,7 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
             if (bottomNav.selectedItemId != centerItemId) {
                 changeBadgeVisible(centerItemId, true)
                 fab.setImageResource(R.drawable.ic_camera_black_24dp)
-                viewPager.currentItem = 2
+                viewPager.setCurrentItem(2, false)
                 bottomNav.menu.getItem(2).isChecked = true
             }
         }
