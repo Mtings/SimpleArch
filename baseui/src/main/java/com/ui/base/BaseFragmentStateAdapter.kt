@@ -1,4 +1,4 @@
-package com.song.sakura.ui.base
+package com.ui.base
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

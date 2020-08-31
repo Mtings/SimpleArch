@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.song.sakura.R
-import com.song.sakura.ui.base.BaseFragmentStateAdapter
+import com.ui.base.BaseFragmentStateAdapter
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.center.CenterFragment
 import com.song.sakura.ui.favorite.FavoriteFragment

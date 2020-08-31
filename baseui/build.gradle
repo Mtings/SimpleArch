@@ -57,10 +57,11 @@ dependencies {
 
     }
     api 'androidx.legacy:legacy-support-v4:1.0.0'
-    api 'androidx.constraintlayout:constraintlayout:2.0.0'
+    api 'androidx.constraintlayout:constraintlayout:2.0.1'
     api 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     api 'androidx.drawerlayout:drawerlayout:1.1.0'
     api 'androidx.viewpager:viewpager:1.0.0'
+    api "androidx.viewpager2:viewpager2:1.0.0"
 
     api rootProject.ext.rxandroid
     compileOnly rootProject.ext.gson
