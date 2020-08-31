@@ -23,11 +23,7 @@ open class ShareDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var attachedActivity: Activity
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_share_dialog, container, false)
     }
 

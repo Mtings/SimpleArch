@@ -121,9 +121,11 @@ dependencies {
     api project(':basehttp')
     implementation project(':baseui')
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     //MultiDex(for androidx)
 //    implementation 'androidx.multidex:multidex:2.0.1'
@@ -198,7 +200,7 @@ dependencies {
     implementation 'com.youth.banner:banner:2.1.0'
 
     // VasSonic: https://github.com/Tencent/VasSonic
-    implementation 'com.tencent.sonic:sdk:3.1.0'
+//    implementation 'com.tencent.sonic:sdk:3.1.0'
 }
 
 //import org.aspectj.bridge.IMessage

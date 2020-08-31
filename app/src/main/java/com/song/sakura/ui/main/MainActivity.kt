@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.song.sakura.R
+import com.song.sakura.ui.base.BaseFragmentStateAdapter
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.center.CenterFragment
 import com.song.sakura.ui.favorite.FavoriteFragment
@@ -16,8 +18,6 @@ import com.song.sakura.ui.home.HomeFragment
 import com.song.sakura.ui.home.HomeViewModel
 import com.song.sakura.ui.message.MessageFragment
 import com.song.sakura.ui.mine.MineFragment
-import com.ui.base.BaseFragment
-import com.ui.base.BaseFragmentAdapter
 import com.ui.util.IntentBuilder
 import com.ui.util.RxUtil
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,7 +31,7 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
     var id: Int = 0
 
 
-    private lateinit var mPagerAdapter: BaseFragmentAdapter<BaseFragment>
+    private lateinit var mPagerAdapter: BaseFragmentStateAdapter
 
     companion object {
         fun goMain(context: Activity) {
@@ -68,15 +68,14 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
     }
 
     private fun initView() {
-        mPagerAdapter = BaseFragmentAdapter(this)
-        mPagerAdapter.addFragment(HomeFragment())
-        mPagerAdapter.addFragment(MessageFragment())
-        mPagerAdapter.addFragment(CenterFragment())
-        mPagerAdapter.addFragment(FavoriteFragment())
-        mPagerAdapter.addFragment(MineFragment())
-        // 设置成懒加载模式
-        mPagerAdapter.setLazyMode(true)
-        viewPager.adapter = mPagerAdapter
+        val fragments =
+            listOf<Fragment>(HomeFragment(), MessageFragment(), CenterFragment(), FavoriteFragment(), MineFragment())
+        mPagerAdapter = BaseFragmentStateAdapter(this.supportFragmentManager, this.lifecycle, fragments)
+        viewPager.apply {
+            isUserInputEnabled = false
+            offscreenPageLimit = fragments.size
+            adapter = mPagerAdapter
+        }
 
         bottomNav.itemIconTintList = null
         bottomNav.setOnNavigationItemSelectedListener(this)
@@ -90,26 +89,26 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
             R.id.tab_home -> {
                 changeBadgeVisible(item.itemId, true)
                 fab.setImageResource(R.drawable.ic_camera_gray_24dp)
-                viewPager.currentItem = 0
+                viewPager.setCurrentItem(0, false)
                 return true
             }
             R.id.tab_message -> {
                 otherTabDo(item)
-                viewPager.currentItem = 1
+                viewPager.setCurrentItem(1, false)
                 return true
             }
             R.id.tab_empty -> {
-                viewPager.currentItem = 2
+                viewPager.setCurrentItem(2, false)
                 return true
             }
             R.id.tab_favorite -> {
                 otherTabDo(item)
-                viewPager.currentItem = 3
+                viewPager.setCurrentItem(3, false)
                 return true
             }
             R.id.tab_mine -> {
                 otherTabDo(item)
-                viewPager.currentItem = 4
+                viewPager.setCurrentItem(4, false)
                 return true
             }
             else -> {
@@ -142,7 +141,7 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
         if (bottomNav.selectedItemId != bottomNav.menu.getItem(0).itemId) {
             fab.setImageResource(R.drawable.ic_camera_gray_24dp)
             changeBadgeVisible(bottomNav.menu.getItem(0).itemId, true)
-            viewPager.currentItem = 0
+            viewPager.setCurrentItem(0, false)
             bottomNav.menu.getItem(0).isChecked = true
             return
         }

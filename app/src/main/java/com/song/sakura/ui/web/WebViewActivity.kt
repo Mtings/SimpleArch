@@ -9,24 +9,15 @@ import android.net.http.SslError
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.view.WindowManager
 import android.webkit.*
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.hjq.toast.ToastUtils
 import com.song.sakura.R
-import com.song.sakura.app.App
 import com.song.sakura.extension.checkAppInstalled
 import com.song.sakura.extension.openBrowser
 import com.song.sakura.route.Router
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.ui.share.ShareDialogFragment
-import com.song.sakura.vassonic.OfflinePkgSessionConnection
-import com.song.sakura.vassonic.SonicJavaScriptInterface
-import com.song.sakura.vassonic.SonicRuntimeImpl
-import com.song.sakura.vassonic.SonicSessionClientImpl
-import com.tencent.sonic.sdk.*
-import com.ui.util.LogUtil
 import kotlinx.android.synthetic.main.activity_webview.*
 
 @Route(path = Router.Main.webview)
