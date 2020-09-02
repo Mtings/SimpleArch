@@ -75,13 +75,8 @@ class HomeFragment : IBaseFragment<HomeViewModel>() {
     }
 
     private fun initView() {
-        val titles = ArrayList<String>()
-        titles.add("热门")
-        titles.add("其他")
-
-        val fragments = ArrayList<Fragment>()
-        fragments.add(HomeListChildFragment())
-        fragments.add(Fragment())
+        val titles = listOf("热门", "其他")
+        val fragments = listOf(HomeListChildFragment(), Fragment())
 
         viewPager.offscreenPageLimit = fragments.size
         viewPager.adapter = FragmentAdapter(
