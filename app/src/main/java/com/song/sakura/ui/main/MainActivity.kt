@@ -73,7 +73,7 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
         mPagerAdapter = BaseFragmentStateAdapter(this.supportFragmentManager, this.lifecycle, fragments)
         viewPager.apply {
             isUserInputEnabled = false
-            offscreenPageLimit = fragments.size
+//            offscreenPageLimit = fragments.size
             adapter = mPagerAdapter
         }
 

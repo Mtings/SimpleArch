@@ -56,10 +56,10 @@ dependencies {
     api("androidx.lifecycle:lifecycle-reactivestreams:${lifecycle_version}") {
 
     }
-    api 'androidx.legacy:legacy-support-v4:1.0.0'
+//    api 'androidx.legacy:legacy-support-v4:1.0.0'
     api 'androidx.constraintlayout:constraintlayout:2.0.1'
     api 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
-    api 'androidx.drawerlayout:drawerlayout:1.1.0'
+    api 'androidx.drawerlayout:drawerlayout:1.1.1'
     api 'androidx.viewpager:viewpager:1.0.0'
     api "androidx.viewpager2:viewpager2:1.0.0"
 
@@ -67,7 +67,7 @@ dependencies {
     compileOnly rootProject.ext.gson
     //谷歌兼容库：https://developer.android.google.cn/jetpack/androidx/releases/appcompat?hl=zh-cn
     api 'androidx.appcompat:appcompat:1.2.0'
-    api 'com.google.android.material:material:1.2.0'
+    api 'com.google.android.material:material:1.2.1'
 
     api("androidx.recyclerview:recyclerview:1.1.0") {
         transitive = false

@@ -24,14 +24,13 @@ import com.song.sakura.ui.base.IBaseViewHolder
 import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.util.RouterUtil
 import com.ui.model.AbsentLiveData
-import com.ui.util.Lists
 import kotlinx.android.synthetic.main.fragment_message.*
 import kotlinx.android.synthetic.main.item_project.view.*
 import kotlinx.android.synthetic.main.item_textview.view.*
 
 class MessageFragment : IBaseFragment<MessageViewModel>() {
 
-    private lateinit var data: MutableList<ProjectTree>
+    private var data: MutableList<ProjectTree> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,14 +59,21 @@ class MessageFragment : IBaseFragment<MessageViewModel>() {
         val adapter = LeftCategoryAdapter()
         list.adapter = adapter
 
-        mViewModel.categoryList.observe(viewLifecycleOwner, Observer {
-            data = it
-            adapter.setList(data)
-            mViewModel.refreshArticle(data[0].id)
-        })
-
         val rightProjectAdapter = RightProjectAdapter()
         rightList.adapter = rightProjectAdapter
+
+        mViewModel.categoryList.observe(viewLifecycleOwner, Observer {
+            if (!it.isNullOrEmpty()) {
+                data = it
+                adapter.setList(data)
+                mViewModel.refreshArticle(data[0].id)
+            } else {
+                data = ArrayList()
+                adapter.setList(data)
+                rightProjectAdapter.setList(ArrayList())
+            }
+
+        })
 
         mViewModel.projectLit.observe(viewLifecycleOwner, Observer {
             if (it.data?.curPage == 1) {
@@ -75,7 +81,7 @@ class MessageFragment : IBaseFragment<MessageViewModel>() {
                 if (it.data!!.over) smartRefreshLayout.finishRefreshWithNoMoreData()
                 else smartRefreshLayout.finishRefresh()
             } else {
-                rightProjectAdapter.addData(it.data?.datas ?: Lists.newArrayList())
+                rightProjectAdapter.addData(it.data?.datas ?: ArrayList())
                 if (it.data?.over!!) smartRefreshLayout.finishLoadMoreWithNoMoreData()
                 else smartRefreshLayout.finishLoadMore()
             }
@@ -93,18 +99,18 @@ class MessageFragment : IBaseFragment<MessageViewModel>() {
             adapter.setList(data)
 
             resetRefreshLayout()
-            rightProjectAdapter.setList(Lists.newArrayList())
+            rightProjectAdapter.setList(ArrayList())
             mViewModel.refreshArticle(data[position].id)
         }
 
         smartRefreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
-                mViewModel.refreshArticle(mViewModel.categoryId.value!!)
+                mViewModel.refreshArticle(mViewModel.categoryId.value ?: 0)
             }
 
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-                mViewModel.loadMoreArticle(mViewModel.categoryId.value!!)
+                mViewModel.loadMoreArticle(mViewModel.categoryId.value ?: 0)
             }
         })
 
