@@ -1,7 +1,5 @@
 package com.ui.util;
 
-import com.ui.R;
-
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -21,12 +19,8 @@ import java.text.DecimalFormat;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
-@SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored"})
+@SuppressWarnings("all")
 public class Utils {
-
-    public static final String DIR = "Ware";
-    public static final String regularExpression = "[a-zA-Z0-9\\s]";
-    public static final String regularExpressionPunctuation = "[\\p{P}+~$`^=|<>～｀＄＾＋＝｜＜＞￥×°]";
 
     public static String getDistance(double distance) {
         distance = distance / 1000d;
@@ -35,91 +29,11 @@ public class Utils {
         return ds;
     }
 
-    public static String getDistance(double lat, double lon, double lat1, double lon1) {
-
-        String ds = "";
-        double distance = distanceBetween(
-                lat, lon,
-                lat1, lon1);
-        distance = Math.abs(distance);
-        if (distance >= 0) {
-            distance = distance / 1000d;
-            DecimalFormat fmt = new DecimalFormat("0.##");
-            ds = fmt.format(distance) + "千米 ";
-        } else {
-            DecimalFormat fmt = new DecimalFormat("0.##");
-            ds = fmt.format((int) distance) + "米 ";
-        }
-
-        return ds;
-    }
-
-    public static String getDistance2(double lat, double lon, double lat1, double lon1) {
-
-        String ds = "";
-        double distance = distanceBetween(
-                lat, lon,
-                lat1, lon1);
-        distance = Math.abs(distance);
-        if (MathUtil.compareBegin(new BigDecimal(distance), new BigDecimal(1000d))) {
-            distance = distance / 1000d;
-            DecimalFormat fmt = new DecimalFormat("0.##");
-            ds = fmt.format(distance) + "km ";
-        } else {
-            DecimalFormat fmt = new DecimalFormat("0.##");
-            ds = fmt.format((int) distance) + "m ";
-        }
-
-        return ds;
-    }
-
-
-    public static double distanceBetween(double startLat, double startLon, double endLat, double endLon) {
-//    	float[] results = new float[1];
-//    	android.location.Location.distanceBetween(
-//				lat,
-//				lon,
-//				lat1,
-//				lon1, results);
-//    	return results[0];
-        //return DistanceUtil.getDistance(new LatLng(lat, lon), new LatLng(lat1, lon1));
-        double er = 6378137d; // 6378700.0f;
-        double radlat1 = Math.PI * startLat / 180.0d;
-        double radlat2 = Math.PI * endLat / 180.0d;
-        //now long.
-        double radlong1 = Math.PI * startLon / 180.0d;
-        double radlong2 = Math.PI * endLon / 180.0d;
-        if (radlat1 < 0) radlat1 = Math.PI / 2 + Math.abs(radlat1);// south
-        if (radlat1 > 0) radlat1 = Math.PI / 2 - Math.abs(radlat1);// north
-        if (radlong1 < 0) radlong1 = Math.PI * 2 - Math.abs(radlong1);//west
-        if (radlat2 < 0) radlat2 = Math.PI / 2 + Math.abs(radlat2);// south
-        if (radlat2 > 0) radlat2 = Math.PI / 2 - Math.abs(radlat2);// north
-        if (radlong2 < 0) radlong2 = Math.PI * 2 - Math.abs(radlong2);// west
-        //spherical coordinates x=r*cos(ag)sin(at), y=r*sin(ag)*sin(at), z=r*cos(at)
-        //zero ag is up so reverse lat
-        double x1 = er * Math.cos(radlong1) * Math.sin(radlat1);
-        double y1 = er * Math.sin(radlong1) * Math.sin(radlat1);
-        double z1 = er * Math.cos(radlat1);
-        double x2 = er * Math.cos(radlong2) * Math.sin(radlat2);
-        double y2 = er * Math.sin(radlong2) * Math.sin(radlat2);
-        double z2 = er * Math.cos(radlat2);
-        double d = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
-        //side, side, side, law of cosines and arccos
-        double theta = Math.acos((er * er + er * er - d * d) / (2 * er * er));
-        double dist = theta * er;
-        return dist;
-    }
-
     public static int dip2px(Context context, float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }
 
-    //    public static int dip2px(float dipValue) {
-//        final float scale = BaseApplication.getAppContext().getResources().getDisplayMetrics().density;
-//        return (int) (dipValue * scale + 0.5f);
-//    }
-//
     public static float sp2px(Context context, float sp) {
         final float scale = context.getResources().getDisplayMetrics().scaledDensity;
         return sp * scale;

@@ -2,6 +2,7 @@ package com.ui.base;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
@@ -10,7 +11,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 import com.ui.util.Lists;
-import com.ui.util.StatusBarHelper;
 
 import com.ui.R;
 
@@ -19,7 +19,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -31,7 +30,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public class BaseActivity extends AppCompatActivity {
 
     static {
@@ -67,6 +65,7 @@ public class BaseActivity extends AppCompatActivity {
                                     .getWindowToken(),
                             InputMethodManager.HIDE_NOT_ALWAYS);
         } catch (Exception e) {
+            //doNothing
         }
 
     }
@@ -139,39 +138,23 @@ public class BaseActivity extends AppCompatActivity {
 
 
     public void setToolbarBackDrawable(Toolbar mToolbar) {
-        mAppBarLayout = findViewById(R.id.appbar);
-
         if (null != mToolbar) {
             mToolbar.setNavigationOnClickListener(e -> onBackPressed());
         }
-        if (null != mAppBarLayout && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            View.inflate(getActivity(), R.layout.line_dark, mAppBarLayout);
-        }
     }
 
-    public void showToast(@StringRes int stringRes) {
+    public void showSnackBar(@StringRes int stringRes) {
         Snackbar.make(getWindow().getDecorView(), stringRes, Snackbar.LENGTH_LONG).show();
     }
 
-    public void showToast(View view, @StringRes int stringRes) {
+    public void showSnackBar(View view, @StringRes int stringRes) {
         Snackbar.make(view == null ? getWindow().getDecorView() : view, stringRes, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         fragmentBackHelperList = Lists.newArrayList();
-        StatusBarHelper.Builder(this).setStatusBarLightMode(true);
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     public void error(String error) {
@@ -200,7 +183,7 @@ public class BaseActivity extends AppCompatActivity {
 
     @SuppressLint("MissingSuperCall")
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
 
     }
 

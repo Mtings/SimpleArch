@@ -9,8 +9,8 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.gyf.immersionbar.ImmersionBar
 import com.song.sakura.R
-import com.ui.base.BaseFragmentStateAdapter
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.center.CenterFragment
 import com.song.sakura.ui.favorite.FavoriteFragment
@@ -18,10 +18,10 @@ import com.song.sakura.ui.home.HomeFragment
 import com.song.sakura.ui.home.HomeViewModel
 import com.song.sakura.ui.message.MessageFragment
 import com.song.sakura.ui.mine.MineFragment
+import com.ui.base.BaseFragmentStateAdapter
 import com.ui.util.IntentBuilder
 import com.ui.util.RxUtil
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.viewPager
 
 class MainActivity : IBaseActivity<HomeViewModel>(),
     BottomNavigationView.OnNavigationItemSelectedListener {
@@ -49,10 +49,17 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
         super.onNewIntent(intent)
     }
 
+    override fun initImmersionBar() {
+        ImmersionBar.with(this).keyboardEnable(true)
+            .statusBarDarkFont(true)
+            .init()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setBackgroundDrawableResource(R.color.color_background)
         setContentView(R.layout.activity_main)
+        initImmersionBar()
         initViewModel(this, HomeViewModel::class.java)
         initView()
 

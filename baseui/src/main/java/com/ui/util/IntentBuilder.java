@@ -20,17 +20,11 @@ import java.util.ArrayList;
 public class IntentBuilder {
 
     public static final String KEY_ID = "KEY_ID";
-    public static final String KEY_TRACE_ID = "KEY_TRACE_ID";
-    public static final String KEY_CENTER_ID = "KEY_CENTER_ID";
-    public static final String KEY_ORDER_ID = "KEY_ORDER_ID";
     public static final String KEY_TYPE = "KEY_TYPE";
     public static final String KEY_PAGE_INDEX = "index";
     public static final String KEY_INFO = "KEY_INFO";
     public static final String KEY_LIST = "KEY_LIST";
-    public static final String KEY_SEARCH_LIST = "KEY_SEARCH_LIST";
     public static final String KEY_TITLE = "KEY_TITLE";
-    public static final String KEY_PAGE_TITLE = "KEY_PAGE_TITLE";
-    public static final String KEY_CATEGORY_ID = "KEY_CATEGORY_ID";
     public static final String KEY_FIELD = "KEY_FIELD";
     public static final String KEY_VALUE = "KEY_VALUE";
     public static final String KEY_MOBILE = "KEY_MOBILE";

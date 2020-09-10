@@ -18,7 +18,6 @@ import com.ui.util.DrawableHelper;
 import com.ui.util.Utils;
 
 @SuppressLint("RestrictedApi")
-@SuppressWarnings("deprecation")
 public class Toolbar extends androidx.appcompat.widget.Toolbar {
     TextView mTitleText;
 
@@ -26,6 +25,7 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
         super(context);
     }
 
+    @SuppressLint("PrivateResource")
     public Toolbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
@@ -44,6 +44,7 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
         }
     }
 
+    @SuppressLint("PrivateResource")
     public Toolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();

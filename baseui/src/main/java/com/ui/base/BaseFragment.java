@@ -1,6 +1,7 @@
 package com.ui.base;
 
 import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
@@ -22,7 +23,6 @@ import com.ui.widget.Toolbar;
 
 import java.lang.reflect.Field;
 
-@SuppressWarnings("deprecation")
 public class BaseFragment extends Fragment {
 
     protected RecyclerView.RecycledViewPool mPool;
@@ -37,7 +37,7 @@ public class BaseFragment extends Fragment {
     protected BaseActivity baseActivity;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof BaseActivity) {
             baseActivity = (BaseActivity) context;
