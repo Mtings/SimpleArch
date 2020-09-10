@@ -16,6 +16,7 @@ import com.hjq.toast.ToastUtils;
 import com.network.api.ApiResponse;
 import com.song.sakura.BuildConfig;
 
+import com.song.sakura.R;
 import com.song.sakura.app.App;
 import com.song.sakura.ui.main.ShareViewModel;
 import com.ui.base.BaseActivity;
@@ -63,7 +64,10 @@ public class IBaseActivity<Q extends BaseViewModel> extends BaseActivity {
     }
 
     public void initImmersionBar() {
-        ImmersionBar.with(this).init();
+        ImmersionBar.with(this).keyboardEnable(true)
+                .statusBarDarkFont(true)
+                .titleBar(R.id.appbar)
+                .init();
     }
 
 

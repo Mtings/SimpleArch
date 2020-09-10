@@ -31,6 +31,7 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
         super.onCreate(savedInstanceState)
         initParams()
         setContentView(R.layout.activity_webview)
+        initImmersionBar()
 
         mToolbar?.apply {
             inflateMenu(R.menu.share_menu)

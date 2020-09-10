@@ -187,6 +187,9 @@
 # https://github.com/getActivity/XXPermissions
 -keep class com.hjq.permissions.** {*;}
 
+# https://github.com/getActivity/ToastUtils
+-keep class com.hjq.toast.** {*;}
+
 # slidinguppanel
 -keep class com.sothree.slidinguppanel.** {*;}
 -dontwarn com.sothree.slidinguppanel.**

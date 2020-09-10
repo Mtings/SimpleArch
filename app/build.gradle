@@ -192,7 +192,7 @@ dependencies {
 //    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 
     // 权限请求框架：https://github.com/getActivity/XXPermissions
-    implementation 'com.hjq:xxpermissions:8.2'
+    implementation 'com.hjq:xxpermissions:8.6'
 
     // banner：https://github.com/youth5201314/banner
     implementation 'com.youth.banner:banner:2.1.0'

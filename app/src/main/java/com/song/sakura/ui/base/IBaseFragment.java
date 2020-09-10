@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.gyf.immersionbar.ImmersionBar;
 
 import com.network.api.ApiResponse;
+import com.song.sakura.R;
 import com.song.sakura.app.App;
 import com.song.sakura.ui.main.ShareViewModel;
 import com.ui.base.BaseFragment;
@@ -27,8 +28,10 @@ public class IBaseFragment<T extends BaseViewModel> extends BaseFragment {
 
     public void initImmersionBar() {
         try {
-            ImmersionBar.with(this).keyboardEnable(true).statusBarDarkFont(true)
-                    .navigationBarWithKitkatEnable(false).init();
+            ImmersionBar.with(this).keyboardEnable(true)
+                    .statusBarDarkFont(true)
+                    .titleBar(R.id.appbar)
+                    .init();
         } catch (Exception ignored) {
         }
     }
