@@ -42,7 +42,7 @@ public class BaseActivity extends AppCompatActivity {
     @Nullable
     protected Toolbar mToolbar;
     protected List<FragmentBackHelper> fragmentBackHelperList;
-    protected Dialog mDialogError;
+    protected BaseDialog mDialogError;
 
 
     public void setFragmentBackHelper(FragmentBackHelper i) {
@@ -161,10 +161,11 @@ public class BaseActivity extends AppCompatActivity {
                 mDialogError.dismiss();
                 mDialogError = null;
             }
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(error);
-            builder.setPositiveButton(R.string.btn_confirm, (dialog, which) -> dialog.dismiss());
-            mDialogError = builder.show();
+            mDialogError = new HintDialog.Builder(this)
+                    .setIcon(HintDialog.ICON_ERROR)
+                    .setMessage(error)
+                    .create();
+            mDialogError.show();
         }
     }
 

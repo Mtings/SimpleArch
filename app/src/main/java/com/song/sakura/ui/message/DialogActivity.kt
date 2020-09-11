@@ -272,6 +272,10 @@ class DialogActivity : IBaseActivity<IBaseViewModel>() {
                 .show()
         }
 
+        bindUi(RxUtil.click(btn_dialog_fail_toast)) {
+            error("这就是错误提示")
+        }
+
     }
 
 }

@@ -129,7 +129,10 @@ public class BaseFragment extends Fragment {
     public void error(String error) {
         setProgressVisible(false);
         if (!TextUtils.isEmpty(error)) {
-            DialogUtil.createDialogView(getActivity(), error, (dialog, which) -> dialog.dismiss(), R.string.btn_confirm);
+            new HintDialog.Builder(getBaseActivity())
+                    .setIcon(HintDialog.ICON_ERROR)
+                    .setMessage(error)
+                    .show();
         }
     }
 

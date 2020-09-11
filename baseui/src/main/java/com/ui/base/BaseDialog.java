@@ -50,7 +50,7 @@ import com.ui.R;
  * time   : 2018/11/24
  * desc   : Dialog 基类
  */
-public class BaseDialog extends AppCompatDialog implements ResourcesAction, HandlerAction, ClickAction,
+public class BaseDialog extends AppCompatDialog implements ResourcesAction, HandlerAction, ClickAction, AnimAction,
         DialogInterface.OnShowListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
 
     private final ListenersWrapper<BaseDialog> mListeners = new ListenersWrapper<>(this);
