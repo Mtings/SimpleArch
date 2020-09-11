@@ -42,11 +42,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/AndroidProject
- *    time   : 2019/09/16
- *    desc   : PopupWindow 基类
+ * author : Android 轮子哥
+ * github : https://github.com/getActivity/AndroidProject
+ * time   : 2019/09/16
+ * desc   : PopupWindow 基类
  */
+
+@SuppressWarnings("unused")
 public class BasePopupWindow extends PopupWindow
         implements ResourcesAction, HandlerAction, ClickAction,
         PopupWindow.OnDismissListener {
@@ -70,8 +72,8 @@ public class BasePopupWindow extends PopupWindow
     /**
      * 设置一个销毁监听器
      *
-     * @param listener       销毁监听器对象
-     * @deprecated           请使用 {@link #addOnDismissListener(BasePopupWindow.OnDismissListener)}
+     * @param listener 销毁监听器对象
+     * @deprecated 请使用 {@link #addOnDismissListener(BasePopupWindow.OnDismissListener)}
      */
     @Deprecated
     @Override
@@ -85,7 +87,7 @@ public class BasePopupWindow extends PopupWindow
     /**
      * 添加一个显示监听器
      *
-     * @param listener      监听器对象
+     * @param listener 监听器对象
      */
     public void addOnShowListener(@Nullable BasePopupWindow.OnShowListener listener) {
         if (mShowListeners == null) {
@@ -97,7 +99,7 @@ public class BasePopupWindow extends PopupWindow
     /**
      * 添加一个销毁监听器
      *
-     * @param listener      监听器对象
+     * @param listener 监听器对象
      */
     public void addOnDismissListener(@Nullable BasePopupWindow.OnDismissListener listener) {
         if (mDismissListeners == null) {
@@ -110,7 +112,7 @@ public class BasePopupWindow extends PopupWindow
     /**
      * 移除一个显示监听器
      *
-     * @param listener      监听器对象
+     * @param listener 监听器对象
      */
     public void removeOnShowListener(@Nullable BasePopupWindow.OnShowListener listener) {
         if (mShowListeners != null) {
@@ -121,7 +123,7 @@ public class BasePopupWindow extends PopupWindow
     /**
      * 移除一个销毁监听器
      *
-     * @param listener      监听器对象
+     * @param listener 监听器对象
      */
     public void removeOnDismissListener(@Nullable BasePopupWindow.OnDismissListener listener) {
         if (mDismissListeners != null) {
@@ -266,42 +268,72 @@ public class BasePopupWindow extends PopupWindow
 
         private static final int DEFAULT_ANCHORED_GRAVITY = Gravity.TOP | Gravity.START;
 
-        /** Context 对象 */
+        /**
+         * Context 对象
+         */
         private final Context mContext;
-        /** PopupWindow 布局 */
+        /**
+         * PopupWindow 布局
+         */
         private View mContentView;
-        /** PopupWindow 对象 */
+        /**
+         * PopupWindow 对象
+         */
         private BasePopupWindow mPopupWindow;
 
-        /** PopupWindow Show 监听 */
+        /**
+         * PopupWindow Show 监听
+         */
         private List<OnShowListener> mOnShowListeners;
-        /** PopupWindow Dismiss 监听 */
+        /**
+         * PopupWindow Dismiss 监听
+         */
         private List<OnDismissListener> mOnDismissListeners;
 
-        /** 动画 */
+        /**
+         * 动画
+         */
         private int mAnimations = AnimAction.NO_ANIM;
-        /** 位置 */
+        /**
+         * 位置
+         */
         private int mGravity = DEFAULT_ANCHORED_GRAVITY;
-        /** 宽度和高度 */
+        /**
+         * 宽度和高度
+         */
         private int mWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
         private int mHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
 
-        /** 是否可触摸 */
+        /**
+         * 是否可触摸
+         */
         private boolean mTouchable = true;
-        /** 是否有焦点 */
+        /**
+         * 是否有焦点
+         */
         private boolean mFocusable = true;
-        /** 是否外层可触摸 */
+        /**
+         * 是否外层可触摸
+         */
         private boolean mOutsideTouchable = false;
 
-        /** 背景遮盖层透明度 */
+        /**
+         * 背景遮盖层透明度
+         */
         private float mBackgroundDimAmount;
 
-        /** X 轴偏移 */
+        /**
+         * X 轴偏移
+         */
         private int mXOffset;
-        /** Y 轴偏移 */
+        /**
+         * Y 轴偏移
+         */
         private int mYOffset;
 
-        /** 点击事件集合 */
+        /**
+         * 点击事件集合
+         */
         private SparseArray<OnClickListener> mClickArray;
 
         public Builder(Context context) {
@@ -315,6 +347,7 @@ public class BasePopupWindow extends PopupWindow
             // 这里解释一下，为什么要传 new FrameLayout，因为如果不传的话，XML 的根布局获取到的 LayoutParams 对象会为空，也就会导致宽高解析不出来
             return setContentView(LayoutInflater.from(mContext).inflate(id, new FrameLayout(mContext), false));
         }
+
         public B setContentView(View view) {
             mContentView = view;
 
@@ -490,6 +523,7 @@ public class BasePopupWindow extends PopupWindow
         public B setText(@IdRes int viewId, @StringRes int stringId) {
             return setText(viewId, getString(stringId));
         }
+
         public B setText(@IdRes int id, CharSequence text) {
             ((TextView) findViewById(id)).setText(text);
             return (B) this;
@@ -509,6 +543,7 @@ public class BasePopupWindow extends PopupWindow
         public B setHint(@IdRes int viewId, @StringRes int stringId) {
             return setHint(viewId, getString(stringId));
         }
+
         public B setHint(@IdRes int id, CharSequence text) {
             ((TextView) findViewById(id)).setHint(text);
             return (B) this;
@@ -528,6 +563,7 @@ public class BasePopupWindow extends PopupWindow
         public B setBackground(@IdRes int viewId, @DrawableRes int drawableId) {
             return setBackground(viewId, ContextCompat.getDrawable(mContext, drawableId));
         }
+
         public B setBackground(@IdRes int id, Drawable drawable) {
             findViewById(id).setBackground(drawable);
             return (B) this;
@@ -539,6 +575,7 @@ public class BasePopupWindow extends PopupWindow
         public B setImageDrawable(@IdRes int viewId, @DrawableRes int drawableId) {
             return setBackground(viewId, ContextCompat.getDrawable(mContext, drawableId));
         }
+
         public B setImageDrawable(@IdRes int id, Drawable drawable) {
             ((ImageView) findViewById(id)).setImageDrawable(drawable);
             return (B) this;
@@ -692,7 +729,7 @@ public class BasePopupWindow extends PopupWindow
          * 根据 id 查找 View
          */
         @Override
-        public  <V extends View> V findViewById(@IdRes int id) {
+        public <V extends View> V findViewById(@IdRes int id) {
             if (mContentView == null) {
                 // 没有 setContentView 就想 findViewById ?
                 throw new IllegalStateException("are you ok?");

@@ -16,13 +16,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.TextView;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.ui.widget.Toolbar;
 
-import java.lang.reflect.Field;
-
+@SuppressWarnings("unused")
 public class BaseFragment extends Fragment {
 
     protected RecyclerView.RecycledViewPool mPool;
@@ -51,17 +48,12 @@ public class BaseFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mToolbar = view.findViewById(R.id.toolbar);
         if (mToolbar == null) {
-            mToolbar = getActivity().findViewById(R.id.toolbar);
+            mToolbar = requireActivity().findViewById(R.id.toolbar);
         }
-        if (getActivity().getIntent() != null && getActivity().getIntent().hasExtra(Intent.EXTRA_TITLE)) {
-            setTitle(getActivity().getIntent().getStringExtra(Intent.EXTRA_TITLE));
+        if (requireActivity().getIntent() != null && requireActivity().getIntent().hasExtra(Intent.EXTRA_TITLE)) {
+            setTitle(requireActivity().getIntent().getStringExtra(Intent.EXTRA_TITLE));
         }
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -71,24 +63,6 @@ public class BaseFragment extends Fragment {
             getBaseActivity().removeFragmentBackHelper((FragmentBackHelper) this);
         }
     }
-
-    /**
-     * 解决Fragment嵌套使用时bug
-     * 但是在使用NavigationView时会报空指针异常，需注释
-     */
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        try {
-//            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
-//            childFragmentManager.setAccessible(true);
-//            childFragmentManager.set(this, null);
-//        } catch (NoSuchFieldException e) {
-//            throw new RuntimeException(e);
-//        } catch (IllegalAccessException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     public void setTitle(@StringRes int resId) {
         if (null != mToolbar)
@@ -121,23 +95,21 @@ public class BaseFragment extends Fragment {
 
     public void setViewDisableDelay(final View view) {
         view.setEnabled(false);
-        view.postDelayed(() -> {
-            view.setEnabled(true);
-        }, 600);
+        view.postDelayed(() -> view.setEnabled(true), 600);
     }
 
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        requireActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
     public void startActivity(Intent intent, boolean isBack) {
         super.startActivity(intent);
         if (isBack)
-            getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            requireActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
         else
-            getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            requireActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
     public BaseActivity getBaseActivity() {
@@ -148,7 +120,7 @@ public class BaseFragment extends Fragment {
         getBaseActivity().finish();
     }
 
-    public void startActivity(Class clz) {
+    public void startActivity(Class<?> clz) {
         Intent intent = new Intent(getActivity(), FragmentParentActivity.class);
         intent.putExtra(FragmentParentActivity.KEY_FRAGMENT, clz);
         startActivity(intent);
@@ -157,9 +129,7 @@ public class BaseFragment extends Fragment {
     public void error(String error) {
         setProgressVisible(false);
         if (!TextUtils.isEmpty(error)) {
-            DialogUtil.createDialogView(getActivity(), error, (dialog, which) -> {
-                dialog.dismiss();
-            }, R.string.btn_confirm);
+            DialogUtil.createDialogView(getActivity(), error, (dialog, which) -> dialog.dismiss(), R.string.btn_confirm);
         }
     }
 

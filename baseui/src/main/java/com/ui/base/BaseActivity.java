@@ -25,11 +25,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class BaseActivity extends AppCompatActivity {
 
     static {
@@ -39,7 +39,6 @@ public class BaseActivity extends AppCompatActivity {
     protected ViewGroup rootView;
     protected View mProgressView;
 
-    protected AppBarLayout mAppBarLayout;
     @Nullable
     protected Toolbar mToolbar;
     protected List<FragmentBackHelper> fragmentBackHelperList;
@@ -51,12 +50,12 @@ public class BaseActivity extends AppCompatActivity {
             fragmentBackHelperList.add(i);
     }
 
-
     public void removeFragmentBackHelper(FragmentBackHelper i) {
-        if (i != null && fragmentBackHelperList.contains(i))
+        if (i != null)
             fragmentBackHelperList.remove(i);
     }
 
+    @SuppressWarnings("all")
     public void dismissKeyboard() {
         try {
             this.getCurrentFocus().clearFocus();
@@ -76,9 +75,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void setViewDisableDelay(final View view) {
         view.setEnabled(false);
-        view.postDelayed(() -> {
-            view.setEnabled(true);
-        }, 600);
+        view.postDelayed(() -> view.setEnabled(true), 600);
     }
 
     protected void initProgressLayout() {
@@ -166,9 +163,7 @@ public class BaseActivity extends AppCompatActivity {
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(error);
-            builder.setPositiveButton(R.string.btn_confirm, (dialog, which) -> {
-                dialog.dismiss();
-            });
+            builder.setPositiveButton(R.string.btn_confirm, (dialog, which) -> dialog.dismiss());
             mDialogError = builder.show();
         }
     }

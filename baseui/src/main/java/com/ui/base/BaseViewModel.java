@@ -1,6 +1,7 @@
 package com.ui.base;
 
 import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
@@ -13,6 +14,7 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
+@SuppressWarnings("unused")
 public abstract class BaseViewModel extends AndroidViewModel {
     protected final CompositeDisposable subscription = new CompositeDisposable();
 
@@ -31,17 +33,15 @@ public abstract class BaseViewModel extends AndroidViewModel {
     }
 
     public <T> void submitRequest(Observable<T> observable, Consumer<? super T> onNext, Consumer<Throwable> onError) {
-            subscription.add(observable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread()).subscribe(onNext, onError));
+        subscription.add(observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(onNext, onError));
     }
 
     public <T> void submitRequest(Observable<T> observable, Consumer<? super T> onNext) {
-
         subscription.add(observable.subscribe(onNext));
     }
 
     public <T> void submitRequestCatchError(Observable<T> observable, Consumer<? super T> onNext) {
-
         subscription.add(observable.subscribe(onNext, LogUtil::print));
     }
 

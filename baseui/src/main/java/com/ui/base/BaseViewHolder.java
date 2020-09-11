@@ -4,17 +4,18 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.ui.util.DrawableHelper;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+@SuppressWarnings("unused")
 public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     protected DisplayMetrics displayMetrics;
@@ -29,11 +30,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
      */
     @SuppressWarnings("unchecked")
     public <T extends View> T getView(int id) {
-        T result = (T) itemView.findViewById(id);
-        if (result == null) {
-            return null;
-        }
-        return result;
+        return (T) itemView.findViewById(id);
     }
 
     public <T extends View> T findViewById(@IdRes int resId) {
@@ -60,12 +57,13 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     public String getString(@StringRes int resId, String s) {
-        return itemView.getContext().getResources().getString(resId)+s;
+        return itemView.getContext().getResources().getString(resId) + s;
     }
 
     public String getString(@StringRes int resId) {
         return itemView.getContext().getResources().getString(resId);
     }
+
     public void setViewDrawableRight(TextView view, int resId) {
         view.setCompoundDrawablesWithIntrinsicBounds(
                 null,
@@ -74,50 +72,10 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void setTextView(TextView textView, CharSequence... text) {
-        if (textView == null) return;
-        CharSequence t = getArrayString(text);
-        if (TextUtils.isEmpty(t)) textView.setText("");
-        else textView.setText(t);
-        textView.setVisibility(View.VISIBLE);
-    }
-
-    public void setTextView(@IdRes int resId, CharSequence... text) {
-        TextView textView = getView(resId);
-        setTextView(textView, text);
-    }
-
     public void setTextViewSize(@IdRes int resId, int size) {
         TextView textView = getView(resId);
         textView.setTextSize(size);
     }
-
-    private CharSequence getArrayString(CharSequence... text) {
-        String s = "";
-        StringBuilder str = new StringBuilder();
-        if (text == null || text.length == 0) {
-            return str;
-        }
-        boolean isImages = false;
-        for (CharSequence img : text) {
-            str.append(img);
-            str.append(s);
-            isImages = true;
-        }
-        if (isImages && s.length() > 0) {
-           return str.substring(0, str.length() - s.length());
-        }
-        return str;
-    }
-
-//    public void setIconView(@IdRes int resId, String url) {
-//        CustomDraweeView icon = getView(resId);
-//        if (icon != null) {
-//            BaseImageLoadUtil.Builder().load(url)
-//                    .build().imageOptions(R.color.color_999999)
-//                    .displayImage(icon);
-//        }
-//    }
 
     public void setViewSize(@IdRes int resId, int w, int h) {
         View view = getView(resId);
@@ -146,7 +104,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-   public Activity getActivity(){
+    public Activity getActivity() {
         return (Activity) itemView.getContext();
     }
 
