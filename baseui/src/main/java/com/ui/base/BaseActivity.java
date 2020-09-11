@@ -5,7 +5,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -16,7 +15,6 @@ import com.ui.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -157,12 +155,10 @@ public class BaseActivity extends AppCompatActivity {
     public void error(String error) {
         setProgressVisible(false);
         if (!TextUtils.isEmpty(error)) {
-            if (mDialogError != null) {
-                mDialogError.dismiss();
-                mDialogError = null;
-            }
+            dismissErrorDialog();
             mDialogError = new HintDialog.Builder(this)
                     .setIcon(HintDialog.ICON_ERROR)
+                    .setCancelable(true)
                     .setMessage(error)
                     .create();
             mDialogError.show();
@@ -171,10 +167,16 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        dismissErrorDialog();
+        super.onDestroy();
+    }
+
+    public void dismissErrorDialog() {
         if (mDialogError != null && mDialogError.isShowing()) {
             mDialogError.dismiss();
+            mDialogError.cancel();
+            mDialogError = null;
         }
-        super.onDestroy();
     }
 
     @SuppressLint("MissingSuperCall")

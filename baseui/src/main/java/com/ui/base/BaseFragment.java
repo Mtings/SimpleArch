@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ui.R;
-import com.ui.util.DialogUtil;
 
 import android.content.Context;
 import android.content.Intent;
@@ -131,6 +130,7 @@ public class BaseFragment extends Fragment {
         if (!TextUtils.isEmpty(error)) {
             new HintDialog.Builder(getBaseActivity())
                     .setIcon(HintDialog.ICON_ERROR)
+                    .setCancelable(true)
                     .setMessage(error)
                     .show();
         }
