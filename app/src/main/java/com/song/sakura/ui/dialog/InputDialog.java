@@ -21,8 +21,7 @@ public final class InputDialog {
 
     public static final class Builder
             extends UIDialog.Builder<Builder>
-            implements BaseDialog.OnShowListener,
-            BaseDialog.OnDismissListener {
+            implements BaseDialog.OnShowListener {
 
         private OnListener mListener;
         private final EditText mInputView;
@@ -34,7 +33,6 @@ public final class InputDialog {
             mInputView = findViewById(R.id.tv_input_message);
 
             addOnShowListener(this);
-            addOnDismissListener(this);
         }
 
         public Builder setHint(@StringRes int id) {
@@ -71,14 +69,6 @@ public final class InputDialog {
         @Override
         public void onShow(BaseDialog dialog) {
             postDelayed(() -> getSystemService(InputMethodManager.class).showSoftInput(mInputView, 0), 500);
-        }
-
-        /**
-         * {@link BaseDialog.OnDismissListener}
-         */
-        @Override
-        public void onDismiss(BaseDialog dialog) {
-            getSystemService(InputMethodManager.class).hideSoftInputFromWindow(mInputView.getWindowToken(), 0);
         }
 
         @SingleClick

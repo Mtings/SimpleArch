@@ -11,6 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStore;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -28,12 +31,13 @@ import com.song.sakura.helper.ActivityStackManager;
 import com.ui.util.DrawableHelper;
 import com.ui.util.LogUtil;
 
-public class App extends Application implements ViewModelStoreOwner {
+public class App extends Application implements ViewModelStoreOwner, LifecycleOwner {
 
     private static Application mApplication;
 
     private ViewModelStore mAppViewModelStore;
     private ViewModelProvider.Factory mFactory;
+    private final LifecycleRegistry mLifecycle = new LifecycleRegistry(this);
 
     static {
         SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, refreshLayout) -> {
@@ -55,6 +59,7 @@ public class App extends Application implements ViewModelStoreOwner {
     public void onCreate() {
         super.onCreate();
 
+        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE);
         mApplication = this;
         mAppViewModelStore = new ViewModelStore();
 
@@ -90,7 +95,12 @@ public class App extends Application implements ViewModelStoreOwner {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-//        MultiDex.install(base);
+    }
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return mLifecycle;
     }
 
     public static Context getApplication() {

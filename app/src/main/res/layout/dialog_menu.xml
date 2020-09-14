@@ -27,8 +27,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginVertical="10dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="15dp"
         app:cardElevation="0px">
@@ -40,10 +39,8 @@
             android:background="@drawable/selector_transparent"
             android:focusable="true"
             android:gravity="center"
-            android:paddingStart="15dp"
-            android:paddingTop="13dp"
-            android:paddingEnd="15dp"
-            android:paddingBottom="13dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="13dp"
             android:singleLine="true"
             android:text="取消"
             android:textColor="@color/colorCancel"

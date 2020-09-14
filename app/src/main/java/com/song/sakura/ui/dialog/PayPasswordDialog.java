@@ -48,7 +48,7 @@ public final class PayPasswordDialog {
         private final TextView mMoneyView;
 
         private final PasswordView mPasswordView;
-
+        private final RecyclerView mRecyclerView;
         private final KeyboardAdapter mAdapter;
 
         public Builder(Context context) {
@@ -58,22 +58,18 @@ public final class PayPasswordDialog {
 
             mTitleView = findViewById(R.id.tv_pay_title);
             mCloseView = findViewById(R.id.iv_pay_close);
-
             mSubTitleView = findViewById(R.id.tv_pay_sub_title);
             mMoneyView = findViewById(R.id.tv_pay_money);
-
             mPasswordView = findViewById(R.id.pw_pay_view);
-
-            RecyclerView recyclerView = findViewById(R.id.rv_pay_list);
-            recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
-            mAdapter = new KeyboardAdapter();
-
-            mAdapter.setNewData(Arrays.asList(KEYBOARD_TEXT));
-            mAdapter.setOnItemClickListener(this);
-
-            recyclerView.setAdapter(mAdapter);
-
+            mRecyclerView = findViewById(R.id.rv_pay_list);
             setOnClickListener(R.id.iv_pay_close);
+
+            mRecyclerView.setLayoutManager(new GridLayoutManager(context, 3));
+
+            mAdapter = new KeyboardAdapter();
+            mAdapter.setList(Arrays.asList(KEYBOARD_TEXT));
+            mAdapter.setOnItemClickListener(this);
+            mRecyclerView.setAdapter(mAdapter);
         }
 
         public Builder setTitle(@StringRes int id) {

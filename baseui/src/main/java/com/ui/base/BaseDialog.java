@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,38 +34,36 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 
+import com.ui.R;
 import com.ui.action.AnimAction;
 import com.ui.action.ClickAction;
-import com.ui.action.ResourcesAction;
 import com.ui.action.HandlerAction;
+import com.ui.action.ResourcesAction;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ui.R;
-
-/**
- * author : Android 轮子哥
- * github : https://github.com/getActivity/AndroidProject
- * time   : 2018/11/24
- * desc   : Dialog 基类
- */
-public class BaseDialog extends AppCompatDialog implements ResourcesAction, HandlerAction, ClickAction, AnimAction,
+public class BaseDialog extends AppCompatDialog implements LifecycleOwner, ResourcesAction,
+        HandlerAction, ClickAction, AnimAction,
         DialogInterface.OnShowListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
 
     private final ListenersWrapper<BaseDialog> mListeners = new ListenersWrapper<>(this);
+    private final LifecycleRegistry mLifecycle = new LifecycleRegistry(this);
 
-    private List<OnShowListener> mShowListeners;
-    private List<OnCancelListener> mCancelListeners;
-    private List<OnDismissListener> mDismissListeners;
+    private List<BaseDialog.OnShowListener> mShowListeners;
+    private List<BaseDialog.OnCancelListener> mCancelListeners;
+    private List<BaseDialog.OnDismissListener> mDismissListeners;
 
     public BaseDialog(Context context) {
         this(context, R.style.BaseDialogStyle);
     }
 
-    public BaseDialog(Context context, int themeResId) {
+    public BaseDialog(Context context, @StyleRes int themeResId) {
         super(context, themeResId);
     }
 
@@ -83,7 +83,6 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
             WindowManager.LayoutParams params = window.getAttributes();
             return params.gravity;
         }
-
         return Gravity.NO_GRAVITY;
     }
 
@@ -139,7 +138,7 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
         if (window != null) {
             return window.getAttributes().windowAnimations;
         }
-        return AnimAction.NO_ANIM;
+        return BaseDialog.DEFAULT;
     }
 
     /**
@@ -159,11 +158,27 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
     /**
      * 设置背景遮盖层的透明度（前提条件是背景遮盖层开关必须是为开启状态）
      */
-    public void setBackgroundDimAmount(@FloatRange(from = 0, to = 1.0) float dimAmount) {
+    public void setBackgroundDimAmount(@FloatRange(from = 0.0, to = 1.0) float dimAmount) {
         Window window = getWindow();
         if (window != null) {
             window.setDimAmount(dimAmount);
         }
+    }
+
+    @Override
+    public void dismiss() {
+        removeCallbacks();
+        View focusView = getCurrentFocus();
+        if (focusView != null) {
+            getSystemService(InputMethodManager.class).hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+        }
+        super.dismiss();
+    }
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return mLifecycle;
     }
 
     /**
@@ -302,7 +317,7 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
     /**
      * 设置显示监听器集合
      */
-    private void setOnShowListeners(@Nullable List<OnShowListener> listeners) {
+    private void setOnShowListeners(@Nullable List<BaseDialog.OnShowListener> listeners) {
         super.setOnShowListener(mListeners);
         mShowListeners = listeners;
     }
@@ -310,7 +325,7 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
     /**
      * 设置取消监听器集合
      */
-    private void setOnCancelListeners(@Nullable List<OnCancelListener> listeners) {
+    private void setOnCancelListeners(@Nullable List<BaseDialog.OnCancelListener> listeners) {
         super.setOnCancelListener(mListeners);
         mCancelListeners = listeners;
     }
@@ -318,7 +333,7 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
     /**
      * 设置销毁监听器集合
      */
-    private void setOnDismissListeners(@Nullable List<OnDismissListener> listeners) {
+    private void setOnDismissListeners(@Nullable List<BaseDialog.OnDismissListener> listeners) {
         super.setOnDismissListener(mListeners);
         mDismissListeners = listeners;
     }
@@ -328,6 +343,8 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
      */
     @Override
     public void onShow(DialogInterface dialog) {
+        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
+
         if (mShowListeners != null) {
             for (int i = 0; i < mShowListeners.size(); i++) {
                 mShowListeners.get(i).onShow(this);
@@ -352,6 +369,8 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
      */
     @Override
     public void onDismiss(DialogInterface dialog) {
+        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
+
         if (mDismissListeners != null) {
             for (int i = 0; i < mDismissListeners.size(); i++) {
                 mDismissListeners.get(i).onDismiss(this);
@@ -360,16 +379,28 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
     }
 
     @Override
-    public void dismiss() {
-        removeCallbacks();
-        super.dismiss();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
     }
 
     @SuppressWarnings("unchecked")
-    public static class Builder<B extends Builder> implements ResourcesAction, ClickAction {
+    public static class Builder<B extends Builder> implements LifecycleOwner, ResourcesAction, ClickAction {
 
         /**
-         * Context 对象
+         * 上下文对象
          */
         private final Context mContext;
         /**
@@ -382,17 +413,26 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
         private View mContentView;
 
         /**
-         * 主题
+         * 主题样式
          */
         private int mThemeId = R.style.BaseDialogStyle;
         /**
-         * 动画
+         * 动画样式
          */
-        private int mAnimations = AnimAction.NO_ANIM;
+        private int mAnimStyle = BaseDialog.DEFAULT;
         /**
-         * 位置
+         * 重心位置
          */
         private int mGravity = Gravity.NO_GRAVITY;
+
+        /**
+         * 水平偏移
+         */
+        private int mXOffset;
+        /**
+         * 垂直偏移
+         */
+        private int mYOffset;
 
         /**
          * 宽度和高度
@@ -421,15 +461,15 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
         /**
          * Dialog Show 监听
          */
-        private List<OnShowListener> mOnShowListeners;
+        private List<BaseDialog.OnShowListener> mOnShowListeners;
         /**
          * Dialog Cancel 监听
          */
-        private List<OnCancelListener> mOnCancelListeners;
+        private List<BaseDialog.OnCancelListener> mOnCancelListeners;
         /**
          * Dialog Dismiss 监听
          */
-        private List<OnDismissListener> mOnDismissListeners;
+        private List<BaseDialog.OnDismissListener> mOnDismissListeners;
         /**
          * Dialog Key 监听
          */
@@ -438,7 +478,7 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
         /**
          * 点击事件集合
          */
-        private SparseArray<OnClickListener> mClickArray;
+        private SparseArray<BaseDialog.OnClickListener> mClickArray;
 
         public Builder(Activity activity) {
             this((Context) activity);
@@ -511,6 +551,22 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
         }
 
         /**
+         * 设置水平偏移
+         */
+        public B setXOffset(int offset) {
+            mXOffset = offset;
+            return (B) this;
+        }
+
+        /**
+         * 设置垂直偏移
+         */
+        public B setYOffset(int offset) {
+            mYOffset = offset;
+            return (B) this;
+        }
+
+        /**
          * 设置宽度
          */
         public B setWidth(int width) {
@@ -574,7 +630,7 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
          * 设置动画，已经封装好几种样式，具体可见{@link AnimAction}类
          */
         public B setAnimStyle(@StyleRes int id) {
-            mAnimations = id;
+            mAnimStyle = id;
             if (isCreated()) {
                 mDialog.setWindowAnimations(id);
             }
@@ -595,7 +651,7 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
         /**
          * 设置背景遮盖层的透明度（前提条件是背景遮盖层开关必须是为开启状态）
          */
-        public B setBackgroundDimAmount(@FloatRange(from = 0, to = 1.0) float dimAmount) {
+        public B setBackgroundDimAmount(@FloatRange(from = 0.0, to = 1.0) float dimAmount) {
             mBackgroundDimAmount = dimAmount;
             if (isCreated()) {
                 mDialog.setBackgroundDimAmount(dimAmount);
@@ -759,22 +815,22 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
             }
 
             // 如果当前没有设置动画效果，就设置一个默认的动画效果
-            if (mAnimations == AnimAction.NO_ANIM) {
+            if (mAnimStyle == BaseDialog.DEFAULT) {
                 switch (mGravity) {
                     case Gravity.TOP:
-                        mAnimations = AnimAction.TOP;
+                        mAnimStyle = BaseDialog.TOP;
                         break;
                     case Gravity.BOTTOM:
-                        mAnimations = AnimAction.BOTTOM;
+                        mAnimStyle = BaseDialog.BOTTOM;
                         break;
                     case Gravity.LEFT:
-                        mAnimations = AnimAction.LEFT;
+                        mAnimStyle = BaseDialog.LEFT;
                         break;
                     case Gravity.RIGHT:
-                        mAnimations = AnimAction.RIGHT;
+                        mAnimStyle = BaseDialog.RIGHT;
                         break;
                     default:
-                        mAnimations = AnimAction.DEFAULT;
+                        mAnimStyle = BaseDialog.DEFAULT;
                         break;
                 }
             }
@@ -794,7 +850,9 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
                 params.width = mWidth;
                 params.height = mHeight;
                 params.gravity = mGravity;
-                params.windowAnimations = mAnimations;
+                params.x = mXOffset;
+                params.y = mYOffset;
+                params.windowAnimations = mAnimStyle;
                 window.setAttributes(params);
                 if (mBackgroundDimEnabled) {
                     window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -833,26 +891,10 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
         }
 
         /**
-         * 显示
-         */
-        public BaseDialog show() {
-            if (!isCreated()) {
-                create();
-            }
-            mDialog.show();
-            return mDialog;
-        }
-
-        @Override
-        public Context getContext() {
-            return mContext;
-        }
-
-        /**
          * 获取 Activity
          */
         public Activity getActivity() {
-            Context context = mContext;
+            Context context = getContext();
             do {
                 if (context instanceof Activity) {
                     return (Activity) context;
@@ -863,6 +905,31 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
                 }
             } while (context != null);
             return null;
+        }
+
+        /**
+         * 显示
+         */
+        public BaseDialog show() {
+            if (!isCreated()) {
+                create();
+            }
+            mDialog.show();
+            return mDialog;
+        }
+
+        /**
+         * 销毁当前 Dialog
+         */
+        public void dismiss() {
+            if (mDialog != null) {
+                mDialog.dismiss();
+            }
+        }
+
+        @Override
+        public Context getContext() {
+            return mContext;
         }
 
         /**
@@ -877,15 +944,6 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
          */
         public boolean isShowing() {
             return mDialog != null && mDialog.isShowing();
-        }
-
-        /**
-         * 销毁当前 Dialog
-         */
-        public void dismiss() {
-            if (mDialog != null) {
-                mDialog.dismiss();
-            }
         }
 
         /**
@@ -954,6 +1012,15 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
         public BaseDialog getDialog() {
             return mDialog;
         }
+
+        @Nullable
+        @Override
+        public Lifecycle getLifecycle() {
+            if (mDialog != null) {
+                return mDialog.getLifecycle();
+            }
+            return null;
+        }
     }
 
     /**
@@ -992,6 +1059,10 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
 
         @Override
         public void onActivityResumed(@NonNull Activity activity) {
+            if (mActivity != activity) {
+                return;
+            }
+
             if (mDialog != null && mDialog.isShowing()) {
                 // 还原 Dialog 动画样式（这里必须要使用延迟设置，否则还是有一定几率会出现）
                 mDialog.postDelayed(() -> {
@@ -1004,11 +1075,15 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
 
         @Override
         public void onActivityPaused(@NonNull Activity activity) {
+            if (mActivity != activity) {
+                return;
+            }
+
             if (mDialog != null && mDialog.isShowing()) {
                 // 获取 Dialog 动画样式
                 mDialogAnim = mDialog.getWindowAnimations();
                 // 设置 Dialog 无动画效果
-                mDialog.setWindowAnimations(AnimAction.NO_ANIM);
+                mDialog.setWindowAnimations(BaseDialog.NO_ANIM);
             }
         }
 
@@ -1022,37 +1097,65 @@ public class BaseDialog extends AppCompatDialog implements ResourcesAction, Hand
 
         @Override
         public void onActivityDestroyed(@NonNull Activity activity) {
-            if (mActivity == activity) {
-                if (mDialog != null) {
-                    mDialog.removeOnShowListener(this);
-                    mDialog.removeOnDismissListener(this);
-                    if (mDialog.isShowing()) {
-                        mDialog.dismiss();
-                    }
-                    mDialog = null;
-                }
-                mActivity.getApplication().unregisterActivityLifecycleCallbacks(this);
-                mActivity = null;
+            if (mActivity != activity) {
+                return;
             }
+
+            if (mDialog != null) {
+                mDialog.removeOnShowListener(this);
+                mDialog.removeOnDismissListener(this);
+                if (mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+                mDialog = null;
+            }
+            unregisterActivityLifecycleCallbacks();
+            // 释放 Activity 对象
+            mActivity = null;
         }
 
         @Override
         public void onShow(BaseDialog dialog) {
             mDialog = dialog;
-            if (mActivity != null) {
-                mActivity.getApplication().registerActivityLifecycleCallbacks(this);
-            }
+            registerActivityLifecycleCallbacks();
         }
 
         @Override
         public void onDismiss(BaseDialog dialog) {
             mDialog = null;
-            if (mActivity != null) {
+            unregisterActivityLifecycleCallbacks();
+        }
+
+        /**
+         * 注册 Activity 生命周期监听
+         */
+        private void registerActivityLifecycleCallbacks() {
+            if (mActivity == null) {
+                return;
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                mActivity.registerActivityLifecycleCallbacks(this);
+            } else {
+                mActivity.getApplication().registerActivityLifecycleCallbacks(this);
+            }
+        }
+
+        /**
+         * 反注册 Activity 生命周期监听
+         */
+        private void unregisterActivityLifecycleCallbacks() {
+            if (mActivity == null) {
+                return;
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                mActivity.unregisterActivityLifecycleCallbacks(this);
+            } else {
                 mActivity.getApplication().unregisterActivityLifecycleCallbacks(this);
             }
         }
     }
-
 
     /**
      * Dialog 监听包装类（修复原生 Dialog 监听器对象导致的内存泄漏）

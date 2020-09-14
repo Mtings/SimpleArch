@@ -1,8 +1,11 @@
 package com.song.sakura.ui.dialog;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.StringRes;
@@ -31,26 +34,30 @@ public final class MenuDialog {
 
     public static final class Builder
             extends BaseDialog.Builder<Builder>
-            implements OnItemClickListener {
+            implements OnItemClickListener, View.OnLayoutChangeListener, Runnable {
 
         private OnListener mListener;
         private boolean mAutoDismiss = true;
 
-        private final MenuAdapter mAdapter;
+        private final RecyclerView mRecyclerView;
         private final TextView mCancelView;
+
+        private final MenuAdapter mAdapter;
+
 
         public Builder(Context context) {
             super(context);
             setContentView(R.layout.dialog_menu);
             setAnimStyle(AnimAction.BOTTOM);
 
-            RecyclerView recyclerView = findViewById(R.id.rv_menu_list);
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+            mRecyclerView = findViewById(R.id.rv_menu_list);
             mCancelView = findViewById(R.id.tv_menu_cancel);
 
             mAdapter = new MenuAdapter();
             mAdapter.setOnItemClickListener(this);
-            recyclerView.setAdapter(mAdapter);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+            mRecyclerView.setAdapter(mAdapter);
 
             setOnClickListener(R.id.tv_menu_cancel);
         }
@@ -86,7 +93,8 @@ public final class MenuDialog {
 
         @SuppressWarnings("all")
         public Builder setList(List data) {
-            mAdapter.setNewData(data);
+            mAdapter.setList(data);
+            mRecyclerView.addOnLayoutChangeListener(this);
             return this;
         }
 
@@ -123,6 +131,7 @@ public final class MenuDialog {
             }
         }
 
+        @SuppressWarnings("all")
         @Override
         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
             if (mAutoDismiss) {
@@ -132,6 +141,44 @@ public final class MenuDialog {
             if (mListener != null) {
                 mListener.onSelected(getDialog(), position, mAdapter.getItem(position));
             }
+        }
+
+
+        /**
+         * {@link View.OnLayoutChangeListener}
+         */
+        @Override
+        public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+            mRecyclerView.removeOnLayoutChangeListener(this);
+            // 这里一定要加延迟，如果不加在 Android 9.0 上面会导致 setLayoutParams 无效
+            post(this);
+        }
+
+        @Override
+        public void run() {
+            final ViewGroup.LayoutParams params = mRecyclerView.getLayoutParams();
+            final int maxHeight = getScreenHeight() / 4 * 3;
+            if (mRecyclerView.getHeight() > maxHeight) {
+                if (params.height != maxHeight) {
+                    params.height = maxHeight;
+                    mRecyclerView.setLayoutParams(params);
+                }
+            } else {
+                if (params.height != ViewGroup.LayoutParams.WRAP_CONTENT) {
+                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    mRecyclerView.setLayoutParams(params);
+                }
+            }
+        }
+
+        /**
+         * 获取屏幕的高度
+         */
+        private int getScreenHeight() {
+            WindowManager manager = getSystemService(WindowManager.class);
+            DisplayMetrics outMetrics = new DisplayMetrics();
+            manager.getDefaultDisplay().getMetrics(outMetrics);
+            return outMetrics.heightPixels;
         }
     }
 

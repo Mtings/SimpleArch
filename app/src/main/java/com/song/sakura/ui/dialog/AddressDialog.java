@@ -1,16 +1,13 @@
 package com.song.sakura.ui.dialog;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -84,6 +81,7 @@ public final class AddressDialog {
             mTitleView = findViewById(R.id.tv_address_title);
             mCloseView = findViewById(R.id.iv_address_closer);
             mTabLayout = findViewById(R.id.tb_address_tab);
+            setOnClickListener(R.id.iv_address_closer);
 
             mTabLayout.addTab(mTabLayout.newTab().setText("请选择"), true);
             mTabLayout.addOnTabSelectedListener(this);
@@ -113,8 +111,6 @@ public final class AddressDialog {
             // 显示省份列表
             mAdapter.addData(AddressManager.getProvinceList(getContext()));
 
-            setOnClickListener(R.id.iv_address_closer);
-
             addOnShowListener(this);
             addOnDismissListener(this);
         }
@@ -132,7 +128,7 @@ public final class AddressDialog {
          * 设置默认省份
          */
         public Builder setProvince(String province) {
-            if (province != null && !"".equals(province)) {
+            if (!TextUtils.isEmpty(province)) {
                 List<AddressBean> data = mAdapter.getItem(0);
                 if (data != null && !data.isEmpty()) {
                     for (int i = 0; i < data.size(); i++) {
@@ -154,7 +150,7 @@ public final class AddressDialog {
                 // 已经忽略了县级区域的选择，不能选定指定的城市
                 throw new IllegalStateException("The selection of county-level regions has been ignored. The designated city cannot be selected");
             }
-            if (city != null && !"".equals(city)) {
+            if (!TextUtils.isEmpty(city)) {
                 List<AddressBean> data = mAdapter.getItem(1);
                 if (data != null && !data.isEmpty()) {
                     for (int i = 0; i < data.size(); i++) {
@@ -175,9 +171,8 @@ public final class AddressDialog {
          * 不选择县级区域
          */
         public Builder setIgnoreArea() {
-            List<AddressBean> data = mAdapter.getItem(1);
-            if (data != null && !data.isEmpty()) {
-                // 已经指定了城市，不能再忽略县级区域
+            if (mAdapter.getItemCount() == 3) {
+                // 已经指定了城市，则不能忽略县级区域
                 throw new IllegalStateException("Cities have been designated and county-level areas can no longer be ignored");
             }
             mIgnoreArea = true;
@@ -349,7 +344,7 @@ public final class AddressDialog {
 
             AddressAdapter adapter = new AddressAdapter();
             ((RecyclerView) helper.itemView.findViewById(R.id.recyclerView)).setAdapter(adapter);
-            adapter.setNewData(item);
+            adapter.setList(item);
             adapter.setOnItemClickListener((adapter1, view, position) -> {
                 if (mListener != null) {
                     mListener.onSelected(helper.getLayoutPosition(), position);
