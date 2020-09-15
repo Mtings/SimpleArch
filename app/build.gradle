@@ -197,6 +197,10 @@ dependencies {
     // banner：https://github.com/youth5201314/banner
     implementation 'com.youth.banner:banner:2.1.0'
 
+    // 动画解析库：https://github.com/airbnb/lottie-android
+    // 动画资源：https://lottiefiles.com、https://icons8.com/animated-icons
+    implementation 'com.airbnb.android:lottie:3.4.2'
+
     // VasSonic: https://github.com/Tencent/VasSonic
 //    implementation 'com.tencent.sonic:sdk:3.1.0'
 }

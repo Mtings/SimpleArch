@@ -45,6 +45,14 @@
                 android:layout_marginTop="30dp"
                 android:text="防多次点击" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_activity_status"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="界面状态" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

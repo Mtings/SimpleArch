@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">SimpleArch</string>
-    <string name="text_tab_recently">热   门</string>
-    <string name="text_tab_其他">其   他</string>
-
     <string name="common_network">当前没有网络连接，请检查网络设置</string>
-
     <string name="common_confirm">确定</string>
     <string name="common_cancel">取消</string>
+
+    <!--tab-->
+    <string name="text_tab_recently">热   门</string>
+    <string name="text_tab_其他">其   他</string>
 
     <!-- 支付密码对话框 -->
     <string name="pay_title">请输入支付密码</string>
@@ -28,4 +28,9 @@
     <string name="weibo">微博</string>
     <string name="more">更多</string>
     <string name="share_unknown_error">分享出现未知异常</string>
+
+    <!-- 提示布局 -->
+    <string name="hint_layout_no_data">空空如也</string>
+    <string name="hint_layout_error_request">请求出错，点击重试</string>
+    <string name="hint_layout_error_network">网络错误，点击重试</string>
 </resources>

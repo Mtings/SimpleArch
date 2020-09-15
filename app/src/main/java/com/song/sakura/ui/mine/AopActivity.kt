@@ -1,5 +1,6 @@
 package com.song.sakura.ui.mine
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
@@ -30,6 +31,7 @@ class AopActivity : IBaseActivity<IBaseViewModel>(), ClickAction {
         setOnClickListener(R.id.btn_dialog_check_net)
         setOnClickListener(R.id.btn_dialog_check_permission)
         setOnClickListener(R.id.btn_dialog_single_click)
+        setOnClickListener(R.id.btn_activity_status)
     }
 
     @SingleClick
@@ -43,6 +45,9 @@ class AopActivity : IBaseActivity<IBaseViewModel>(), ClickAction {
             }
             R.id.btn_dialog_single_click -> {
                 singleClick()
+            }
+            R.id.btn_activity_status -> {
+                startActivity(Intent(this, LottieActivity::class.java))
             }
         }
     }
