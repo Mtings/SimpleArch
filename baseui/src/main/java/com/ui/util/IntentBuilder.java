@@ -21,7 +21,6 @@ public class IntentBuilder {
 
     public static final String KEY_ID = "KEY_ID";
     public static final String KEY_TYPE = "KEY_TYPE";
-    public static final String KEY_PAGE_INDEX = "index";
     public static final String KEY_INFO = "KEY_INFO";
     public static final String KEY_LIST = "KEY_LIST";
     public static final String KEY_TITLE = "KEY_TITLE";
@@ -33,10 +32,22 @@ public class IntentBuilder {
     public static final String KEY_PWD = "KEY_PWD";
     public static final String KEY_BOOLEAN = "KEY_BOOLEAN";
 
-    public static final String KEY_KEY = "KEY_KEY";
-    public static final String KEY_KEY1 = "KEY_KEY1";
-    public static final String KEY_KEY2 = "KEY_KEY2";
-    public static final String KEY_KEY3 = "KEY_KEY3";
+    /** 索引 */
+    public static final String INDEX = "index";
+    /** 数量 */
+    public static final String AMOUNT = "amount";
+    // 文件类型相关
+    /** 文件 */
+    public static final String FILE = "file";
+    /** 文本 */
+    public static final String TEXT = "text";
+    /** 图片 */
+    public static final String IMAGE = "picture";
+    /** 音频 */
+    public static final String VOICE = "voice";
+    /** 视频 */
+    public static final String VIDEO = "video";
+
 
     private Intent intent;
 

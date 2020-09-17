@@ -44,10 +44,19 @@ public final class RatioFrameLayout extends FrameLayout {
             int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
             int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
 
-            if (widthSpecMode == MeasureSpec.EXACTLY && heightSpecMode != MeasureSpec.EXACTLY) {
+            if (widthSpecMode == MeasureSpec.EXACTLY && heightSpecMode == MeasureSpec.EXACTLY) {
+                // 如果当前宽度和高度都是写死的
+                if (widthSpecSize / mSizeRatio <= heightSpecSize) {
+                    // 如果宽度经过比例换算不超过原有的高度
+                    heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (widthSpecSize / mSizeRatio), MeasureSpec.EXACTLY);
+                } else if (heightSpecSize * mSizeRatio <= widthSpecSize) {
+                    // 如果高度经过比例换算不超过原有的宽度
+                    widthMeasureSpec = MeasureSpec.makeMeasureSpec((int) (heightSpecSize * mSizeRatio), MeasureSpec.EXACTLY);
+                }
+            } else if (widthSpecMode == MeasureSpec.EXACTLY) {
                 // 如果当前宽度是写死的，但是高度不写死
                 heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (widthSpecSize / mSizeRatio), MeasureSpec.EXACTLY);
-            } else if (heightSpecMode == MeasureSpec.EXACTLY && widthSpecMode != MeasureSpec.EXACTLY) {
+            } else if (heightSpecMode == MeasureSpec.EXACTLY) {
                 // 如果当前高度是写死的，但是宽度不写死
                 widthMeasureSpec = MeasureSpec.makeMeasureSpec((int) (heightSpecSize * mSizeRatio), MeasureSpec.EXACTLY);
             }

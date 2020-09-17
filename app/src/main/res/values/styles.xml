@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- 窗口背景颜色 -->
@@ -9,25 +9,26 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!-- 应用的强调色，CheckBox RadioButton Switch 等一般控件的选中效果默认采用该颜色 -->
         <item name="colorAccent">@color/colorAccent</item>
-<!--        <item name="windowActionBar">false</item>-->
-<!--        <item name="windowNoTitle">true</item>-->
-<!--        <item name="colorControlNormal">@color/color_999999</item>-->
+        <!-- toolbar左侧返回按钮 -->
         <item name="navigationIcon">@drawable/ic_back_arrow</item>
-        <item name="buttonStyle">@style/Button</item>
-        <item name="editTextStyle">@style/EditText</item>
-        <item name="toolbarStyle">@style/Toolbar.White</item>
+        <!-- toolbar右侧字体颜色 -->
         <item name="actionMenuTextColor">@color/black</item>
-        <!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
         <item name="android:actionMenuTextColor">@color/black</item>
-        <item name="android:autofilledHighlight">@android:color/transparent</item>
-        <!--<item name="android:windowIsTranslucent">false</item>-->
-        <item name="buttonBarPositiveButtonStyle">@style/positiveBtnStyle</item>
-        <item name="buttonBarNegativeButtonStyle">@style/negativeBtnStyle</item>
+        <!-- 解决自动填充edit变黄 -->
+        <item name="android:autofilledHighlight" tools:targetApi="o">@android:color/transparent</item>
         <!-- 解决 Android 5.1 及以上版本 Button 英文字符串自动变大写的问题 -->
         <item name="android:textAllCaps">false</item>
         <!-- ActionMode 覆盖 Actionbar 不被顶下来 -->
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowContentOverlay">@null</item>
+        <!-- ActionMode 的颜色 -->
+        <item name="actionModeBackground">@color/colorPrimary</item>
+        <!-- 其他控件颜色 -->
+        <item name="buttonStyle">@style/Button</item>
+        <item name="editTextStyle">@style/EditText</item>
+        <item name="toolbarStyle">@style/Toolbar.White</item>
+
+        <item name="checkboxStyle">@style/Widget.AppCompat.CompoundButton.CheckBox</item>
     </style>
 
     <style name="Launcher" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
@@ -60,19 +61,19 @@
         <item name="android:foreground">@null</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <!--    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <!--    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
 
     <!--确定按钮样式-->
-    <style name="positiveBtnStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
+    <!--    <style name="positiveBtnStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">-->
+    <!--        <item name="android:textColor">@color/colorAccent</item>-->
+    <!--    </style>-->
 
     <!--取消按钮样式-->
-    <style name="negativeBtnStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/color_999999</item>
-    </style>
+    <!--    <style name="negativeBtnStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">-->
+    <!--        <item name="android:textColor">@color/color_999999</item>-->
+    <!--    </style>-->
 
     <!-- toolbar style function for toolbar title style  Here can only change the color-->
     <style name="Toolbar.White" parent="@style/Widget.MaterialComponents.Toolbar">
@@ -108,36 +109,6 @@
         <item name="android:textColorHint">@color/color_cccccc</item>
         <item name="android:textColorHintInverse">@color/color_cccccc</item>
 
-    </style>
-
-    <style name="TabLayout.White" parent="Base.Widget.Design.TabLayout">
-        <item name="android:layout_height">48dp</item>
-        <item name="tabPaddingStart">8dp</item>
-        <item name="tabPaddingEnd">8dp</item>
-        <item name="tabIndicatorHeight">1dp</item>
-        <item name="tabSelectedTextColor">@color/white</item>
-        <item name="tabTextColor">@color/black</item>
-        <item name="tabIndicatorColor">@color/white</item>
-        <item name="tabTextAppearance">@style/TextAppearance.Design.Tab.Gridy</item>
-    </style>
-
-    <style name="TabLayout" parent="Base.Widget.Design.TabLayout">
-        <item name="android:layout_height">48dp</item>
-        <item name="tabPaddingStart">8dp</item>
-        <item name="tabPaddingEnd">8dp</item>
-        <item name="tabIndicatorHeight">1dp</item>
-        <item name="tabSelectedTextColor">@color/colorAccent</item>
-        <item name="tabTextColor">@android:color/black</item>
-        <item name="tabIndicatorColor">@color/colorAccent</item>
-        <item name="tabTextAppearance">@style/TextAppearance.Design.Tab.Gridy</item>
-    </style>
-
-    <style name="TextAppearance.Design.Tab.Gridy" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">15dp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:layout_height">42dp</item>
-        <!--<item name="android:textColor">@color/color_tab_selector</item>-->
-        <item name="textAllCaps">true</item>
     </style>
 
     <item name="nav_host_fragment_container" type="id" />

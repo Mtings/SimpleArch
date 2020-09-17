@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layoutAnimation="@null">
+
+        <com.song.sakura.widget.HintLayout
+            android:id="@+id/hintStatusLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layoutAnimation="@anim/layout_from_bottom"
+                app:layoutManager="GridLayoutManager"
+                app:spanCount="3"
+                tools:itemCount="20"
+                tools:listitem="@layout/item_image_select" />
+
+        </com.song.sakura.widget.HintLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="20dp"
+            android:tint="@color/white"
+            app:backgroundTint="@color/colorAccent"
+            app:borderWidth="0px"
+            app:elevation="1dp"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_camera"
+            app:tint="@color/white" />
+    </FrameLayout>
+
+
+</LinearLayout>

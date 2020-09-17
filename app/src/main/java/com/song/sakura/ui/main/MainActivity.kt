@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : IBaseActivity<HomeViewModel>(),
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    @Autowired(name = IntentBuilder.KEY_PAGE_INDEX)
+    @Autowired(name = IntentBuilder.INDEX)
     @JvmField
     var id: Int = 0
 
@@ -37,7 +37,7 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
         fun goMain(context: Activity) {
             context.startActivity(
                 Intent(context, MainActivity::class.java)
-                    .putExtra(IntentBuilder.KEY_PAGE_INDEX, 0)
+                    .putExtra(IntentBuilder.INDEX, 0)
                     .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             )
             context.overridePendingTransition(R.anim.right_in, R.anim.left_out)

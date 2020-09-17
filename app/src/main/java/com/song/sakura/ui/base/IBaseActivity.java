@@ -1,9 +1,7 @@
 package com.song.sakura.ui.base;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
@@ -111,18 +109,5 @@ public class IBaseActivity<Q extends BaseViewModel> extends BaseActivity {
                     }
                 }
         ));
-    }
-
-    @Override
-    public void dismissKeyboard() {
-        try {
-            View view = getWindow().peekDecorView();
-            if (view != null) {
-                InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
-        } catch (Exception e) {
-
-        }
     }
 }

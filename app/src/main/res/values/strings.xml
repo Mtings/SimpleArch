@@ -33,4 +33,16 @@
     <string name="hint_layout_no_data">空空如也</string>
     <string name="hint_layout_error_request">请求出错，点击重试</string>
     <string name="hint_layout_error_network">网络错误，点击重试</string>
+
+    <!-- 图片选择 -->
+    <string name="image_select_title">图片选择</string>
+    <string name="image_select_all">所有图片</string>
+    <string name="image_select_total">共 %d 张</string>
+    <string name="album_total_amount">共 %d 个相册</string>
+    <string name="image_select_max_hint">本次最多只能选择 %d 张图片</string>
+
+    <!-- 拍照 -->
+    <string name="camera_launch_fail">无法启动相机</string>
+    <string name="camera_image_error">目标地址错误</string>
+
 </resources>

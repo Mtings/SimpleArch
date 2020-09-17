@@ -26,6 +26,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
+import java.util.Random;
 
 @SuppressWarnings("unused")
 public class BaseActivity extends AppCompatActivity {
@@ -187,6 +188,74 @@ public class BaseActivity extends AppCompatActivity {
 
     public Activity getActivity() {
         return this;
+    }
+
+
+    /**
+     * 隐藏软键盘
+     */
+    private void hideSoftKeyboard() {
+        // 隐藏软键盘，避免软键盘引发的内存泄露
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (manager != null && manager.isActive(view)) {
+                manager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
+
+    /**
+     * startActivityForResult 方法优化
+     */
+
+    private OnActivityCallback mActivityCallback;
+    private int mActivityRequestCode;
+
+    public void startActivityForResult(Class<? extends Activity> clazz, OnActivityCallback callback) {
+        startActivityForResult(new Intent(this, clazz), null, callback);
+    }
+
+    public void startActivityForResult(Intent intent, OnActivityCallback callback) {
+        startActivityForResult(intent, null, callback);
+    }
+
+    public void startActivityForResult(Intent intent, @Nullable Bundle options, OnActivityCallback callback) {
+        // 回调还没有结束，所以不能再次调用此方法，这个方法只适合一对一回调，其他需求请使用原生的方法实现
+        if (mActivityCallback == null) {
+            mActivityCallback = callback;
+            // 随机生成请求码，这个请求码必须在 2 的 16 次幂以内，也就是 0 - 65535
+            mActivityRequestCode = new Random().nextInt((int) Math.pow(2, 16));
+            startActivityForResult(intent, mActivityRequestCode, options);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (mActivityCallback != null && mActivityRequestCode == requestCode) {
+            mActivityCallback.onActivityResult(resultCode, data);
+            mActivityCallback = null;
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode, @Nullable Bundle options) {
+        hideSoftKeyboard();
+        // 查看源码得知 startActivity 最终也会调用 startActivityForResult
+        super.startActivityForResult(intent, requestCode, options);
+    }
+
+    public interface OnActivityCallback {
+
+        /**
+         * 结果回调
+         *
+         * @param resultCode        结果码
+         * @param data              数据
+         */
+        void onActivityResult(int resultCode, @Nullable Intent data);
     }
 
 }
