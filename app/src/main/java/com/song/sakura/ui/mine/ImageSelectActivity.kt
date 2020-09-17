@@ -179,17 +179,25 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
 
         mToolbar?.apply {
             title = "图片选择"
-            menu.add(0, 0, 0, "所有图片").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+            addTextRight("所有图片")
             setOnMenuItemClickListener {
                 if (mAllImage.isEmpty()) {
                     return@setOnMenuItemClickListener true
                 }
                 val data: ArrayList<AlbumDialog.AlbumInfo> = ArrayList(mAllAlbum.size + 1)
+                var totalAmount = 0
+                val albumKeys: Set<String> = mAllAlbum.keys
+                for (key in albumKeys) {
+                    val temp: List<String>? = mAllAlbum[key]
+                    if (!temp.isNullOrEmpty()) {
+                        totalAmount += temp.size
+                    }
+                }
                 data.add(
                     AlbumDialog.AlbumInfo(
                         mAllImage[0],
                         getString(R.string.image_select_all),
-                        String.format(getString(R.string.image_select_total), mAllAlbum.size),
+                        String.format(getString(R.string.image_select_total), totalAmount),
                         mAdapter.data == mAllImage
                     )
                 )
@@ -210,8 +218,10 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
                 AlbumDialog.Builder(this@ImageSelectActivity)
                     .setData(data)
                     .setListener { _, position, bean ->
-                        mToolbar?.menu?.clear()
-                        mToolbar?.menu?.add(0, 0, 0, bean.name)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                        mToolbar?.apply {
+                            clearMenu()
+                            addTextRight(bean.name)
+                        }
                         // 滚动回第一个位置
                         list.scrollToPosition(0)
                         if (position == 0) {
@@ -316,8 +326,10 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
             list.layoutAnimation = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_fall_down)
             list.scheduleLayoutAnimation()
 
-            mToolbar?.menu?.clear()
-            mToolbar?.menu?.add(0, 0, 0, "所有图片")?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+            mToolbar?.apply {
+                clearMenu()
+                addTextRight("所有图片")
+            }
 
             if (mAllImage.isEmpty()) {
                 // 显示空布局

@@ -75,6 +75,10 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
         }
     }
 
+    public void clearMenu() {
+        getMenu().clear();
+    }
+
     /**
      * 添加toolbar右侧文字时可用
      */
