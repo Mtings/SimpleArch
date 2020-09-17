@@ -184,27 +184,13 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
                 if (mAllImage.isEmpty()) {
                     return@setOnMenuItemClickListener true
                 }
-                val data: ArrayList<AlbumDialog.AlbumInfo> = ArrayList(mAllAlbum.size + 1)
+                val data: ArrayList<AlbumDialog.AlbumInfo> = ArrayList()
                 var totalAmount = 0
-                val albumKeys: Set<String> = mAllAlbum.keys
-                for (key in albumKeys) {
-                    val temp: List<String>? = mAllAlbum[key]
-                    if (!temp.isNullOrEmpty()) {
-                        totalAmount += temp.size
-                    }
-                }
-                data.add(
-                    AlbumDialog.AlbumInfo(
-                        mAllImage[0],
-                        getString(R.string.image_select_all),
-                        String.format(getString(R.string.image_select_total), totalAmount),
-                        mAdapter.data == mAllImage
-                    )
-                )
                 val keys: Set<String> = mAllAlbum.keys
                 for (key in keys) {
                     val temp: List<String>? = mAllAlbum[key]
                     if (!temp.isNullOrEmpty()) {
+                        totalAmount += temp.size
                         data.add(
                             AlbumDialog.AlbumInfo(
                                 temp[0],
@@ -215,6 +201,15 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
                         )
                     }
                 }
+                data.add(
+                    0,
+                    AlbumDialog.AlbumInfo(
+                        mAllImage[0],
+                        getString(R.string.image_select_all),
+                        String.format(getString(R.string.image_select_total), totalAmount),
+                        mAdapter.data == mAllImage
+                    )
+                )
                 AlbumDialog.Builder(this@ImageSelectActivity)
                     .setData(data)
                     .setListener { _, position, bean ->
