@@ -46,7 +46,6 @@ class HomeFragment : IBaseFragment<HomeViewModel>() {
         initView()
         initImmersionBar()
         ImmersionBar.setTitleBar(getBaseActivity(), titleBar)
-        mViewModel.refresh()
 
         mViewModel.bannerList.observe(viewLifecycleOwner, Observer {
             if (!it.data.isNullOrEmpty()) {
@@ -71,6 +70,8 @@ class HomeFragment : IBaseFragment<HomeViewModel>() {
                 if (it.isOver) refreshLayout.finishLoadMoreWithNoMoreData() else refreshLayout.finishLoadMore()
             }
         })
+
+        refreshLayout.autoRefresh()
 
     }
 
