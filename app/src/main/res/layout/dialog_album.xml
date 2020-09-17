@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:paddingBottom="8dp"
-    android:background="@drawable/bg_dialog_rounded_corner"
+    android:background="@drawable/bg_dialog_rounded_corner_without_bottom"
     android:layoutAnimation="@anim/layout_from_bottom"
     android:orientation="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

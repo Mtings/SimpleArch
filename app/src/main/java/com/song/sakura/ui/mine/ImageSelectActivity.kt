@@ -9,6 +9,7 @@ import android.util.TypedValue
 import android.view.MenuItem
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
+import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hjq.permissions.Permission
@@ -17,6 +18,7 @@ import com.hjq.toast.ToastUtils
 import com.song.sakura.R
 import com.song.sakura.action.StatusAction
 import com.song.sakura.aop.Permissions
+import com.song.sakura.helper.DoubleClickHelper
 import com.song.sakura.ui.base.BaseViewHolder
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.base.IBaseViewModel
@@ -36,7 +38,8 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, HandlerAction, ClickAction, BundleAction {
+class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, HandlerAction, ClickAction, BundleAction,
+    Toolbar.OnMenuItemClickListener {
 
     private lateinit var mAdapter: ImageSelectAdapter
 
@@ -78,6 +81,59 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
         }
     }
 
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        if (DoubleClickHelper.isSingleClick()) {
+            if (mAllImage.isEmpty()) {
+                return true
+            }
+            val data: ArrayList<AlbumDialog.AlbumInfo> = ArrayList()
+            var totalAmount = 0
+            val keys: Set<String> = mAllAlbum.keys
+            for (key in keys) {
+                val temp: List<String>? = mAllAlbum[key]
+                if (!temp.isNullOrEmpty()) {
+                    totalAmount += temp.size
+                    data.add(
+                        AlbumDialog.AlbumInfo(
+                            temp[0],
+                            key,
+                            String.format(getString(R.string.image_select_total), temp.size),
+                            mAdapter.data == temp
+                        )
+                    )
+                }
+            }
+            data.add(
+                0,
+                AlbumDialog.AlbumInfo(
+                    mAllImage[0],
+                    getString(R.string.image_select_all),
+                    String.format(getString(R.string.image_select_total), totalAmount),
+                    mAdapter.data == mAllImage
+                )
+            )
+            AlbumDialog.Builder(this@ImageSelectActivity)
+                .setData(data)
+                .setListener { _, position, bean ->
+                    mToolbar?.apply {
+                        clearMenu()
+                        addTextRight(bean.name)
+                    }
+                    // 滚动回第一个位置
+                    list.scrollToPosition(0)
+                    if (position == 0) {
+                        mAdapter.setList(mAllImage)
+                    } else {
+                        mAdapter.setList(mAllAlbum[bean.name])
+                    }
+                    // 执行列表动画
+                    list.layoutAnimation = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_from_right)
+                    list.scheduleLayoutAnimation()
+                }.show()
+        }
+        return true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_image)
@@ -101,6 +157,15 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
                 )
             } else {
                 ImagePreviewActivity.start(activity, mAdapter.getItem(position))
+            }
+        }
+
+        mAdapter.setOnItemLongClickListener { _, view, _ ->
+            return@setOnItemLongClickListener if (mSelectImage.size < mMaxSelect) {
+                // 长按的时候模拟选中
+                view.findViewById<FrameLayout>(R.id.fl_image_select_check).performClick()
+            } else {
+                false
             }
         }
 
@@ -144,15 +209,6 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
             }
         }
 
-        mAdapter.setOnItemLongClickListener { _, view, _ ->
-            return@setOnItemLongClickListener if (mSelectImage.size < mMaxSelect) {
-                // 长按的时候模拟选中
-                view.findViewById<FrameLayout>(R.id.fl_image_select_check).performClick()
-            } else {
-                false
-            }
-        }
-
         bindUi(RxUtil.click(floating)) {
             if (mSelectImage.isEmpty()) {
                 // 点击拍照
@@ -180,58 +236,7 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
         mToolbar?.apply {
             title = "图片选择"
             addTextRight("所有图片")
-            setOnMenuItemClickListener {
-                if (mAllImage.isEmpty()) {
-                    return@setOnMenuItemClickListener true
-                }
-                val data: ArrayList<AlbumDialog.AlbumInfo> = ArrayList()
-                var totalAmount = 0
-                val keys: Set<String> = mAllAlbum.keys
-                for (key in keys) {
-                    val temp: List<String>? = mAllAlbum[key]
-                    if (!temp.isNullOrEmpty()) {
-                        totalAmount += temp.size
-                        data.add(
-                            AlbumDialog.AlbumInfo(
-                                temp[0],
-                                key,
-                                String.format(getString(R.string.image_select_total), temp.size),
-                                mAdapter.data == temp
-                            )
-                        )
-                    }
-                }
-                data.add(
-                    0,
-                    AlbumDialog.AlbumInfo(
-                        mAllImage[0],
-                        getString(R.string.image_select_all),
-                        String.format(getString(R.string.image_select_total), totalAmount),
-                        mAdapter.data == mAllImage
-                    )
-                )
-                AlbumDialog.Builder(this@ImageSelectActivity)
-                    .setData(data)
-                    .setListener { _, position, bean ->
-                        mToolbar?.apply {
-                            clearMenu()
-                            addTextRight(bean.name)
-                        }
-                        // 滚动回第一个位置
-                        list.scrollToPosition(0)
-                        if (position == 0) {
-                            mAdapter.setList(mAllImage)
-                        } else {
-                            mAdapter.setList(mAllAlbum[bean.name])
-                        }
-                        // 执行列表动画
-                        list.layoutAnimation = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_from_right)
-                        list.scheduleLayoutAnimation()
-                    }.show()
-
-                return@setOnMenuItemClickListener true
-            }
-        }
+        }?.setOnMenuItemClickListener(this)
 
         // 获取最大的选择数
         mMaxSelect = getInt(IntentBuilder.AMOUNT, mMaxSelect)
