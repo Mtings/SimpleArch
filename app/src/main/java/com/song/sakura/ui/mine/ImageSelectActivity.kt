@@ -218,13 +218,12 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
                         mSelectImage.add(file.path)
                     }
 
-                    // 这里需要延迟刷新，否则可能会找不到拍照的图片
-                    postDelayed({
+                    CoroutineScope(Dispatchers.Main).launch {
+                        // 这里需要延迟刷新，否则可能会找不到拍照的图片
+                        delay(1000L)
                         // 重新加载图片列表
-                        CoroutineScope(Dispatchers.Main).launch {
-                            run()
-                        }
-                    }, 1000)
+                        run()
+                    }
                 }
             } else {
                 // 完成选择
@@ -311,7 +310,7 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
                 cursor.close()
             }
 
-            delay(500)
+            delay(500L)
             // 滚动回第一个位置
             list.scrollToPosition(0)
             // 设置新的列表数据
