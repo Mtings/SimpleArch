@@ -27,6 +27,23 @@
                 android:layout_marginTop="30dp"
                 android:text="日历翻动效果text" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_activity_status"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="界面状态" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_activity_select_image"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="选择图片" />
+
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

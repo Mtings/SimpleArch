@@ -1,6 +1,5 @@
 package com.song.sakura.ui.mine
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.gyf.immersionbar.ImmersionBar
@@ -31,8 +30,6 @@ class AopActivity : IBaseActivity<IBaseViewModel>(), ClickAction {
         setOnClickListener(R.id.btn_dialog_check_net)
         setOnClickListener(R.id.btn_dialog_check_permission)
         setOnClickListener(R.id.btn_dialog_single_click)
-        setOnClickListener(R.id.btn_activity_status)
-        setOnClickListener(R.id.btn_activity_select_image)
     }
 
     @SingleClick
@@ -46,21 +43,6 @@ class AopActivity : IBaseActivity<IBaseViewModel>(), ClickAction {
             }
             R.id.btn_dialog_single_click -> {
                 singleClick()
-            }
-            R.id.btn_activity_status -> {
-                startActivity(Intent(this, LottieActivity::class.java))
-            }
-
-            R.id.btn_activity_select_image -> {
-                ImageSelectActivity.start(this, 4, object : OnPhotoSelectListener {
-                    override fun onSelected(data: List<String?>?) {
-                        ToastUtils.show("选择了$data")
-                    }
-
-                    override fun onCancel() {
-                        ToastUtils.show("取消了")
-                    }
-                })
             }
         }
     }
