@@ -20,7 +20,7 @@ class MineFragment : IBaseFragment<IBaseViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         mToolbar?.apply {
-            addTextRight("我的")
+            addTextRight("AOP")
             navigationIcon = null
             title = "Toolbar"
             setOnMenuItemClickListener {

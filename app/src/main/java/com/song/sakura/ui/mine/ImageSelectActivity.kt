@@ -212,23 +212,29 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
         bindUi(RxUtil.click(floating)) {
             if (mSelectImage.isEmpty()) {
                 // 点击拍照
-                CameraActivity.start(this) { file ->
-                    // 当前选中图片的数量必须小于最大选中数
-                    if (mSelectImage.size < mMaxSelect) {
-                        mSelectImage.add(file.path)
-                    }
+                CameraActivity.start(this, object : OnCameraListener {
+                    override fun onSelected(file: File?) {
+                        if (file != null) {
+                            // 当前选中图片的数量必须小于最大选中数
+                            if (mSelectImage.size < mMaxSelect) {
+                                mSelectImage.add(file.path)
+                            }
 
-                    CoroutineScope(Dispatchers.Main).launch {
-                        // 这里需要延迟刷新，否则可能会找不到拍照的图片
-                        delay(1000L)
-                        // 重新加载图片列表
-                        run()
+                            CoroutineScope(Dispatchers.Main).launch {
+                                // 这里需要延迟刷新，否则可能会找不到拍照的图片
+                                delay(1000L)
+                                // 重新加载图片列表
+                                run()
+                            }
+                        }
                     }
-                }
+                })
             } else {
                 // 完成选择
                 setResult(RESULT_OK, Intent().putStringArrayListExtra(IntentBuilder.IMAGE, mSelectImage))
                 finish()
+
+
             }
         }
 
