@@ -6,12 +6,12 @@
     android:background="#363636">
 
     <com.song.sakura.widget.PhotoViewPager
-        android:id="@+id/vp_image_preview_pager"
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.rd.PageIndicatorView
-        android:id="@+id/pv_image_preview_indicator"
+        android:id="@+id/pageIndicatorView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
