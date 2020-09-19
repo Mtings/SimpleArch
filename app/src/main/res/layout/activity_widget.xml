@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <com.song.sakura.widget.CountDownText
+            android:id="@+id/countdownText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:animationDuration="600"
+            app:digitBottomDrawable="@drawable/background_bottom_green"
+            app:digitDividerColor="#795548"
+            app:digitPadding="5dp"
+            app:digitTextColor="#795548"
+            app:digitTextSize="30dp"
+            app:digitTopDrawable="@drawable/background_top_green_light"
+            app:digitWidth="100dp"
+            app:halfDigitHeight="30dp"
+            app:resetSymbol="" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="80dp"
+            android:maxLength="9"
+            android:hint="最大9字符"
+            android:layout_marginTop="30dp"
+            android:inputType="text" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="启动"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -3,45 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:layout_height="match_parent">
 
-    <com.song.sakura.widget.CountDownText
-        android:id="@+id/countdownText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        app:animationDuration="600"
-        app:digitBottomDrawable="@drawable/background_bottom_green"
-        app:digitDividerColor="#795548"
-        app:digitPadding="5dp"
-        app:digitTextColor="#795548"
-        app:digitTextSize="30dp"
-        app:digitTopDrawable="@drawable/background_top_green_light"
-        app:halfDigitHeight="30dp"
-        app:digitWidth="100dp"
-        app:resetSymbol="" />
+    <include layout="@layout/toolbar" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edit"
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="80dp"
-        android:maxLength="9"
-        android:hint="最大9字符"
-        android:layout_marginTop="30dp"
-        android:inputType="text" />
+        android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="启动"
-        android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_flash_view"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="日历翻动效果text" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
 
 
 </LinearLayout>
