@@ -25,8 +25,10 @@ import com.song.sakura.extension.openBrowser
 import com.song.sakura.route.Router
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.base.IBaseViewModel
+import com.song.sakura.ui.dialog.MessageDialog
 import com.song.sakura.ui.share.ShareDialogFragment
 import com.ui.base.BaseActivity
+import com.ui.base.BaseDialog
 import kotlinx.android.synthetic.main.activity_webview.*
 
 @Route(path = Router.Main.webview)
@@ -173,8 +175,15 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
                     url.openBrowser(this@WebViewActivity)
                     return true
                 }
-                if (url.checkAppInstalled(this@WebViewActivity) && url.startsWith("bilibili://video")) {
-                    url.openBrowser(this@WebViewActivity)
+                // 哔哩哔哩视频处理
+                if ("tv.danmaku.bili".checkAppInstalled(this@WebViewActivity) && url.startsWith("bilibili://video")) {
+                    MessageDialog.Builder(this@WebViewActivity)
+                        .setTitle("提示")
+                        .setMessage("是否打开哔哩哔哩客户端看视频")
+                        .setConfirm(getString(R.string.common_confirm))
+                        .setCancel(getString(R.string.common_cancel))
+                        .setListener { url.openBrowser(this@WebViewActivity) }
+                        .show()
                     return true
                 }
                 val isHttp =
