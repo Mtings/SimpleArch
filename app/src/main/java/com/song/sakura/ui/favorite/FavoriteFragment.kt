@@ -31,6 +31,7 @@ class FavoriteFragment : IBaseFragment<IBaseViewModel>(), View.OnClickListener {
         btn_flash_view.setOnClickListener(this)
         btn_activity_status.setOnClickListener(this)
         btn_activity_select_image.setOnClickListener(this)
+        btnVideoPlay.setOnClickListener(this)
     }
 
     @SingleClick
@@ -52,6 +53,13 @@ class FavoriteFragment : IBaseFragment<IBaseViewModel>(), View.OnClickListener {
                         ToastUtils.show("取消了")
                     }
                 })
+            }
+            R.id.btnVideoPlay -> {
+                VideoPlayerActivity.start(
+                    getBaseActivity(),
+                    "http://vfx.mtime.cn/Video/2019/06/29/mp4/190629004821240734.mp4",
+                    "速度与激情特别行动"
+                )
             }
         }
     }

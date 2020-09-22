@@ -28,7 +28,6 @@ import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.ui.dialog.MessageDialog
 import com.song.sakura.ui.share.ShareDialogFragment
 import com.ui.base.BaseActivity
-import com.ui.base.BaseDialog
 import kotlinx.android.synthetic.main.activity_webview.*
 
 @Route(path = Router.Main.webview)

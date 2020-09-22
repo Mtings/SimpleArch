@@ -43,6 +43,13 @@
                 android:layout_marginTop="30dp"
                 android:text="选择图片" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnVideoPlay"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="播放视频" />
 
         </LinearLayout>
 
