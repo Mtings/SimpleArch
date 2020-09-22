@@ -75,10 +75,11 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_player_view_play_time"
             android:layout_width="50dp"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="14dp"
-            tools:text="00:00" />
+            tools:text="000:00" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/sb_player_view_progress"
