@@ -4,9 +4,11 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,6 +33,7 @@ import com.ui.action.ActivityAction;
 import com.ui.base.BaseActivity;
 import com.ui.base.BaseDialog;
 import com.ui.base.HintDialog;
+import com.ui.util.LogUtil;
 import com.ui.widget.layout.SimpleLayout;
 
 import java.io.File;
@@ -338,7 +341,7 @@ public final class PlayerView extends SimpleLayout
 //        params.height = viewHeight;
 //        mVideoView.setLayoutParams(params);
 //
-//        postDelayed(mRefreshRunnable, REFRESH_TIME / 2);
+        postDelayed(mRefreshRunnable, REFRESH_TIME / 2);
     }
 
     /*** {@link MediaPlayer.OnCompletionListener} */
@@ -499,7 +502,7 @@ public final class PlayerView extends SimpleLayout
 
                                 // 更新屏幕亮度
                                 WindowManager.LayoutParams params = mWindow.getAttributes();
-                                params.screenBrightness = params.screenBrightness + brightness / 255.0f;
+                                params.screenBrightness = getAppBrightness() + brightness / 255f;
                                 if (params.screenBrightness > 1) {
                                     params.screenBrightness = 1;
                                 } else if (params.screenBrightness < 0) {
@@ -573,6 +576,40 @@ public final class PlayerView extends SimpleLayout
             }
         }
         return super.onTouchEvent(event);
+    }
+
+    /*** 获取当前页面亮度 */
+    public float getAppBrightness() {
+        Window window = getActivity().getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        float brightness = layoutParams.screenBrightness;
+        if (brightness == WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE) {
+            brightness = getSystemBrightness() * 1f / getBrightnessMax();
+        }
+        return brightness;
+    }
+
+    /*** 获取系统亮度 */
+    public int getSystemBrightness() {
+        return Settings.System.getInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 255);
+    }
+
+    /**
+     * 获取最大亮度
+     * 小米手机亮度过高
+     *
+     * @return max
+     */
+    private int getBrightnessMax() {
+        try {
+            Resources system = Resources.getSystem();
+            int resId = system.getIdentifier("config_screenBrightnessSettingMaximum", "integer", "android");
+            if (resId != 0) {
+                return system.getInteger(resId);
+            }
+        } catch (Exception ignore) {
+        }
+        return 255;
     }
 
     private HintDialog.Builder mToastDialog;
