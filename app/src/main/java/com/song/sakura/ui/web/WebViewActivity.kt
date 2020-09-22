@@ -65,7 +65,6 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
         webView.settings.apply {
-            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             /* 设置支持Js,必须设置*/
             javaScriptEnabled = true
             allowContentAccess = true
@@ -133,30 +132,27 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
                 callback: ValueCallback<Array<Uri?>?>,
                 params: FileChooserParams?
             ): Boolean {
-                val activity: Activity = this@WebViewActivity
-                if (activity is BaseActivity) {
-                    XXPermissions.with(activity)
-                        .permission(*Permission.Group.STORAGE)
-                        .request(object : OnPermission {
-                            override fun hasPermission(granted: List<String>, all: Boolean) {
-                                if (all && params != null) {
-                                    openSystemFileChooser(activity, callback, params)
-                                } else {
-                                    callback.onReceiveValue(null)
-                                }
-                            }
-
-                            override fun noPermission(denied: List<String>, quick: Boolean) {
+                XXPermissions.with(this@WebViewActivity)
+                    .permission(*Permission.Group.STORAGE)
+                    .request(object : OnPermission {
+                        override fun hasPermission(granted: List<String>, all: Boolean) {
+                            if (all && params != null) {
+                                openSystemFileChooser(this@WebViewActivity, callback, params)
+                            } else {
                                 callback.onReceiveValue(null)
-                                if (quick) {
-                                    ToastUtils.show("授权失败，请手动授予权限")
-                                    XXPermissions.startPermissionActivity(activity, denied)
-                                } else {
-                                    ToastUtils.show("请先授予权限")
-                                }
                             }
-                        })
-                }
+                        }
+
+                        override fun noPermission(denied: List<String>, quick: Boolean) {
+                            callback.onReceiveValue(null)
+                            if (quick) {
+                                ToastUtils.show("授权失败，请手动授予权限")
+                                XXPermissions.startPermissionActivity(this@WebViewActivity, denied)
+                            } else {
+                                ToastUtils.show("请先授予权限")
+                            }
+                        }
+                    })
                 return true
             }
 
