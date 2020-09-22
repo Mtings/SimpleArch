@@ -33,7 +33,6 @@ import com.ui.action.ActivityAction;
 import com.ui.base.BaseActivity;
 import com.ui.base.BaseDialog;
 import com.ui.base.HintDialog;
-import com.ui.util.LogUtil;
 import com.ui.widget.layout.SimpleLayout;
 
 import java.io.File;
@@ -45,7 +44,7 @@ public final class PlayerView extends SimpleLayout
         View.OnClickListener, ActivityAction,
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnInfoListener,
-        MediaPlayer.OnCompletionListener {
+        MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
 
     /*** 刷新间隔 */
     private static final int REFRESH_TIME = 1000;
@@ -139,6 +138,7 @@ public final class PlayerView extends SimpleLayout
         mVideoView.setOnPreparedListener(this);
         mVideoView.setOnCompletionListener(this);
         mVideoView.setOnInfoListener(this);
+        mVideoView.setOnErrorListener(this);
 
         postDelayed(mControllerRunnable, CONTROLLER_TIME);
     }
@@ -164,12 +164,14 @@ public final class PlayerView extends SimpleLayout
         // 延迟隐藏控制面板
         removeCallbacks(mControllerRunnable);
         postDelayed(mControllerRunnable, CONTROLLER_TIME);
+        postDelayed(mRefreshRunnable, REFRESH_TIME / 2);
     }
 
     /*** 暂停播放 */
     public void pause() {
         mVideoView.pause();
         mControlView.setImageResource(R.drawable.ic_video_play_start);
+        removeCallbacks(mRefreshRunnable);
         // 延迟隐藏控制面板
         removeCallbacks(mControllerRunnable);
         postDelayed(mControllerRunnable, CONTROLLER_TIME);
@@ -280,8 +282,6 @@ public final class PlayerView extends SimpleLayout
         animator.setFloatValues(1, 0);
         animator.addUpdateListener(animation -> {
             float alpha = (float) animation.getAnimatedValue();
-            mLockView.setAlpha(alpha);
-            mControlView.setAlpha(alpha);
             if (alpha == 0) {
                 if (mLockView.getVisibility() == VISIBLE) {
                     mLockView.setVisibility(INVISIBLE);
@@ -290,6 +290,8 @@ public final class PlayerView extends SimpleLayout
                     mControlView.setVisibility(INVISIBLE);
                 }
             }
+            mLockView.setAlpha(alpha);
+            mControlView.setAlpha(alpha);
         });
         animator.start();
     }
@@ -299,7 +301,7 @@ public final class PlayerView extends SimpleLayout
     }
 
     public void onPause() {
-        mVideoView.suspend();
+//        mVideoView.suspend();
         pause();
     }
 
@@ -341,13 +343,19 @@ public final class PlayerView extends SimpleLayout
 //        params.height = viewHeight;
 //        mVideoView.setLayoutParams(params);
 //
-        postDelayed(mRefreshRunnable, REFRESH_TIME / 2);
+//        postDelayed(mRefreshRunnable, REFRESH_TIME / 2);
     }
 
     /*** {@link MediaPlayer.OnCompletionListener} */
     @Override
     public void onCompletion(MediaPlayer player) {
         pause();
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        pause();
+        return true;
     }
 
     @Override
@@ -579,7 +587,7 @@ public final class PlayerView extends SimpleLayout
     }
 
     /*** 获取当前页面亮度 */
-    public float getAppBrightness() {
+    private float getAppBrightness() {
         Window window = getActivity().getWindow();
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         float brightness = layoutParams.screenBrightness;
@@ -590,7 +598,7 @@ public final class PlayerView extends SimpleLayout
     }
 
     /*** 获取系统亮度 */
-    public int getSystemBrightness() {
+    private int getSystemBrightness() {
         return Settings.System.getInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 255);
     }
 
@@ -629,7 +637,7 @@ public final class PlayerView extends SimpleLayout
     private WaitDialog.Builder mWaitDialog;
 
     @NonNull
-    private WaitDialog.Builder getWaitDialog() {
+    public WaitDialog.Builder getWaitDialog() {
         if (mWaitDialog == null) {
             mWaitDialog = new WaitDialog.Builder(getActivity())
                     .setCancelable(false);

@@ -74,10 +74,10 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_player_view_play_time"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="14dp"
             tools:text="00:00" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="14dp"
             tools:text="10:00" />
 
         <androidx.appcompat.widget.AppCompatImageView
