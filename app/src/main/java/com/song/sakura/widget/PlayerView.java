@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.hjq.toast.ToastUtils;
 import com.song.sakura.R;
 import com.song.sakura.ui.dialog.WaitDialog;
 import com.ui.action.ActivityAction;
@@ -164,14 +165,12 @@ public final class PlayerView extends SimpleLayout
         // 延迟隐藏控制面板
         removeCallbacks(mControllerRunnable);
         postDelayed(mControllerRunnable, CONTROLLER_TIME);
-        postDelayed(mRefreshRunnable, REFRESH_TIME / 2);
     }
 
     /*** 暂停播放 */
     public void pause() {
         mVideoView.pause();
         mControlView.setImageResource(R.drawable.ic_video_play_start);
-        removeCallbacks(mRefreshRunnable);
         // 延迟隐藏控制面板
         removeCallbacks(mControllerRunnable);
         postDelayed(mControllerRunnable, CONTROLLER_TIME);
@@ -301,7 +300,7 @@ public final class PlayerView extends SimpleLayout
     }
 
     public void onPause() {
-//        mVideoView.suspend();
+        mVideoView.suspend();
         pause();
     }
 
@@ -343,7 +342,7 @@ public final class PlayerView extends SimpleLayout
 //        params.height = viewHeight;
 //        mVideoView.setLayoutParams(params);
 //
-//        postDelayed(mRefreshRunnable, REFRESH_TIME / 2);
+        postDelayed(mRefreshRunnable, REFRESH_TIME / 2);
     }
 
     /*** {@link MediaPlayer.OnCompletionListener} */
@@ -355,6 +354,7 @@ public final class PlayerView extends SimpleLayout
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         pause();
+        ToastUtils.show("网络不佳，请稍候再试");
         return true;
     }
 
@@ -668,11 +668,12 @@ public final class PlayerView extends SimpleLayout
                 if (!mLockMode && mBottomLayout.getVisibility() == GONE) {
                     mBottomLayout.setVisibility(VISIBLE);
                 }
-            } else {
-                if (mBottomLayout.getVisibility() == VISIBLE) {
-                    mBottomLayout.setVisibility(GONE);
-                }
             }
+//            else {
+//                if (mBottomLayout.getVisibility() == VISIBLE) {
+//                    mBottomLayout.setVisibility(GONE);
+//                }
+//            }
             postDelayed(this, REFRESH_TIME);
         }
     };
