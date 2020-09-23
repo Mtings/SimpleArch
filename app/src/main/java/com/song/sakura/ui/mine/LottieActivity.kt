@@ -1,6 +1,7 @@
 package com.song.sakura.ui.mine
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.song.sakura.R
 import com.song.sakura.action.StatusAction
@@ -38,8 +39,11 @@ class LottieActivity : IBaseActivity<IBaseViewModel>(), StatusAction, HandlerAct
                         ContextCompat.getDrawable(
                             activity,
                             R.drawable.ic_finish
-                        ), "暂无数据", null
-                    )
+                        ), "暂无数据"
+                    ) {
+                        showLoading()
+                        postDelayed(this::showEmpty, 2500)
+                    }
                     else -> {
                     }
                 }
