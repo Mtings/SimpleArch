@@ -97,6 +97,8 @@ public final class PlayerView extends SimpleLayout
     private int mAdjustSecond;
     /*** 触摸方向 */
     private int mTouchOrientation = -1;
+    /*** 是否出错 */
+    private boolean isError = false;
 
     public PlayerView(@NonNull Context context) {
         this(context, null);
@@ -160,6 +162,12 @@ public final class PlayerView extends SimpleLayout
 
     /*** 开始播放 */
     public void start() {
+        if (isError) {
+            isError = false;
+            mVideoView.seekTo(mCurrentProgress);
+            mProgressView.setProgress(mCurrentProgress);
+            mVideoView.resume();
+        }
         mVideoView.start();
         mControlView.setImageResource(R.drawable.ic_video_play_pause);
         // 延迟隐藏控制面板
@@ -353,7 +361,10 @@ public final class PlayerView extends SimpleLayout
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
+        mVideoView.suspend();
         pause();
+        mCurrentProgress = mProgressView.getProgress();
+        isError = true;
         ToastUtils.show("网络不佳，请稍候再试");
         return true;
     }
