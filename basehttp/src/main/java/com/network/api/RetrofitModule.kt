@@ -15,12 +15,15 @@ class RetrofitModule {
     lateinit var client: OkHttpClient
     lateinit var retrofit: Retrofit
 
+    companion object {
+        const val TIMEOUT = 30L
+    }
+
     @SuppressLint("StaticFieldLeak")
     object Singleton {
         val retrofitModule: RetrofitModule = RetrofitModule()
     }
 
-    private val TIMEOUT = 30L
     private val clientBuilder: OkHttpClient.Builder =
         OkHttpClient.Builder()
             .connectTimeout(TIMEOUT, TimeUnit.SECONDS)

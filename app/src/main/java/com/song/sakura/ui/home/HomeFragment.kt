@@ -63,11 +63,15 @@ class HomeFragment : IBaseFragment<HomeViewModel>() {
         })
 
         mViewModel.refreshControl.observe(viewLifecycleOwner, Observer {
-            if (it.isRefresh) {
-                refreshLayout.finishRefresh()
-                if (it.isOver) refreshLayout.setNoMoreData(it.isOver)
+            if (it.isSuccess) {
+                if (it.isRefresh) {
+                    refreshLayout.finishRefresh()
+                    if (it.isOver) refreshLayout.setNoMoreData(it.isOver)
+                } else {
+                    if (it.isOver) refreshLayout.finishLoadMoreWithNoMoreData() else refreshLayout.finishLoadMore()
+                }
             } else {
-                if (it.isOver) refreshLayout.finishLoadMoreWithNoMoreData() else refreshLayout.finishLoadMore()
+                refreshLayout.finishRefreshWithNoMoreData()
             }
         })
 
@@ -192,8 +196,8 @@ class HomeViewModel(app: Application) : IBaseViewModel(app) {
 
     val refreshControl = MutableLiveData<HomeRefreshControl>()
 
-    fun refreshControlSwitch(isRefresh: Boolean, isOver: Boolean) {
-        refreshControl.value = HomeRefreshControl(isRefresh = isRefresh, isOver = isOver)
+    fun refreshControlSwitch(isSuccess: Boolean, isRefresh: Boolean, isOver: Boolean) {
+        refreshControl.value = HomeRefreshControl(isSuccess, isRefresh, isOver)
     }
 
 }

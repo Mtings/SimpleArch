@@ -17,20 +17,30 @@ import com.gyf.immersionbar.ImmersionBar
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import com.song.sakura.R
+import com.song.sakura.action.StatusAction
 import com.song.sakura.entity.response.ArticleBean
 import com.song.sakura.entity.response.ProjectTree
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewHolder
 import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.util.RouterUtil
+import com.song.sakura.widget.HintLayout
 import com.ui.model.AbsentLiveData
 import kotlinx.android.synthetic.main.fragment_message.*
 import kotlinx.android.synthetic.main.item_project.view.*
 import kotlinx.android.synthetic.main.item_textview.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class MessageFragment : IBaseFragment<MessageViewModel>() {
+class MessageFragment : IBaseFragment<MessageViewModel>(), StatusAction {
 
     private var data: MutableList<ProjectTree> = ArrayList()
+
+    override fun getHintLayout(): HintLayout {
+        return hintStatusLayout
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +73,7 @@ class MessageFragment : IBaseFragment<MessageViewModel>() {
         rightList.adapter = rightProjectAdapter
 
         mViewModel.categoryList.observe(viewLifecycleOwner, Observer {
+            showComplete()
             if (!it.isNullOrEmpty()) {
                 data = it
                 adapter.setList(data)
@@ -71,19 +82,32 @@ class MessageFragment : IBaseFragment<MessageViewModel>() {
                 data = ArrayList()
                 adapter.setList(data)
                 rightProjectAdapter.setList(ArrayList())
+                showError { v ->
+                    showLoading()
+                    CoroutineScope(Dispatchers.Main)
+                        .launch {
+                            delay(500L)
+                            refresh()
+                        }
+                }
             }
 
         })
 
         mViewModel.projectLit.observe(viewLifecycleOwner, Observer {
-            if (it.data?.curPage == 1) {
-                rightProjectAdapter.setList(it.data?.datas)
-                if (it.data!!.over) smartRefreshLayout.finishRefreshWithNoMoreData()
-                else smartRefreshLayout.finishRefresh()
+            if (it?.errorCode == -1) {
+                smartRefreshLayout.finishRefresh()
+                smartRefreshLayout.finishLoadMore()
             } else {
-                rightProjectAdapter.addData(it.data?.datas ?: ArrayList())
-                if (it.data?.over!!) smartRefreshLayout.finishLoadMoreWithNoMoreData()
-                else smartRefreshLayout.finishLoadMore()
+                if (it.data?.curPage == 1) {
+                    rightProjectAdapter.setList(it.data?.datas)
+                    if (it.data!!.over) smartRefreshLayout.finishRefreshWithNoMoreData()
+                    else smartRefreshLayout.finishRefresh()
+                } else {
+                    rightProjectAdapter.addData(it.data?.datas ?: ArrayList())
+                    if (it.data?.over != null && it.data?.over!!) smartRefreshLayout.finishLoadMoreWithNoMoreData()
+                    else smartRefreshLayout.finishLoadMore()
+                }
             }
         })
 
@@ -114,6 +138,10 @@ class MessageFragment : IBaseFragment<MessageViewModel>() {
             }
         })
 
+        refresh()
+    }
+
+    private fun refresh() {
         mViewModel.refreshCategory()
     }
 

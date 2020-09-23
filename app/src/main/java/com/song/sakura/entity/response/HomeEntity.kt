@@ -70,8 +70,9 @@ class ArticleBean(
 }
 
 class HomeRefreshControl(
-    var isRefresh: Boolean = false,
-    var isOver: Boolean = false
+    var isSuccess: Boolean,
+    var isRefresh: Boolean,
+    var isOver: Boolean
 )
 
 data class ProjectTree(

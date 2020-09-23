@@ -62,11 +62,13 @@ class HomeListChildFragment : IBaseFragment<HomeViewModel>() {
             if (null != it?.curPage) {
                 if (it.curPage == 1) {
                     mAdapter.setList(it.datas)
-                    mViewModel.refreshControlSwitch(true, it.over)
+                    mViewModel.refreshControlSwitch(isSuccess = true, isRefresh = true, isOver = it.over)
                 } else if (it.curPage > 1) {
                     mAdapter.addData(it.datas)
-                    mViewModel.refreshControlSwitch(false, it.over)
+                    mViewModel.refreshControlSwitch(isSuccess = true, isRefresh = false, isOver = it.over)
                 }
+            } else {
+                mViewModel.refreshControlSwitch(isSuccess = false, isRefresh = true, isOver = false)
             }
         })
     }
