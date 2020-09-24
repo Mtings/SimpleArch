@@ -128,9 +128,9 @@ class CameraActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
             when (resultCode) {
                 // 重新扫描多媒体（否则可能扫描不到）
                 Activity.RESULT_OK ->
-                    MediaScannerConnection.scanFile(applicationContext, arrayOf(mFile!!.path), null, null)
+                    MediaScannerConnection.scanFile(applicationContext, arrayOf(mFile?.path), null, null)
                 // 删除这个文件
-                Activity.RESULT_CANCELED -> mFile!!.delete()
+                Activity.RESULT_CANCELED -> mFile?.delete()
                 else -> {
                 }
             }

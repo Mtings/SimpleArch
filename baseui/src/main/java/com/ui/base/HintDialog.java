@@ -30,7 +30,7 @@ public final class HintDialog {
             setContentView(R.layout.hint_dialog);
             setAnimStyle(BaseDialog.TOAST);
             setBackgroundDimEnabled(false);
-            setCancelable(false);
+            setCancelable(true);
 
             mMessageView = findViewById(R.id.tv_hint_message);
             mIconView = findViewById(R.id.iv_hint_icon);

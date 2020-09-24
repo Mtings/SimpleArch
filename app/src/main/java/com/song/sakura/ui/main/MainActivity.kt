@@ -4,12 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
+import com.hjq.toast.ToastUtils
 import com.song.sakura.R
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.center.CenterFragment
@@ -18,13 +18,14 @@ import com.song.sakura.ui.home.HomeFragment
 import com.song.sakura.ui.home.HomeViewModel
 import com.song.sakura.ui.message.MessageFragment
 import com.song.sakura.ui.mine.MineFragment
+import com.ui.action.HandlerAction
 import com.ui.base.BaseFragmentStateAdapter
 import com.ui.util.IntentBuilder
 import com.ui.util.RxUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : IBaseActivity<HomeViewModel>(),
-    BottomNavigationView.OnNavigationItemSelectedListener {
+    BottomNavigationView.OnNavigationItemSelectedListener, HandlerAction {
 
     @Autowired(name = IntentBuilder.INDEX)
     @JvmField
@@ -43,10 +44,6 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
             context.overridePendingTransition(R.anim.right_in, R.anim.left_out)
             ActivityCompat.finishAffinity(context)
         }
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
     }
 
     override fun initImmersionBar() {
@@ -153,9 +150,9 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
             return
         }
         if (isFirst) {
-            Toast.makeText(this, "再次点击返回退出", Toast.LENGTH_SHORT).show()
+            ToastUtils.show("再次点击返回退出")
             isFirst = false
-            bottomNav.postDelayed({ isFirst = true }, 3500)
+            postDelayed({ isFirst = true }, 3500)
             return
         }
         // 进行内存优化，销毁掉所有的界面
