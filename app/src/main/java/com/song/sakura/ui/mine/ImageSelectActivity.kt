@@ -68,7 +68,7 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
             }
             val intent = Intent(activity, ImageSelectActivity::class.java)
             intent.putExtra(IntentBuilder.AMOUNT, maxSelect)
-            activity.startActivityForResult(intent) { resultCode, data ->
+            activity.startActivityForResult(intent) { resultCode: Int, data: Intent? ->
                 if (listener == null || data == null) {
                     return@startActivityForResult
                 }
@@ -255,7 +255,7 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
     }
 
     private suspend fun run() {
-        withContext(Dispatchers.Main) {
+        withContext(Dispatchers.IO) {
             mAllAlbum.clear()
             mAllImage.clear()
             val contentUri = MediaStore.Files.getContentUri("external")
@@ -315,33 +315,34 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
 
                 cursor.close()
             }
-
             delay(500L)
-            // 滚动回第一个位置
-            list.scrollToPosition(0)
-            // 设置新的列表数据
-            mAdapter.setList(mAllImage)
-            if (mSelectImage.isEmpty()) {
-                floating.setImageResource(R.drawable.ic_camera)
-            } else {
-                floating.setImageResource(R.drawable.ic_succeed)
-            }
+            withContext(Dispatchers.Main) {
+                // 滚动回第一个位置
+                list.scrollToPosition(0)
+                // 设置新的列表数据
+                mAdapter.setList(mAllImage)
+                if (mSelectImage.isEmpty()) {
+                    floating.setImageResource(R.drawable.ic_camera)
+                } else {
+                    floating.setImageResource(R.drawable.ic_succeed)
+                }
 
-            // 执行列表动画
-            list.layoutAnimation = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_fall_down)
-            list.scheduleLayoutAnimation()
+                // 执行列表动画
+                list.layoutAnimation = AnimationUtils.loadLayoutAnimation(activity, R.anim.layout_fall_down)
+                list.scheduleLayoutAnimation()
 
-            mToolbar?.apply {
-                clearMenu()
-                addTextRight("所有图片")
-            }
+                mToolbar?.apply {
+                    clearMenu()
+                    addTextRight("所有图片")
+                }
 
-            if (mAllImage.isEmpty()) {
-                // 显示空布局
-                showEmpty()
-            } else {
-                // 显示加载完成
-                showComplete()
+                if (mAllImage.isEmpty()) {
+                    // 显示空布局
+                    showEmpty()
+                } else {
+                    // 显示加载完成
+                    showComplete()
+                }
             }
         }
     }
