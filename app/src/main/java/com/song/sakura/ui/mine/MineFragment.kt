@@ -19,6 +19,7 @@ class MineFragment : IBaseFragment<IBaseViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initImmersionBar()
         mToolbar?.apply {
             addTextRight("AOP")
             navigationIcon = null
@@ -29,14 +30,6 @@ class MineFragment : IBaseFragment<IBaseViewModel>() {
                 return@setOnMenuItemClickListener true
             }
         }
-
-        initImmersionBar()
     }
 
-    override fun initImmersionBar() {
-        ImmersionBar.with(this).keyboardEnable(true)
-            .statusBarDarkFont(true)
-            .titleBar(R.id.appbar)
-            .init()
-    }
 }

@@ -21,17 +21,6 @@ import com.ui.decoration.Y_DividerItemDecoration
 import kotlinx.android.synthetic.main.item_article.view.*
 import kotlinx.android.synthetic.main.list.*
 
-
-/**
- * Title: com.song.sakura.ui.home
- * Description:
- * Copyright:Copyright(c) 2020
- * CreateTime:2020/06/30 14:09
- *
- * @author SogZiw
- * @version 1.0
- */
-
 class HomeListChildFragment : IBaseFragment<HomeViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

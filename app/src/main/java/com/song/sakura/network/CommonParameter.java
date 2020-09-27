@@ -34,7 +34,7 @@ public class CommonParameter {
     public String ts = "";
 
     public CommonParameter() {
-        init(App.getApplication());
+        init(App.Companion.getApplication());
     }
 
     public CommonParameter(Context context) {
@@ -42,7 +42,7 @@ public class CommonParameter {
     }
 
     public String getDeviceId() {
-        return deviceId = UTDevice.getUtdid(App.getApplication());
+        return deviceId = UTDevice.getUtdid(App.Companion.getApplication());
     }
 
     private void init(Context context) {

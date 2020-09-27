@@ -53,6 +53,8 @@ class MessageFragment : IBaseFragment<MessageViewModel>(), StatusAction {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initImmersionBar()
         mToolbar?.apply {
             addTextRight("样式")
             navigationIcon = null
@@ -64,8 +66,11 @@ class MessageFragment : IBaseFragment<MessageViewModel>(), StatusAction {
             }
         }
 
-        initImmersionBar()
+        init()
+        refresh()
+    }
 
+    private fun init() {
         val adapter = LeftCategoryAdapter()
         list.adapter = adapter
 
@@ -137,8 +142,6 @@ class MessageFragment : IBaseFragment<MessageViewModel>(), StatusAction {
                 mViewModel.loadMoreArticle(mViewModel.categoryId.value ?: 0)
             }
         })
-
-        refresh()
     }
 
     private fun refresh() {

@@ -15,7 +15,7 @@ public class GlideUtil {
         boolean isGif = type.endsWith("gif");
         if (isGif) {
             try {
-                FutureTarget<byte[]> target = Glide.with(App.getApplication())
+                FutureTarget<byte[]> target = Glide.with(App.Companion.getApplication())
                         .as(byte[].class)
                         .load(url)
                         .decode(GifDrawable.class).submit();
@@ -25,7 +25,7 @@ public class GlideUtil {
             }
             return null;
         }
-        FutureTarget<Bitmap> target = Glide.with(App.getApplication())
+        FutureTarget<Bitmap> target = Glide.with(App.Companion.getApplication())
                 .asBitmap().load(url).submit();
         try {
             Bitmap bitmap = target.get();

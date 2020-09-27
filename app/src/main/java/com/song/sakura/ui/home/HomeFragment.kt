@@ -153,12 +153,12 @@ class HomeViewModel(app: Application) : IBaseViewModel(app) {
             AbsentLiveData.create()
     }
 
-    val articleList = Transformations.switchMap(page) {
+    private val articleList = Transformations.switchMap(page) {
         if (it == null) AbsentLiveData.create()
         else api.getHomeArticleList(it)
     }
 
-    val topArticleList = Transformations.switchMap(page) {
+    private val topArticleList = Transformations.switchMap(page) {
         if (it == 0) api.homeTopList
         else {
             val data = MutableLiveData<ApiResponse<List<ArticleBean>>>()

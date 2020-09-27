@@ -2,7 +2,7 @@ package com.song.sakura.ui.main
 
 import android.app.Application
 import com.song.sakura.ui.base.IBaseViewModel
-import com.song.sakura.ui.base.UnPeekLiveData
+import com.network.repository.UnPeekLiveData
 
 /**
  * Title: com.song.sakura.ui.main
