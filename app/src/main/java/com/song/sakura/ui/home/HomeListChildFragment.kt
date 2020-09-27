@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.song.sakura.R
 import com.song.sakura.entity.response.ArticleBean
 import com.song.sakura.ui.base.IBaseFragment
-import com.song.sakura.ui.base.IBaseViewHolder
+import com.song.sakura.ui.base.BaseViewHolder
 import com.song.sakura.util.RouterUtil
 import com.ui.decoration.Y_Divider
 import com.ui.decoration.Y_DividerBuilder
@@ -82,9 +82,9 @@ class DividerItemDecoration(context: Context) : Y_DividerItemDecoration(context)
     }
 }
 
-class ListAdapter() : BaseQuickAdapter<ArticleBean, IBaseViewHolder>(R.layout.item_article, null) {
+class ListAdapter() : BaseQuickAdapter<ArticleBean, BaseViewHolder>(R.layout.item_article, null) {
 
-    override fun convert(holder: IBaseViewHolder, item: ArticleBean) {
+    override fun convert(holder: BaseViewHolder, item: ArticleBean) {
         holder.itemView.title.text = Html.fromHtml(item.title ?: "")
         holder.itemView.author.text = item.getFixedName()
         holder.itemView.image.setImageResource(item.getIcon())

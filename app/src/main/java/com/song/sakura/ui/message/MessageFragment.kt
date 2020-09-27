@@ -21,7 +21,7 @@ import com.song.sakura.action.StatusAction
 import com.song.sakura.entity.response.ArticleBean
 import com.song.sakura.entity.response.ProjectTree
 import com.song.sakura.ui.base.IBaseFragment
-import com.song.sakura.ui.base.IBaseViewHolder
+import com.song.sakura.ui.base.BaseViewHolder
 import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.util.RouterUtil
 import com.song.sakura.widget.HintLayout
@@ -203,9 +203,9 @@ class MessageViewModel(app: Application) : IBaseViewModel(app) {
 }
 
 class LeftCategoryAdapter :
-    BaseQuickAdapter<ProjectTree, IBaseViewHolder>(R.layout.item_textview, null) {
+    BaseQuickAdapter<ProjectTree, BaseViewHolder>(R.layout.item_textview, null) {
 
-    override fun convert(holder: IBaseViewHolder, item: ProjectTree) {
+    override fun convert(holder: BaseViewHolder, item: ProjectTree) {
         holder.itemView.textView.apply {
             text = Html.fromHtml(item.name)
             isSelected = item.select
@@ -214,9 +214,9 @@ class LeftCategoryAdapter :
 }
 
 class RightProjectAdapter :
-    BaseQuickAdapter<ArticleBean, IBaseViewHolder>(R.layout.item_project, null) {
+    BaseQuickAdapter<ArticleBean, BaseViewHolder>(R.layout.item_project, null) {
 
-    override fun convert(holder: IBaseViewHolder, item: ArticleBean) {
+    override fun convert(holder: BaseViewHolder, item: ArticleBean) {
         holder.itemView.tvTitle.text = item.title
         holder.itemView.tvDesc.text = item.desc
         holder.itemView.tvName.text = item.getFixedName()
