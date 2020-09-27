@@ -6,15 +6,14 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.*;
 import androidx.appcompat.widget.TintTypedArray;
+import androidx.core.content.ContextCompat;
 
-import com.ui.util.DrawableHelper;
 import com.ui.util.Utils;
 
 @SuppressLint("RestrictedApi")
@@ -61,15 +60,13 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
         if (a.hasValue(androidx.appcompat.R.styleable.Toolbar_titleTextColor)) {
             setTitleTextColor(a.getColor(androidx.appcompat.R.styleable.Toolbar_titleTextColor, 0xffffffff));
         }
-
     }
-
 
     public void setTextDrawableLeft(@DrawableRes int resId) {
         if (mTitleText != null) {
             mTitleText.setCompoundDrawablePadding(Utils.dip2px(getContext(), 10));
             mTitleText.setCompoundDrawables(
-                    DrawableHelper.getDrawableWithBounds(getContext(), resId),
+                    ContextCompat.getDrawable(getContext(),resId),
                     null, null, null
             );
         }
@@ -124,7 +121,6 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
         else
             super.setTitle(title);
     }
-
 
     private void init() {
         mTitleText = new TextView(getContext());

@@ -3,9 +3,8 @@ package com.ui.base;
 import androidx.annotation.ColorRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.ui.util.DrawableHelper;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
@@ -47,7 +46,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
 
     public Drawable getDrawable(int res) {
 
-        Drawable drawable = DrawableHelper.getDrawable(itemView.getContext(), res);
+        Drawable drawable = ContextCompat.getDrawable(itemView.getContext(), res);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
         return drawable;
     }

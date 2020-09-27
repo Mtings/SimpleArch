@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.song.sakura.util.UserCache;
 import com.ui.util.LogUtil;
-import com.ui.util.StringUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -81,7 +80,7 @@ public class CommonInterceptor implements Interceptor {
             authorizedUrlBuilder.addQueryParameter(key, map.get(key));
             //authorizedUrlBuilder.addQueryParameter(key, URLEncoder.encode(map.get(key), "UTF-8"));
         }
-        String token = StringUtils.isBlank(UserCache.INSTANCE.getAuthToken()) ? "" : UserCache.INSTANCE.getAuthToken();
+        String token = isBlank(UserCache.INSTANCE.getAuthToken()) ? "" : UserCache.INSTANCE.getAuthToken();
         // 新的请求
         if ("GET".equals(oldRequest.method())) {
             newRequest = oldRequest.newBuilder().get()
@@ -99,6 +98,18 @@ public class CommonInterceptor implements Interceptor {
 
     }
 
+    public static boolean isBlank(final CharSequence cs) {
+        int strLen;
+        if (cs == null || (strLen = cs.length()) == 0) {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++) {
+            if (!Character.isWhitespace(cs.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static String toSign(Map<String, String> paraPublic, Object obj) {
         HashMap<String, Object> properties = new HashMap<>();

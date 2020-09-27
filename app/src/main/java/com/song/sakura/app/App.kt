@@ -18,7 +18,6 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.song.sakura.BuildConfig
 import com.song.sakura.R
 import com.song.sakura.helper.ActivityStackManager
-import com.ui.util.DrawableHelper
 import com.ui.util.LogUtil
 
 class App : Application(), ViewModelStoreOwner, LifecycleOwner {
@@ -73,7 +72,6 @@ class App : Application(), ViewModelStoreOwner, LifecycleOwner {
         }
         ARouter.init(this)
 
-        DrawableHelper.init(this)
         // 吐司工具类
         ToastUtils.init(this)
 

@@ -206,6 +206,9 @@ dependencies {
     // ViewPager 指示器：https://github.com/romandanylyk/PageIndicatorView
     implementation 'com.romandanylyk:pageindicatorview:1.0.3'
 
+    // https://github.com/Blankj/AndroidUtilCode/blob/master/lib/utilcode/README-CN.md
+    implementation 'com.blankj:utilcodex:1.29.0'
+
     // VasSonic: https://github.com/Tencent/VasSonic
 //    implementation 'com.tencent.sonic:sdk:3.1.0'
 }

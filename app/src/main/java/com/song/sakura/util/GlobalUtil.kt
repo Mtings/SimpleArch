@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
+import com.blankj.utilcode.util.SPUtils
 import com.song.sakura.app.App
 import com.song.sakura.extension.logE
 import com.song.sakura.extension.toString

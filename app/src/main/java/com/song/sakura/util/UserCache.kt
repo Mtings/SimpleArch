@@ -1,8 +1,6 @@
 package com.song.sakura.util
 
 import android.annotation.SuppressLint
-import com.ui.util.ACache
-import com.ui.util.GsonUtil
 import com.song.sakura.app.App
 
 @SuppressLint("Recycle")
