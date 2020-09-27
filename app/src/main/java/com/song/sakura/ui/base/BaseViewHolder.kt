@@ -79,7 +79,7 @@ open class BaseViewHolder(itemView: View) : com.chad.library.adapter.base.viewho
         view.visibility = visible
     }
 
-    fun getActivity(): Activity? {
+    fun getActivity(): Activity {
         return itemView.context as Activity
     }
 
