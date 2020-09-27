@@ -22,11 +22,7 @@ class VideoPlayerActivity : IBaseActivity<IBaseViewModel>(), PlayerView.onGoBack
             if (file == null || !file.isFile) {
                 return
             }
-            start(
-                context,
-                file.path,
-                file.name
-            )
+            start(context, file.path, file.name)
         }
 
         fun start(context: Context, url: String?, title: String?) {
