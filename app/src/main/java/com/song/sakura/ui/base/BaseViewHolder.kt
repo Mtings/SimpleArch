@@ -2,6 +2,7 @@ package com.song.sakura.ui.base
 
 import android.app.Activity
 import android.graphics.drawable.Drawable
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +14,7 @@ import androidx.core.content.ContextCompat
 
 open class BaseViewHolder(itemView: View) : com.chad.library.adapter.base.viewholder.BaseViewHolder(itemView) {
 
-    init {
-        val displayMetrics = itemView.resources.displayMetrics
-    }
+    var displayMetrics: DisplayMetrics = itemView.resources.displayMetrics
 
     fun inflater(parent: ViewGroup, layoutRes: Int): View? {
         return LayoutInflater.from(parent.context).inflate(layoutRes, parent, false)
