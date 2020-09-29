@@ -13,9 +13,10 @@ import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.ui.mine.ImageSelectActivity
 import com.song.sakura.ui.mine.LottieActivity
 import com.song.sakura.ui.mine.OnPhotoSelectListener
+import com.ui.action.ClickAction
 import kotlinx.android.synthetic.main.fragment_favorite.*
 
-class FavoriteFragment : IBaseFragment<IBaseViewModel>(), View.OnClickListener {
+class FavoriteFragment : IBaseFragment<IBaseViewModel>(), ClickAction {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_favorite, container, false)
@@ -28,10 +29,10 @@ class FavoriteFragment : IBaseFragment<IBaseViewModel>(), View.OnClickListener {
             navigationIcon = null
         }
 
-        btn_flash_view.setOnClickListener(this)
-        btn_activity_status.setOnClickListener(this)
-        btn_activity_select_image.setOnClickListener(this)
-        btnVideoPlay.setOnClickListener(this)
+        setOnClickListener(btn_flash_view)
+        setOnClickListener(btn_activity_status)
+        setOnClickListener(btn_activity_select_image)
+        setOnClickListener(btnVideoPlay)
     }
 
     @SingleClick
@@ -64,5 +65,8 @@ class FavoriteFragment : IBaseFragment<IBaseViewModel>(), View.OnClickListener {
         }
     }
 
+    override fun <V : View?> findViewById(id: Int): V {
+        TODO("Not yet implemented")
+    }
 
 }

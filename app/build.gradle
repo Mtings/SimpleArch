@@ -174,7 +174,7 @@ dependencies {
 
     //slid menu https://github.com/umano/AndroidSlidingUpPanel
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
-    //ARouter
+    //ARouter https://github.com/alibaba/ARouter
     implementation 'com.alibaba:arouter-api:1.4.1'
     kapt 'com.alibaba:arouter-compiler:1.2.2'
     //EventBus https://github.com/greenrobot/EventBus
