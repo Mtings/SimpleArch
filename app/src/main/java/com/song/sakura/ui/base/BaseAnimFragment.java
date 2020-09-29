@@ -21,13 +21,14 @@ public class BaseAnimFragment<Q extends BaseViewModel> extends IBaseFragment<Q> 
     private Animation mInAnim;
     private Animation mOutAnim;
 
-    protected @AnimRes
-    int inResId = R.anim.translate_in_from_bottom, outResId = R.anim.translate_out_from_top;
+    protected @AnimRes int inResId = R.anim.translate_in_from_bottom, outResId = R.anim.translate_out_from_top;
 
+    @AnimRes
     public int getInResId() {
         return inResId;
     }
 
+    @AnimRes
     public int getOutResId() {
         return outResId;
     }
