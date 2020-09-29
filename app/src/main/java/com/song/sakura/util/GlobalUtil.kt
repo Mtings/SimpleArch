@@ -213,18 +213,15 @@ object GlobalUtil {
         return packageManager.getApplicationIcon(applicationInfo)
     }
 
-    /**
-     * 判断手机是否安装了QQ。
-     */
+    /*** 判断手机是否安装了QQ */
     fun isQQInstalled() = isInstalled("com.tencent.mobileqq")
 
-    /**
-     * 判断手机是否安装了微信。
-     */
+    /*** 判断手机是否安装了TIM */
+    fun isTimInstalled() = isInstalled("com.tencent.tim")
+
+    /*** 判断手机是否安装了微信 */
     fun isWechatInstalled() = isInstalled("com.tencent.mm")
 
-    /**
-     * 判断手机是否安装了微博。
-     * */
+    /*** 判断手机是否安装了微博 */
     fun isWeiboInstalled() = isInstalled("com.sina.weibo")
 }

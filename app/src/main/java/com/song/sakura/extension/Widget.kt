@@ -10,7 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.song.sakura.util.EmptyCornerDrawable
 
-fun ImageView.displayWithUrl(url: String?) {
+fun ImageView.displayWithUrlCenterCrop(url: String) {
     Glide.with(this).load(url)
         .apply(
             RequestOptions().transforms(CenterCrop())
@@ -18,7 +18,7 @@ fun ImageView.displayWithUrl(url: String?) {
         .into(this)
 }
 
-fun ImageView.displayWithUrl2(url: String) {
+fun ImageView.displayWithUrl(url: String) {
     Glide.with(this).load(url)
         .into(this)
 }
@@ -38,7 +38,6 @@ fun ImageView.displayWithUrl(url: String?, radius: Float) {
         )
         .into(this)
 }
-
 
 /**
  * 隐藏软键盘

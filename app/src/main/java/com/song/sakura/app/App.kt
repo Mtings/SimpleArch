@@ -97,7 +97,7 @@ class App : Application(), ViewModelStoreOwner, LifecycleOwner {
         return mAppViewModelStore
     }
 
-    fun getAppViewModelProvider(activity: Activity): ViewModelProvider? {
+    fun getAppViewModelProvider(activity: Activity): ViewModelProvider {
         return ViewModelProvider(activity.applicationContext as App, getAppFactory(activity)!!)
     }
 

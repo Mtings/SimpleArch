@@ -1,4 +1,4 @@
-package com.song.sakura.util;
+package com.ui.util;
 
 import android.content.Context;
 import android.view.View;
