@@ -35,20 +35,14 @@ class LottieActivity : IBaseActivity<IBaseViewModel>(), StatusAction, HandlerAct
                         postDelayed(this::showEmpty, 2500)
                     }
                     2 -> showEmpty()
-                    3 -> showLayout(
-                        ContextCompat.getDrawable(
-                            activity,
-                            R.drawable.ic_finish
-                        ), "暂无数据"
-                    ) {
+                    3 -> showLayout(ContextCompat.getDrawable(activity, R.drawable.ic_finish), "暂无数据") {
                         showLoading()
                         postDelayed(this::showEmpty, 2500)
                     }
                     else -> {
                     }
                 }
-            }
-            .show()
+            }.show()
     }
 
     override fun getHintLayout(): HintLayout {

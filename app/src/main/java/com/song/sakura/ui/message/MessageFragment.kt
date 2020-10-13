@@ -60,7 +60,7 @@ class MessageFragment : IBaseFragment<MessageViewModel>(), StatusAction {
             navigationIcon = null
             title = "分类"
             setOnMenuItemClickListener {
-                val intent = Intent(baseActivity, DialogActivity::class.java)
+                val intent = Intent(getBaseActivity(), DialogActivity::class.java)
                 startActivity(intent)
                 return@setOnMenuItemClickListener true
             }
@@ -87,7 +87,7 @@ class MessageFragment : IBaseFragment<MessageViewModel>(), StatusAction {
                 data = ArrayList()
                 adapter.setList(data)
                 rightProjectAdapter.setList(ArrayList())
-                showError { v ->
+                showError {
                     showLoading()
                     CoroutineScope(Dispatchers.Main)
                         .launch {

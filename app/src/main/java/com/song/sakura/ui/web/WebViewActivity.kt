@@ -10,6 +10,7 @@ import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.text.TextUtils
 import android.view.View
 import android.webkit.*
@@ -117,7 +118,7 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
                     && !title.contains("?")
                 ) {
                     if (s.length > 15) {
-                        mToolbar?.title = s.substring(0, 15) + "..."
+                        mToolbar?.title = Html.fromHtml(s.substring(0, 15) + "...")
                     }
                 }
             }

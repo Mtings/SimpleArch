@@ -15,7 +15,7 @@ import com.ui.util.IntentBuilder
 import kotlinx.android.synthetic.main.activity_image_preview.*
 import java.util.*
 
-class ImagePreviewActivity : IBaseActivity<IBaseViewModel?>(), BundleAction {
+class ImagePreviewActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
 
     companion object {
         fun start(context: Context, url: String) {

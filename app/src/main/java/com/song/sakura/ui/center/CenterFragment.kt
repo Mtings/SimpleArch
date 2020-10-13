@@ -26,6 +26,7 @@ class CenterFragment : IBaseFragment<CenterViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         initImmersionBar()
         mToolbar?.apply {
+            navigationIcon = null
             title = "中间"
         }
     }

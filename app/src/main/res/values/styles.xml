@@ -27,7 +27,7 @@
         <item name="buttonStyle">@style/Button</item>
         <item name="editTextStyle">@style/EditText</item>
         <item name="toolbarStyle">@style/Toolbar.White</item>
-
+        <!-- 修复Material下CheckBox的额外padding问题 -->
         <item name="checkboxStyle">@style/Widget.AppCompat.CompoundButton.CheckBox</item>
     </style>
 

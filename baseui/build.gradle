@@ -57,7 +57,7 @@ dependencies {
 
     }
 //    api 'androidx.legacy:legacy-support-v4:1.0.0'
-    api 'androidx.constraintlayout:constraintlayout:2.0.1'
+    api 'androidx.constraintlayout:constraintlayout:2.0.2'
     api 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     api 'androidx.drawerlayout:drawerlayout:1.1.1'
     api 'androidx.viewpager:viewpager:1.0.0'
