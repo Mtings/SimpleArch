@@ -96,13 +96,19 @@
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
-        <activity android:name=".ui.favorite.VideoPlayerActivity"
+        <activity
+            android:name=".ui.favorite.VideoPlayerActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/FullScreenTheme" />
 
         <activity
             android:name=".ui.web.WebViewActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+
+        <activity
+            android:name=".ui.home.SearchActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 

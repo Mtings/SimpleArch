@@ -100,7 +100,7 @@ class ListAdapter() : BaseQuickAdapter<ArticleBean, BaseViewHolder>(R.layout.ite
             }
         }
         holder.itemView.tag2.apply {
-            if (TextUtils.isEmpty(item.chapterName)) {
+            if (TextUtils.isEmpty(item.chapterName) || item.chapterName.equals(item.superChapterName)) {
                 visibility = View.GONE
             } else {
                 visibility = View.VISIBLE

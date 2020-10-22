@@ -1,6 +1,7 @@
 package com.song.sakura.ui.home
 
 import android.app.Application
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.network.api.ApiResponse
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import com.song.sakura.R
+import com.song.sakura.aop.SingleClick
 import com.song.sakura.entity.response.ArticleBean
 import com.song.sakura.entity.response.BannerVO
 import com.song.sakura.entity.response.HomeRefreshControl
@@ -24,13 +26,14 @@ import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.util.LiveDataUtil
 import com.song.sakura.util.RouterUtil
+import com.ui.action.ClickAction
 import com.ui.base.FragmentAdapter
 import com.ui.model.AbsentLiveData
 import com.youth.banner.adapter.BannerAdapter
 import com.youth.banner.indicator.CircleIndicator
 import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : IBaseFragment<HomeViewModel>() {
+class HomeFragment : IBaseFragment<HomeViewModel>(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +80,14 @@ class HomeFragment : IBaseFragment<HomeViewModel>() {
 
         refreshLayout.autoRefresh()
 
+        ivSearch.setOnClickListener(this)
+    }
+
+    @SingleClick
+    override fun onClick(v: View?) {
+        if (v?.id == R.id.ivSearch) {
+            startActivity(Intent(getBaseActivity(), SearchActivity::class.java))
+        }
     }
 
     private fun initView() {

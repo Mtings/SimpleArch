@@ -31,6 +31,20 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compileOnly "androidx.annotation:annotation:1.1.0"
+    api rootProject.ext.rxandroid
+    implementation(rootProject.ext.gson) {
+        exclude 'group': 'com.android.support'
+    }
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.retrofit2:converter-gson:2.9.0'
+//    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+//    api 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    
+//    implementation('com.squareup.okhttp3:okhttp:3.14.9') {
+//        exclude 'group': 'com.android.support'
+//    }
+
     // ViewModel and LiveData
     api("androidx.lifecycle:lifecycle-extensions:$lifecycle_version") {
         exclude 'group': 'com.android.support'
@@ -46,22 +60,5 @@ dependencies {
     api("androidx.lifecycle:lifecycle-common-java8:$lifecycle_version") {
         exclude 'group': 'com.android.support'
     }
-    api("androidx.lifecycle:lifecycle-reactivestreams:$lifecycle_version") {
-
-    }
-
-    api rootProject.ext.rxandroid
-//    implementation('com.squareup.okhttp3:okhttp:3.14.9') {
-//        exclude 'group': 'com.android.support'
-//    }
-    implementation(rootProject.ext.gson) {
-        exclude 'group': 'com.android.support'
-    }
-
-    compileOnly "androidx.annotation:annotation:1.1.0"
-
-    api 'com.squareup.retrofit2:retrofit:2.9.0'
-    api 'com.squareup.retrofit2:converter-gson:2.9.0'
-//    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
-//    api 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    api "androidx.lifecycle:lifecycle-reactivestreams:$lifecycle_version"
 }
