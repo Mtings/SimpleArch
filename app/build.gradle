@@ -108,7 +108,8 @@ android {
     }
     aspectjx {
         enabled true
-        exclude 'androidx','com.google','com.squareup'
+        exclude 'versions.9' //兼容kotlin 1.4.10
+        exclude 'androidx','com.google'
     }
 }
 
