@@ -55,9 +55,21 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        android:textColor="@color/textColor"
+        android:text="热门搜索"
+        tools:ignore="HardcodedText" />
+
+    <com.ui.widget.flowlayout.TagFlowLayout
+        android:id="@+id/tagFlowLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        app:max_select="1" />
 
 </LinearLayout>
