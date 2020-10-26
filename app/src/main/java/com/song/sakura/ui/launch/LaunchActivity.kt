@@ -22,7 +22,7 @@ class LaunchActivity : IBaseActivity<IBaseViewModel>() {
 
         CoroutineScope(Dispatchers.Main)
             .launch {
-                delay(1000L)
+                delay(500L)
                 goMain(this@LaunchActivity)
             }
 

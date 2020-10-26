@@ -3,9 +3,11 @@ package com.song.sakura.ui.home
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.hjq.toast.ToastUtils
 import com.song.sakura.R
+import com.song.sakura.aop.SingleClick
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.base.IBaseViewModel
 import com.ui.action.ClickAction
@@ -16,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : IBaseActivity<IBaseViewModel>(), ClickAction {
 
-    private val datas = listOf("Hello", "Android", "Welcome Hi ", "Button", "TextView")
+    private val datas = mutableListOf("Hello", "Android", "Welcome Hi ", "Button", "TextView")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,24 @@ class SearchActivity : IBaseActivity<IBaseViewModel>(), ClickAction {
             ToastUtils.show("点击了${datas[position]}")
             return@OnTagClickListener true
         })
+
+        setOnClickListener(btnSearch)
+        edit.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                ToastUtils.show("搜索")
+                datas.add(edit.text.toString())
+                tagFlowLayout.adapter.notifyDataChanged()
+            }
+            //返回true，保留软键盘；false，隐藏软键盘
+            return@setOnEditorActionListener false
+        }
     }
 
+    @SingleClick
+    override fun onClick(v: View?) {
+        if (v?.id == R.id.btnSearch) {
+            hideSoftKeyboard()
+            ToastUtils.show("搜索")
+        }
+    }
 }

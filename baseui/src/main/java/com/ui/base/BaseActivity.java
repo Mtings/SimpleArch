@@ -54,20 +54,6 @@ public class BaseActivity extends AppCompatActivity {
             fragmentBackHelperList.remove(i);
     }
 
-    @SuppressWarnings("all")
-    public void dismissKeyboard() {
-        try {
-            this.getCurrentFocus().clearFocus();
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                    .hideSoftInputFromWindow(this.getCurrentFocus()
-                                    .getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
-        } catch (Exception e) {
-            //doNothing
-        }
-
-    }
-
     public void setRootView(ViewGroup rootView) {
         this.rootView = rootView;
     }
@@ -194,7 +180,7 @@ public class BaseActivity extends AppCompatActivity {
     /**
      * 隐藏软键盘
      */
-    private void hideSoftKeyboard() {
+    public void hideSoftKeyboard() {
         // 隐藏软键盘，避免软键盘引发的内存泄露
         View view = getCurrentFocus();
         if (view != null) {

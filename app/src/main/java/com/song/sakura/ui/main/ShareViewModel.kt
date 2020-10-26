@@ -1,8 +1,8 @@
 package com.song.sakura.ui.main
 
 import android.app.Application
+import com.song.sakura.network.UnPeekLiveData
 import com.song.sakura.ui.base.IBaseViewModel
-import com.network.repository.UnPeekLiveData
 
 /**
  * Title: com.song.sakura.ui.main
