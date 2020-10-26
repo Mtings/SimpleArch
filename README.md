@@ -1,6 +1,8 @@
 # SimpleArch
  a simple and easy-to-use Android architecture
- 一个简单易用的Android项目架构
+ 一个简单易用的Android项目架构，MVVM框架，网络请求基于Retrofit2 + LiveData
+ 
+* [点击此处下载](https://www.pgyer.com/ksVz)
 
 #### 使用了以下第三方框架
 

@@ -76,7 +76,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintRight_toLeftOf="@+id/tvApp"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_iconfont" />
+                            app:srcCompat="@drawable/ic_app" />
 
                         <TextView
                             android:id="@+id/tvApp"
