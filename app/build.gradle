@@ -208,6 +208,9 @@ dependencies {
     // https://github.com/Blankj/AndroidUtilCode/blob/master/lib/utilcode/README-CN.md
     implementation 'com.blankj:utilcodex:1.29.0'
 
+    // https://square.github.io/leakcanary/getting_started/
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
+
     // VasSonic: https://github.com/Tencent/VasSonic
 //    implementation 'com.tencent.sonic:sdk:3.1.0'
 }

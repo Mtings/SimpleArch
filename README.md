@@ -2,7 +2,7 @@
  a simple and easy-to-use Android architecture
  一个简单易用的Android项目架构，MVVM框架，网络请求基于Retrofit2 + LiveData
  
-* [点击此处下载](https://www.pgyer.com/ksVz)
+* [点击此处下载SimpleArch.apk](https://www.pgyer.com/ksVz)
 
 #### 使用了以下第三方框架
 
@@ -30,3 +30,8 @@
 
 * AOP插件 [aspectjrt](https://mvnrepository.com/artifact/org.aspectj/aspectjrt)
   兼容kotlin [gradle_plugin_android_aspectjx](https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx)
+
+#### 后续计划
+* 实现下载更新app的框架
+* 今日头条屏幕适配
+* Glide封装
