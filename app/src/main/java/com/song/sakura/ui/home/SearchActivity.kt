@@ -52,6 +52,10 @@ class SearchActivity : IBaseActivity<IBaseViewModel>(), ClickAction {
         }
     }
 
+    override fun onBackPressed() {
+        finish()
+    }
+
     @SingleClick
     override fun onClick(v: View?) {
         if (v?.id == R.id.btnSearch) {
