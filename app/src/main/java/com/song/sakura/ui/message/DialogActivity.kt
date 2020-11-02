@@ -8,6 +8,7 @@ import com.song.sakura.R
 import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.ui.dialog.*
+import com.song.sakura.update.manager.DownloadManager
 import com.ui.base.BaseDialog
 import com.ui.util.RxUtil
 import kotlinx.android.synthetic.main.activity_dialog.*
@@ -274,6 +275,18 @@ class DialogActivity : IBaseActivity<IBaseViewModel>() {
 
         bindUi(RxUtil.click(btn_dialog_fail_toast)) {
             error("这就是错误提示")
+        }
+
+        bindUi(RxUtil.click(btnDialogUpdate)) {
+            val manager = DownloadManager.getInstance(this@DialogActivity)
+            manager.setApkName("testName.apk")
+                .setApkUrl("http://static.ws.126.net/163/apk/newsapp/newsreader_netease_gw.apk")
+                .setApkVersionCode(21)
+                .setApkVersionName("2.1.0")
+                .setApkDescription("这里是描述信息\n这里是描述信息2")
+                .setForcedUpgrade(false)
+                .setSmallIcon(R.drawable.ic_app)
+                .download()
         }
 
     }

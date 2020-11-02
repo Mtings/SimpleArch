@@ -133,13 +133,13 @@
                 android:layout_marginTop="30dp"
                 android:text="弹出时间对话框" />
 
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/btn_dialog_update"-->
-<!--                style="@style/ButtonStyle"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="30dp"-->
-<!--                android:text="弹出更新对话框" />-->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDialogUpdate"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="弹出更新对话框" />
 
 <!--            <androidx.appcompat.widget.AppCompatButton-->
 <!--                android:id="@+id/btn_dialog_share"-->
