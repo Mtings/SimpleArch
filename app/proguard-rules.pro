@@ -246,6 +246,10 @@
 -keep class com.song.sakura.widget.** {*;}
 -dontwarn com.song.sakura.widget.**
 
+# 不混淆update
+-keep class com.song.sakura.update.** {*;}
+-dontwarn com.song.sakura.update.**
+
 
 
 
