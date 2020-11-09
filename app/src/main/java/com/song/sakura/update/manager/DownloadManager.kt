@@ -11,6 +11,7 @@ import com.song.sakura.aop.Permissions
 import com.song.sakura.update.UpdateDialog
 import com.song.sakura.update.listener.OnDownloadListener
 import com.song.sakura.util.ApkUtil
+import java.lang.ref.SoftReference
 import java.util.*
 
 
@@ -21,11 +22,11 @@ class DownloadManager {
         const val APK_SUFFIX = ".apk"
         const val TAG: String = "UpdateApp: DownloadManager"
 
-        private var context: Context? = null
+        private var context: SoftReference<Context>? = null
         var manager: DownloadManager? = null
 
         fun getInstance(context: Context): DownloadManager {
-            this.context = context
+            this.context = SoftReference<Context>(context)
             return manager ?: synchronized(this) {
                 manager ?: DownloadManager().also { manager = it }
             }
@@ -259,8 +260,8 @@ class DownloadManager {
             return
         }
         //对版本进行判断，是否显示升级对话框
-        if (getApkVersionCode() > ApkUtil.getVersionCode(context)) {
-            UpdateDialog.Builder(context!!)
+        if (getApkVersionCode() > ApkUtil.getVersionCode(context?.get())) {
+            UpdateDialog.Builder(context?.get()!!)
                 // 版本名
                 .setVersionName(getApkVersionName().toString())
                 // apk大小
@@ -292,8 +293,8 @@ class DownloadManager {
             LogUtils.eTag(TAG, "apkName must endsWith .apk!")
             return false
         }
-        downloadPath = context?.externalCacheDir!!.path
-        AUTHORITIES = context?.packageName + ".provider"
+        downloadPath = context?.get()?.externalCacheDir!!.path
+        AUTHORITIES = context?.get()?.packageName + ".provider"
         return true
     }
 
@@ -309,6 +310,7 @@ class DownloadManager {
      * 释放资源
      */
     fun release() {
+        context?.clear()
         context = null
         manager?.getOnDownloadListener()?.clear()
         manager = null

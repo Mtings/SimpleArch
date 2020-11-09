@@ -79,7 +79,7 @@ class UpdateDialog {
         fun setForceUpdate(force: Boolean): Builder {
             mForceUpdate = force
             mCloseView.visibility = if (force) View.GONE else View.VISIBLE
-            setCancelable(!force)
+//            setCancelable(!force)
             return this
         }
 
@@ -101,8 +101,6 @@ class UpdateDialog {
                 } else if (!mDownloading) {
                     // 没有下载，开启下载
                     context.startService(Intent(context, DownloadService::class.java))
-                } else {
-                    dismiss()
                 }
             }
         }
