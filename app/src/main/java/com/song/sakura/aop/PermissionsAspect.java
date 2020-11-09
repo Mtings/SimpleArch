@@ -47,8 +47,8 @@ public class PermissionsAspect {
                     }
 
                     @Override
-                    public void noPermission(List<String> denied, boolean quick) {
-                        if (quick) {
+                    public void noPermission(List<String> denied, boolean never) {
+                        if (never) {
                             ToastUtils.show("授权失败，请手动授予权限");
                             XXPermissions.startPermissionActivity(ActivityStackManager.getInstance().getTopActivity(), denied);
                         } else {

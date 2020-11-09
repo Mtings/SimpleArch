@@ -263,6 +263,8 @@ class DownloadManager {
             UpdateDialog.Builder(context!!)
                 // 版本名
                 .setVersionName(getApkVersionName().toString())
+                // apk大小
+                .setApkSize(getApkSize())
                 // 是否强制更新
                 .setForceUpdate(isForcedUpgrade())
                 // 更新日志

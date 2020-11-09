@@ -2,6 +2,7 @@ package com.song.sakura.update
 
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -22,6 +23,7 @@ class UpdateDialog {
         private val mProgressView: ProgressBar
         private val mUpdateView: TextView
         private val mCloseView: TextView
+        private val apkSize: TextView
 
         private var AUTHORITIES: String = ""
 
@@ -34,6 +36,7 @@ class UpdateDialog {
             mProgressView = findViewById(R.id.progress)
             mUpdateView = findViewById(R.id.btnUpdate)
             mCloseView = findViewById(R.id.btnClose)
+            apkSize = findViewById(R.id.apkSize)
 
             AUTHORITIES = DownloadManager.manager?.getAuthorities() ?: ""
             DownloadManager.manager?.setOnDownloadListener(this)
@@ -59,10 +62,16 @@ class UpdateDialog {
             return this
         }
 
+        fun setApkSize(size: String): Builder {
+            apkSize.text = "约${size}"
+            apkSize.visibility = if (TextUtils.isEmpty(size)) View.GONE else View.VISIBLE
+            return this
+        }
+
         /*** 设置更新日志 */
-        fun setUpdateLog(text: CharSequence?): Builder {
+        fun setUpdateLog(text: CharSequence): Builder {
             mContentView.text = text
-            mContentView.visibility = if (text == null) View.GONE else View.VISIBLE
+            mContentView.visibility = if (TextUtils.isEmpty(text)) View.GONE else View.VISIBLE
             return this
         }
 
@@ -140,7 +149,9 @@ class UpdateDialog {
             mDownloading = false
             mUpdateView.text = "下载失败，点击重试"
             // 删除下载的文件
-            mApkFile?.delete()
+            if (mApkFile != null && mApkFile!!.exists()) {
+                mApkFile?.delete()
+            }
         }
 
         override fun cancel() {
