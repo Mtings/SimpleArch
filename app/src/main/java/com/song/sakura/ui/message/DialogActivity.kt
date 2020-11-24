@@ -1,5 +1,8 @@
 package com.song.sakura.ui.message
 
+import android.R.attr.phoneNumber
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import com.gyf.immersionbar.ImmersionBar
@@ -287,6 +290,11 @@ class DialogActivity : IBaseActivity<IBaseViewModel>() {
                 .setForcedUpgrade(false)
                 .setSmallIcon(R.drawable.ic_app)
                 .download()
+        }
+
+        bindUi(RxUtil.click(jumpWeixin)) {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("weixin://"))
+            startActivity(intent)
         }
 
     }

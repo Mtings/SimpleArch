@@ -17,6 +17,8 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.song.sakura.BuildConfig
 import com.song.sakura.R
+import com.song.sakura.database.WordRepository
+import com.song.sakura.database.WordRoomDatabase
 import com.song.sakura.helper.ActivityStackManager
 import com.ui.util.LogUtil
 
@@ -35,6 +37,11 @@ class App : Application(), ViewModelStoreOwner, LifecycleOwner {
             val mNetworkInfo = mConnectivityManager.activeNetworkInfo
             return mNetworkInfo?.isAvailable ?: false
         }
+
+        // Using by lazy so the database and the repository are only created when they're needed
+        // rather than when the application starts
+        val database by lazy { WordRoomDatabase.getDatabase(getApplication()) }
+        val repository by lazy { WordRepository(database.wordDao()) }
     }
 
     init {

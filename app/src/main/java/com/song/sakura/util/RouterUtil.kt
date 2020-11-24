@@ -3,7 +3,7 @@ package com.song.sakura.util
 import android.content.Context
 import android.os.Bundle
 import com.alibaba.android.arouter.launcher.ARouter
-import com.song.sakura.entity.response.ArticleBean
+import com.song.sakura.bean.response.ArticleBean
 import com.song.sakura.route.Router
 
 object RouterUtil {

@@ -2,16 +2,34 @@ package com.song.sakura.ui.center
 
 import android.app.Application
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.hjq.toast.ToastUtils
 import com.song.sakura.R
+import com.song.sakura.aop.SingleClick
+import com.song.sakura.app.App
+import com.song.sakura.entity.Word
+import com.song.sakura.ui.base.BaseViewHolder
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewModel
+import com.song.sakura.ui.dialog.InputDialog
+import com.ui.action.ClickAction
+import com.ui.base.BaseDialog
+import kotlinx.android.synthetic.main.fragment_center.*
+import kotlinx.android.synthetic.main.item_word_title.view.*
+import kotlinx.coroutines.launch
 
-class CenterFragment : IBaseFragment<CenterViewModel>() {
+class CenterFragment : IBaseFragment<CenterViewModel>(), ClickAction {
 
+    override fun <V : View?> findViewById(id: Int): V {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +47,79 @@ class CenterFragment : IBaseFragment<CenterViewModel>() {
             navigationIcon = null
             title = "中间"
         }
+
+        val adapter = WordListAdapter()
+        recyclerView.adapter = adapter
+
+        mViewModel.allWords.observe(viewLifecycleOwner) {
+            adapter.setList(it)
+        }
+
+        setOnClickListener(floating)
+
+        adapter.setOnItemLongClickListener { _, _, position ->
+            ToastUtils.show("删除了${adapter.data[position].word}")
+            mViewModel.deleteWord(adapter.data[position].word)
+            return@setOnItemLongClickListener true
+        }
+
+    }
+
+    @SingleClick
+    override fun onClick(v: View?) {
+        if (v == floating) {
+            InputDialog.Builder(requireContext())
+                .setTitle("输入单词")
+                .setConfirm(getString(R.string.common_confirm))
+                .setCancel(getString(R.string.common_cancel))
+                .setListener(object : InputDialog.OnListener {
+                    override fun onConfirm(dialog: BaseDialog?, content: String?) {
+                        if (!TextUtils.isEmpty(content)) {
+                            mViewModel.insert(Word(content!!))
+                        }
+                    }
+
+                    override fun onCancel(dialog: BaseDialog?) {
+                        ToastUtils.show("取消了")
+                    }
+                })
+                .show()
+        }
+    }
+}
+
+class WordListAdapter : BaseQuickAdapter<Word, BaseViewHolder>(R.layout.item_word_title, null) {
+
+    override fun convert(holder: BaseViewHolder, item: Word) {
+        holder.itemView.textView.text = item.word
     }
 }
 
 class CenterViewModel(app: Application) : IBaseViewModel(app) {
 
-    val title = MutableLiveData<String>()
+    // Using LiveData and caching what allWords returns has several benefits:
+    // - We can put an observer on the data (instead of polling for changes) and only update the
+    //   the UI when the data actually changes.
+    // - Repository is completely separated from the UI through the ViewModel.
+    val allWords: LiveData<List<Word>> = App.repository.allWords.asLiveData()
 
-    fun initData() {
-        title.value = "SimpleArch"
+    /**
+     * Launching a new coroutine to insert the data in a non-blocking way
+     */
+    fun insert(word: Word) = viewModelScope.launch {
+        App.repository.insert(word)
     }
+
+    fun deleteAll() = viewModelScope.launch {
+        App.repository.deleteAll()
+    }
+
+    fun deleteWord(word: String) = viewModelScope.launch {
+        App.repository.deleteWord(word)
+    }
+
+    fun deleteOne(word: Word) = viewModelScope.launch {
+        App.repository.deleteOne(word)
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.song.sakura.entity.response
+package com.song.sakura.bean.response
 
 import android.text.TextUtils
 import com.song.sakura.R

@@ -235,8 +235,20 @@
 }
 
 # 不混淆bean类
--keep class com.song.sakura.entity.** {*;}
--dontwarn com.song.sakura.entity.**
+-keep class com.song.sakura.bean.** {*;}
+-dontwarn com.song.sakura.bean.**
+
+# 不混淆entity类
+-keep class com.song.sakura.bean.** {*;}
+-dontwarn com.song.sakura.bean.**
+
+# 不混淆dao类
+-keep class com.song.sakura.dao.** {*;}
+-dontwarn com.song.sakura.dao.**
+
+# 不混淆database类
+-keep class com.song.sakura.database.** {*;}
+-dontwarn com.song.sakura.database.**
 
 # 不混淆util类
 -keep class com.song.sakura.util.** {*;}

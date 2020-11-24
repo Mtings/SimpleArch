@@ -19,14 +19,13 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import com.song.sakura.R
 import com.song.sakura.aop.SingleClick
-import com.song.sakura.entity.response.ArticleBean
-import com.song.sakura.entity.response.BannerVO
-import com.song.sakura.entity.response.HomeRefreshControl
+import com.song.sakura.bean.response.ArticleBean
+import com.song.sakura.bean.response.BannerVO
+import com.song.sakura.bean.response.HomeRefreshControl
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.util.LiveDataUtil
 import com.song.sakura.util.RouterUtil
-import com.ui.action.ClickAction
 import com.ui.base.FragmentAdapter
 import com.ui.model.AbsentLiveData
 import com.youth.banner.adapter.BannerAdapter

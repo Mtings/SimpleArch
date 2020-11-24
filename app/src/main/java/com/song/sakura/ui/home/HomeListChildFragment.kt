@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.song.sakura.R
-import com.song.sakura.entity.response.ArticleBean
+import com.song.sakura.bean.response.ArticleBean
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.BaseViewHolder
 import com.song.sakura.util.RouterUtil

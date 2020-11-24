@@ -1,4 +1,4 @@
-package com.song.sakura.entity.request
+package com.song.sakura.bean.request
 
 class NewsPageReq(
     var page: Int,

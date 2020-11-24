@@ -3,16 +3,14 @@ package com.song.sakura.network;
 import androidx.lifecycle.LiveData;
 
 import com.network.api.ApiResponse;
-import com.song.sakura.entity.response.ArticleBean;
-import com.song.sakura.entity.response.BannerVO;
-import com.song.sakura.entity.response.HomePageEntity;
-import com.song.sakura.entity.response.ProjectTree;
+import com.song.sakura.bean.response.ArticleBean;
+import com.song.sakura.bean.response.BannerVO;
+import com.song.sakura.bean.response.HomePageEntity;
+import com.song.sakura.bean.response.ProjectTree;
 
 import java.util.List;
 
-import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
