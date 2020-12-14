@@ -95,9 +95,11 @@ class CameraActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
             // 拍摄照片
             Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         }
-        if (XXPermissions.hasPermission(
-                this, Permission.READ_EXTERNAL_STORAGE
-                , Permission.WRITE_EXTERNAL_STORAGE, Permission.CAMERA
+        if (XXPermissions.isGrantedPermission(
+                this,
+                Permission.READ_EXTERNAL_STORAGE,
+                Permission.WRITE_EXTERNAL_STORAGE,
+                Permission.CAMERA
             ) && intent.resolveActivity(packageManager) != null
         ) {
             mFile = getSerializable(IntentBuilder.FILE)

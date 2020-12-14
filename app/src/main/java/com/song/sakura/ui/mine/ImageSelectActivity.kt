@@ -271,7 +271,7 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
             )
 
             var cursor: Cursor? = null
-            if (XXPermissions.hasPermission(this@ImageSelectActivity, Permission.READ_EXTERNAL_STORAGE)) {
+            if (XXPermissions.isGrantedPermission(this@ImageSelectActivity, Permission.READ_EXTERNAL_STORAGE)) {
                 cursor = contentResolver.query(
                     contentUri,
                     projections,

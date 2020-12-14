@@ -16,7 +16,7 @@ import android.view.View
 import android.webkit.*
 import android.webkit.WebChromeClient.FileChooserParams
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.hjq.permissions.OnPermission
+import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
 import com.hjq.toast.ToastUtils
@@ -135,8 +135,8 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
             ): Boolean {
                 XXPermissions.with(this@WebViewActivity)
                     .permission(*Permission.Group.STORAGE)
-                    .request(object : OnPermission {
-                        override fun hasPermission(granted: List<String>, all: Boolean) {
+                    .request(object : OnPermissionCallback {
+                        override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
                             if (all && params != null) {
                                 openSystemFileChooser(this@WebViewActivity, callback, params)
                             } else {
@@ -144,11 +144,11 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
                             }
                         }
 
-                        override fun noPermission(denied: List<String>, quick: Boolean) {
+                        override fun onDenied(permissions: MutableList<String>?, never: Boolean) {
                             callback.onReceiveValue(null)
-                            if (quick) {
+                            if (never) {
                                 ToastUtils.show("授权失败，请手动授予权限")
-                                XXPermissions.startPermissionActivity(this@WebViewActivity, denied)
+                                XXPermissions.startPermissionActivity(this@WebViewActivity, permissions)
                             } else {
                                 ToastUtils.show("请先授予权限")
                             }

@@ -1,6 +1,5 @@
 package com.song.sakura.ui.message
 
-import android.R.attr.phoneNumber
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle

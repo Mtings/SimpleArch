@@ -2,7 +2,7 @@ package com.song.sakura.aop;
 
 import android.annotation.SuppressLint;
 
-import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.XXPermissions;
 import com.hjq.toast.ToastUtils;
 import com.song.sakura.helper.ActivityStackManager;
@@ -32,10 +32,9 @@ public class PermissionsAspect {
     public void aroundJoinPoint(final ProceedingJoinPoint joinPoint, Permissions permissions) {
         XXPermissions.with(ActivityStackManager.getInstance().getTopActivity())
                 .permission(permissions.value())
-                .request(new OnPermission() {
-
+                .request(new OnPermissionCallback() {
                     @Override
-                    public void hasPermission(List<String> granted, boolean all) {
+                    public void onGranted(List<String> permissions, boolean all) {
                         if (all) {
                             try {
                                 // 获得权限，执行原方法
@@ -47,10 +46,10 @@ public class PermissionsAspect {
                     }
 
                     @Override
-                    public void noPermission(List<String> denied, boolean never) {
+                    public void onDenied(List<String> permissions, boolean never) {
                         if (never) {
                             ToastUtils.show("授权失败，请手动授予权限");
-                            XXPermissions.startPermissionActivity(ActivityStackManager.getInstance().getTopActivity(), denied);
+                            XXPermissions.startPermissionActivity(ActivityStackManager.getInstance().getTopActivity(), permissions);
                         } else {
                             ToastUtils.show("请先授予权限");
                         }
