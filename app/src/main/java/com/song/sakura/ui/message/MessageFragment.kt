@@ -1,7 +1,6 @@
 package com.song.sakura.ui.message
 
 import android.app.Application
-import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
@@ -56,14 +55,8 @@ class MessageFragment : IBaseFragment<MessageViewModel>(), StatusAction {
 
         initImmersionBar()
         mToolbar?.apply {
-            addTextRight("样式")
             navigationIcon = null
             title = "分类"
-            setOnMenuItemClickListener {
-                val intent = Intent(getBaseActivity(), DialogActivity::class.java)
-                startActivity(intent)
-                return@setOnMenuItemClickListener true
-            }
         }
 
         init()
@@ -104,13 +97,13 @@ class MessageFragment : IBaseFragment<MessageViewModel>(), StatusAction {
                 smartRefreshLayout.finishRefresh()
                 smartRefreshLayout.finishLoadMore()
             } else {
-                if (it.data?.curPage == 1) {
+                if (it?.data?.curPage == 1) {
                     rightProjectAdapter.setList(it.data?.datas)
                     if (it.data!!.over) smartRefreshLayout.finishRefreshWithNoMoreData()
                     else smartRefreshLayout.finishRefresh()
                 } else {
-                    rightProjectAdapter.addData(it.data?.datas ?: ArrayList())
-                    if (it.data?.over != null && it.data?.over!!) smartRefreshLayout.finishLoadMoreWithNoMoreData()
+                    rightProjectAdapter.addData(it?.data?.datas ?: ArrayList())
+                    if (it?.data?.over != null && it.data?.over!!) smartRefreshLayout.finishLoadMoreWithNoMoreData()
                     else smartRefreshLayout.finishLoadMore()
                 }
             }
