@@ -34,7 +34,7 @@ class CameraActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
             start(activity, false, listener)
         }
 
-        @Permissions(Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE, Permission.CAMERA)
+        @Permissions(Permission.MANAGE_EXTERNAL_STORAGE, Permission.CAMERA)
         fun start(activity: BaseActivity, video: Boolean, listener: OnCameraListener?) {
             val file: File? = createCameraFile(video)
             val intent = Intent(activity, CameraActivity::class.java)
@@ -97,8 +97,7 @@ class CameraActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
         }
         if (XXPermissions.isGrantedPermission(
                 this,
-                Permission.READ_EXTERNAL_STORAGE,
-                Permission.WRITE_EXTERNAL_STORAGE,
+                Permission.MANAGE_EXTERNAL_STORAGE,
                 Permission.CAMERA
             ) && intent.resolveActivity(packageManager) != null
         ) {

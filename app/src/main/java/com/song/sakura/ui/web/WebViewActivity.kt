@@ -54,7 +54,7 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
         }
 
         initWebView()
-        webView.loadUrl(link)
+        webView.loadUrl(link ?: "about:blank")
     }
 
     private fun initParams() {
@@ -134,7 +134,7 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
                 params: FileChooserParams?
             ): Boolean {
                 XXPermissions.with(this@WebViewActivity)
-                    .permission(*Permission.Group.STORAGE)
+                    .permission(Permission.MANAGE_EXTERNAL_STORAGE)
                     .request(object : OnPermissionCallback {
                         override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
                             if (all && params != null) {

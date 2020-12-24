@@ -60,7 +60,7 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
             start(activity, 1, listener)
         }
 
-        @Permissions(Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE)
+        @Permissions(Permission.MANAGE_EXTERNAL_STORAGE)
         fun start(activity: BaseActivity, maxSelect: Int, listener: OnPhotoSelectListener?) {
             require(maxSelect >= 1) {
                 // 最少要选择一个图片
@@ -271,7 +271,7 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
             )
 
             var cursor: Cursor? = null
-            if (XXPermissions.isGrantedPermission(this@ImageSelectActivity, Permission.READ_EXTERNAL_STORAGE)) {
+            if (XXPermissions.isGrantedPermission(this@ImageSelectActivity, Permission.MANAGE_EXTERNAL_STORAGE)) {
                 cursor = contentResolver.query(
                     contentUri,
                     projections,

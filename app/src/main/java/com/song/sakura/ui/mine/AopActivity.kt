@@ -52,7 +52,7 @@ class AopActivity : IBaseActivity<IBaseViewModel>(), ClickAction {
         ToastUtils.show("网络连接正常")
     }
 
-    @Permissions(Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE, Permission.CAMERA)
+    @Permissions(Permission.MANAGE_EXTERNAL_STORAGE, Permission.CAMERA)
     fun requestPermission() {
         ToastUtils.show("已获取所有权限")
     }

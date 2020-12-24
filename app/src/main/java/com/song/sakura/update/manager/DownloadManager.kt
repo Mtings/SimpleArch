@@ -254,7 +254,7 @@ class DownloadManager {
 
     /*** 开始下载 */
     @CheckNet
-    @Permissions(Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE)
+    @Permissions(Permission.MANAGE_EXTERNAL_STORAGE)
     fun download() {
         if (!checkParams()) {
             return
