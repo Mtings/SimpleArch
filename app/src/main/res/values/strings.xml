@@ -45,4 +45,8 @@
     <string name="camera_launch_fail">无法启动相机</string>
     <string name="camera_image_error">目标地址错误</string>
 
+    <!-- digits -->
+    <string name="number_digits">0123456789</string>
+    <string name="number_and_letter_digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+
 </resources>
