@@ -3,6 +3,7 @@ package com.song.sakura.ui.center
 import android.app.Application
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.song.sakura.ui.base.BaseViewHolder
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.ui.dialog.InputDialog
+import com.song.sakura.ui.dialog.MenuDialog
 import com.ui.action.ClickAction
 import com.ui.base.BaseDialog
 import kotlinx.android.synthetic.main.fragment_center.*
@@ -57,9 +59,37 @@ class CenterFragment : IBaseFragment<CenterViewModel>(), ClickAction {
 
         setOnClickListener(floating)
 
-        adapter.setOnItemLongClickListener { _, _, position ->
-            ToastUtils.show("删除了${adapter.data[position].word}")
-            mViewModel.deleteWord(adapter.data[position].word)
+        val data: MutableList<String> = ArrayList()
+        data.add("删除String")
+        data.add("删除实体")
+        data.add("删除所有")
+        adapter.setOnItemLongClickListener { _, _, index ->
+            MenuDialog.Builder(baseActivity)
+                .setGravity(Gravity.CENTER)
+                .setList(data)
+                .setListener(object : MenuDialog.OnListener<String> {
+
+                    override fun onSelected(dialog: BaseDialog?, position: Int, string: String?) {
+                        when (position) {
+                            0 -> {
+                                ToastUtils.show("删除了${adapter.data[index].word}")
+                                mViewModel.deleteWord(adapter.data[index].word)
+                            }
+                            1 -> {
+                                ToastUtils.show("删除了${adapter.data[index].word}")
+                                mViewModel.deleteOne(adapter.data[index])
+                            }
+                            else -> {
+                                ToastUtils.show("删除了所有单词")
+                                mViewModel.deleteAll()
+                            }
+                        }
+                    }
+                    override fun onCancel(dialog: BaseDialog?) {
+                        ToastUtils.show("取消了")
+                    }
+                }).show()
+
             return@setOnItemLongClickListener true
         }
 
