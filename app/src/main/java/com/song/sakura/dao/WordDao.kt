@@ -14,6 +14,12 @@ interface WordDao {
     @Query("SELECT * FROM word_table ORDER BY word ASC")
     fun getAlphabetizedWords(): Flow<List<Word>>
 
+    @Query("SELECT * FROM word_table WHERE word = :wordStr ORDER BY word DESC")
+    fun getWordByWordStr(wordStr: String):Flow<Word>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(words: List<Word>)
+
     //如果所选的onConflict策略与列表中已有的单词完全相同，则会忽略该单词。要了解有关可用冲突策略的更多信息，请查阅文档。
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(word: Word)
