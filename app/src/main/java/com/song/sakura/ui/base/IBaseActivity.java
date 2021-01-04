@@ -46,7 +46,6 @@ public class IBaseActivity<Q extends BaseViewModel> extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCustomDensity(this, App.Companion.getMApplication(), 375f);
         ARouter.getInstance().inject(this);
 
         mShareViewModel = getAppViewModelProvider().get(ShareViewModel.class);
