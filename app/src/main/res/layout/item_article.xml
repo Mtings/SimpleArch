@@ -56,7 +56,7 @@
                 android:text="Top"
                 android:textStyle="bold"
                 android:textColor="@color/colorAccent"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/tvNew"
@@ -68,7 +68,7 @@
                 android:text="新"
                 android:textStyle="bold"
                 android:textColor="@color/colorAccent"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/author"
@@ -77,7 +77,7 @@
                 android:textColor="@color/textColor"
                 android:maxLength="12"
                 android:ellipsize="end"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 tools:text="作者" />
 
             <TextView
@@ -115,7 +115,7 @@
                 android:layout_weight="1"
                 android:gravity="end"
                 android:textColor="@color/textColor"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 tools:text="2020-02-12 13:23" />
         </LinearLayout>
 

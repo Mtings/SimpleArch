@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.song.sakura.R
@@ -86,7 +87,7 @@ class ListAdapter() : BaseQuickAdapter<ArticleBean, BaseViewHolder>(R.layout.ite
         holder.itemView.image.setImageResource(item.getIcon())
         holder.itemView.tvMakeTop.visibility = if (item.top) View.VISIBLE else View.GONE
         holder.itemView.tvNew.visibility = if (item.fresh) View.VISIBLE else View.GONE
-        holder.itemView.dateTime.text = item.niceDate ?: ""
+        holder.itemView.dateTime.text = item.getDate()
         holder.itemView.tag1.apply {
             if (TextUtils.isEmpty(item.superChapterName)) {
                 visibility = View.GONE
@@ -95,13 +96,17 @@ class ListAdapter() : BaseQuickAdapter<ArticleBean, BaseViewHolder>(R.layout.ite
                 text = item.superChapterName ?: ""
             }
         }
-        holder.itemView.tag2.apply {
-            if (TextUtils.isEmpty(item.chapterName) || item.chapterName.equals(item.superChapterName)) {
-                visibility = View.GONE
-            } else {
-                visibility = View.VISIBLE
-                text = item.chapterName ?: ""
+        if (!holder.itemView.tag1.isVisible) {
+            holder.itemView.tag2.apply {
+                if (TextUtils.isEmpty(item.chapterName) || "未分类" == item.chapterName || item.chapterName.equals(item.superChapterName)) {
+                    visibility = View.GONE
+                } else {
+                    visibility = View.VISIBLE
+                    text = item.chapterName ?: ""
+                }
             }
+        } else {
+            holder.itemView.tag2.visibility = View.GONE
         }
     }
 }

@@ -25,7 +25,7 @@ import com.ui.util.LogUtil
 class App : Application(), ViewModelStoreOwner, LifecycleOwner {
 
     companion object {
-        private lateinit var mApplication: Application
+        lateinit var mApplication: Application
 
         fun getApplication(): Context {
             return mApplication

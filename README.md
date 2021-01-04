@@ -31,7 +31,4 @@
 * AOP插件 [aspectjrt](https://mvnrepository.com/artifact/org.aspectj/aspectjrt)
   兼容kotlin [gradle_plugin_android_aspectjx](https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx)
 
-#### 后续计划
-* 实现下载更新app的框架
-* 今日头条屏幕适配
-* Glide封装
+

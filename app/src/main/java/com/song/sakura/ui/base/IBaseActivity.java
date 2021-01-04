@@ -1,9 +1,15 @@
 package com.song.sakura.ui.base;
 
+import android.app.Activity;
+import android.app.Application;
+import android.content.ComponentCallbacks;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -40,9 +46,16 @@ public class IBaseActivity<Q extends BaseViewModel> extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setCustomDensity(this, App.Companion.getMApplication(), 375f);
         ARouter.getInstance().inject(this);
 
         mShareViewModel = getAppViewModelProvider().get(ShareViewModel.class);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setCustomDensity(this, App.Companion.getMApplication(), 375f);
     }
 
     public void initViewModel(AppCompatActivity activity, Class<Q> modelClass) {
@@ -110,4 +123,49 @@ public class IBaseActivity<Q extends BaseViewModel> extends BaseActivity {
                 }
         ));
     }
+
+    private static float sNoncompatDensity;
+    private static float sNoncompatScaledDensity;
+
+    /**
+     * 今日头条屏幕适配
+     * https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA
+     *
+     * @param widthDp ui设置设计图宽: ep: 360dp/720dp
+     */
+    private static void setCustomDensity(@NonNull Activity activity, @NonNull Application application, float widthDp) {
+        final DisplayMetrics appDisplayMetrics = application.getResources().getDisplayMetrics();
+
+        if (sNoncompatDensity == 0) {
+            sNoncompatDensity = appDisplayMetrics.density;
+            sNoncompatScaledDensity = appDisplayMetrics.scaledDensity;
+            application.registerComponentCallbacks(new ComponentCallbacks() {
+                @Override
+                public void onConfigurationChanged(@NonNull Configuration newConfig) {
+                    if (newConfig.fontScale > 0) {
+                        sNoncompatScaledDensity = application.getResources().getDisplayMetrics().scaledDensity;
+                    }
+                }
+
+                @Override
+                public void onLowMemory() {
+
+                }
+            });
+        }
+
+        final float targetDensity = appDisplayMetrics.widthPixels / widthDp;
+        final float targetScaledDensity = targetDensity * (sNoncompatScaledDensity / sNoncompatDensity);
+        final int targetDensityDpi = (int) (160 * targetDensity);
+
+        appDisplayMetrics.density = targetDensity;
+        appDisplayMetrics.scaledDensity = targetScaledDensity;
+        appDisplayMetrics.densityDpi = targetDensityDpi;
+
+        final DisplayMetrics activityDisplayMetrics = activity.getResources().getDisplayMetrics();
+        activityDisplayMetrics.density = targetDensity;
+        activityDisplayMetrics.scaledDensity = targetScaledDensity;
+        activityDisplayMetrics.densityDpi = targetDensityDpi;
+    }
+
 }

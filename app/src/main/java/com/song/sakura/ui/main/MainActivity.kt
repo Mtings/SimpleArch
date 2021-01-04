@@ -31,7 +31,6 @@ class MainActivity : IBaseActivity<HomeViewModel>(),
     @JvmField
     var id: Int = 0
 
-
     private lateinit var mPagerAdapter: BaseFragmentStateAdapter
 
     companion object {

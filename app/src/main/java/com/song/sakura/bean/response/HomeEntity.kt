@@ -52,6 +52,14 @@ class ArticleBean(
     var publishTime: Long,
     var envelopePic: String
 ) {
+    fun getDate(): String {
+        return if (!TextUtils.isEmpty(niceDate) && niceDate!!.length > 10) {
+            niceDate?.substring(0, 10) ?: ""
+        } else {
+            niceDate?:""
+        }
+    }
+
     fun getFixedName(): String {
         if (TextUtils.isEmpty(author)) return shareUser ?: ""
         return author ?: ""
