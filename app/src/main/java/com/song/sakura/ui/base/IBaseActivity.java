@@ -51,12 +51,6 @@ public class IBaseActivity<Q extends BaseViewModel> extends BaseActivity {
         mShareViewModel = getAppViewModelProvider().get(ShareViewModel.class);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setCustomDensity(this, App.Companion.getMApplication(), 375f);
-    }
-
     public void initViewModel(AppCompatActivity activity, Class<Q> modelClass) {
         this.mViewModel = getActivityViewModelProvider(activity).get(modelClass);
     }
