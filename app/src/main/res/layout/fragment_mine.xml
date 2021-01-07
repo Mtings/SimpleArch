@@ -34,6 +34,14 @@
                 android:layout_marginTop="30dp"
                 android:text="dialog样式" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnFlow"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Flow" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

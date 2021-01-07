@@ -1,4 +1,4 @@
-package com.song.sakura.ui.message
+package com.song.sakura.ui.mine
 
 import android.content.Intent
 import android.net.Uri

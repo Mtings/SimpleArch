@@ -1,4 +1,4 @@
-package com.song.sakura.ui.mine
+package com.song.sakura.ui.favorite
 
 import android.app.Activity
 import android.content.Intent
@@ -113,7 +113,7 @@ class CameraActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 // 将拍取的照片保存到指定 Uri
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-                startActivityForResult(intent, CameraActivity.CAMERA_REQUEST_CODE)
+                startActivityForResult(intent, CAMERA_REQUEST_CODE)
             } else {
                 ToastUtils.show(R.string.camera_image_error)
             }

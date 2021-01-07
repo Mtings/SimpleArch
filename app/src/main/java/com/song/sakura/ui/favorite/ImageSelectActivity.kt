@@ -1,4 +1,4 @@
-package com.song.sakura.ui.mine
+package com.song.sakura.ui.favorite
 
 import android.content.Intent
 import android.database.Cursor
@@ -134,10 +134,13 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Handl
         return true
     }
 
+    override fun isImmersionBarEnabled(): Boolean {
+        return true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_image)
-        initImmersionBar()
 
         mAdapter = ImageSelectAdapter(mSelectImage)
         list.adapter = mAdapter

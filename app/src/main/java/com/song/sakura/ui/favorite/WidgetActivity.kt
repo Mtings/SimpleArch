@@ -8,10 +8,13 @@ import kotlinx.android.synthetic.main.activity_widget.*
 
 class WidgetActivity : IBaseActivity<IBaseViewModel>() {
 
+    override fun isImmersionBarEnabled(): Boolean {
+        return true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_widget)
-        initImmersionBar()
         mToolbar?.apply {
             title = "Widget"
         }

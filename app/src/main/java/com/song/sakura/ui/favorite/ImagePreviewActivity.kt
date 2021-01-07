@@ -1,4 +1,4 @@
-package com.song.sakura.ui.mine
+package com.song.sakura.ui.favorite
 
 import android.content.Context
 import android.content.Intent

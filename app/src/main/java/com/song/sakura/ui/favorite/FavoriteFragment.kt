@@ -10,9 +10,6 @@ import com.song.sakura.R
 import com.song.sakura.aop.SingleClick
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewModel
-import com.song.sakura.ui.mine.ImageSelectActivity
-import com.song.sakura.ui.mine.LottieActivity
-import com.song.sakura.ui.mine.OnPhotoSelectListener
 import com.ui.action.ClickAction
 import kotlinx.android.synthetic.main.fragment_favorite.*
 

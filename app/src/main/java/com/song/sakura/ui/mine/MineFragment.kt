@@ -9,7 +9,6 @@ import com.song.sakura.R
 import com.song.sakura.aop.SingleClick
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewModel
-import com.song.sakura.ui.message.DialogActivity
 import kotlinx.android.synthetic.main.fragment_mine.*
 
 class MineFragment : IBaseFragment<IBaseViewModel>(), View.OnClickListener {
@@ -29,16 +28,24 @@ class MineFragment : IBaseFragment<IBaseViewModel>(), View.OnClickListener {
 
         btnAop.setOnClickListener(this)
         btnDialog.setOnClickListener(this)
+        btnFlow.setOnClickListener(this)
     }
 
     @SingleClick
     override fun onClick(v: View?) {
-        if (v?.id == R.id.btnAop) {
-            val intent = Intent(baseActivity, AopActivity::class.java)
-            startActivity(intent)
-        } else if (v?.id == R.id.btnDialog) {
-            val intent = Intent(getBaseActivity(), DialogActivity::class.java)
-            startActivity(intent)
+        when (v?.id) {
+            R.id.btnAop -> {
+                val intent = Intent(baseActivity, AopActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.btnDialog -> {
+                val intent = Intent(baseActivity, DialogActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.btnFlow -> {
+                val intent = Intent(baseActivity, FlowActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

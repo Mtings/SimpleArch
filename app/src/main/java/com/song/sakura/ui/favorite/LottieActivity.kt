@@ -1,7 +1,6 @@
-package com.song.sakura.ui.mine
+package com.song.sakura.ui.favorite
 
 import android.os.Bundle
-import android.view.View
 import androidx.core.content.ContextCompat
 import com.song.sakura.R
 import com.song.sakura.action.StatusAction
@@ -14,10 +13,13 @@ import kotlinx.android.synthetic.main.activity_status.*
 
 class LottieActivity : IBaseActivity<IBaseViewModel>(), StatusAction, HandlerAction {
 
+    override fun isImmersionBarEnabled(): Boolean {
+        return true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_status)
-        initImmersionBar()
         mToolbar?.apply {
             title = "界面状态"
         }

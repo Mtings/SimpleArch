@@ -15,17 +15,13 @@ import com.ui.action.ClickAction
 
 class AopActivity : IBaseActivity<IBaseViewModel>(), ClickAction {
 
-    override fun initImmersionBar() {
-        ImmersionBar.with(this)
-            .titleBar(R.id.appbar)
-            .keyboardEnable(true).statusBarDarkFont(true)
-            .navigationBarWithKitkatEnable(false).init()
+    override fun isImmersionBarEnabled(): Boolean {
+        return true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_aop)
-        initImmersionBar()
 
         setOnClickListener(R.id.btn_dialog_check_net)
         setOnClickListener(R.id.btn_dialog_check_permission)

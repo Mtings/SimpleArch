@@ -38,11 +38,14 @@ class WebViewActivity : IBaseActivity<WebViewModel>() {
     var collect = false
     var link: String? = ""
 
+    override fun isImmersionBarEnabled(): Boolean {
+        return true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initParams()
         setContentView(R.layout.activity_webview)
-        initImmersionBar()
 
         mToolbar?.apply {
             inflateMenu(R.menu.share_menu)
