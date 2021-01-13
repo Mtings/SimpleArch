@@ -1,9 +1,10 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'android-aspectjx'
-
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'android-aspectjx'
+}
 configurations.all {
     resolutionStrategy {
         force 'com.google.code.gson:gson:2.8.6'
@@ -99,8 +100,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = "1.8"
-        targetCompatibility = "1.8"
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         // work-runtime-ktx 2.1.0 and above now requires Java 8
@@ -123,7 +124,7 @@ dependencies {
     // 依赖 libs 目录下所有 aar 包
     implementation fileTree(include: ['*.aar'], dir: 'libs')
 
-    api project(':basehttp')
+    implementation project(':basehttp')
     implementation project(':baseui')
 
     testImplementation 'junit:junit:4.13'
