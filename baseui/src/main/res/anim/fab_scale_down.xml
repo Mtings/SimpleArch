@@ -7,4 +7,4 @@
     android:toYScale="0.0"
     android:pivotX="50%"
     android:pivotY="50%"
-    android:duration="200" /><!-- From: file:/Users/dmitrytarianyk/Work/workspace/android/FloatingActionButton/library/src/main/res/anim/fab_scale_down.xml -->
+    android:duration="200" />

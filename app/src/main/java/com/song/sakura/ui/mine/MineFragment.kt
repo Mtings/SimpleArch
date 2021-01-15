@@ -41,6 +41,7 @@ class MineFragment : IBaseFragment<IBaseViewModel>(), View.OnClickListener {
             R.id.btnDialog -> {
                 val intent = Intent(baseActivity, DialogActivity::class.java)
                 startActivity(intent)
+                baseActivity.overridePendingTransition(R.anim.down_in,R.anim.top_out)
             }
             R.id.btnFlow -> {
                 val intent = Intent(baseActivity, FlowActivity::class.java)

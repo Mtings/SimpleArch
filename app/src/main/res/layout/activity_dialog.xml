@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.mine.DialogActivity"
-    tools:ignore="HardcodedText">
+    android:layoutAnimation="@anim/layout_from_bottom">
 
     <include layout="@layout/toolbar"/>
 

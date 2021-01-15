@@ -97,11 +97,11 @@ public class BaseFragment extends Fragment {
         view.postDelayed(() -> view.setEnabled(true), 600);
     }
 
-    @Override
-    public void startActivity(Intent intent) {
-        super.startActivity(intent);
-        requireActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
-    }
+//    @Override
+//    public void startActivity(Intent intent) {
+//        super.startActivity(intent);
+//        requireActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+//    }
 
     public void startActivity(Intent intent, boolean isBack) {
         super.startActivity(intent);
