@@ -31,6 +31,15 @@
         <item name="checkboxStyle">@style/Widget.AppCompat.CompoundButton.CheckBox</item>
     </style>
 
+    <style name="CoordinatorLayoutTheme" parent="AppTheme">
+        <!-- 应用的主要色调，ActionBar Toolbar 默认使用该颜色 -->
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="windowActionModeOverlay">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- ActionMode 的颜色 -->
+        <item name="actionModeBackground">@color/colorAccent</item>
+    </style>
+
     <style name="Launcher" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
         <item name="android:windowBackground">@drawable/bg_launch</item>
         <!--<item name="android:windowIsTranslucent">false</item>&lt;!&ndash;半透明&ndash;&gt;-->

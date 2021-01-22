@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.song.sakura.widget.CollapsibleToolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="50dp"
+    app:contentScrim="?attr/colorPrimary"
+    app:layoutDescription="@xml/scene_09"
+    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+    app:toolbarId="@+id/titleBar">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_launch" />
+
+    <com.ui.widget.Toolbar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:visibility="invisible"
+        app:layout_collapseMode="pin"
+        app:navigationIcon="@null"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:transformPivotX="0dp"
+        android:transformPivotY="0dp"
+        android:text="Monterey"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/white"
+        android:textSize="32dp" />
+
+</com.song.sakura.widget.CollapsibleToolbar>

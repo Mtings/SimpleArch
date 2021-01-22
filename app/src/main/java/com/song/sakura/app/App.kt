@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import com.alibaba.android.arouter.launcher.ARouter
+import com.blankj.utilcode.util.Utils
 import com.hjq.toast.ToastInterceptor
 import com.hjq.toast.ToastUtils
 import com.scwang.smart.refresh.footer.BallPulseFooter
@@ -78,10 +79,10 @@ class App : Application(), ViewModelStoreOwner, LifecycleOwner {
             ARouter.openLog()
         }
         ARouter.init(this)
+        Utils.init(this)
 
         // 吐司工具类
         ToastUtils.init(this)
-
         // 设置 Toast 拦截器
         ToastUtils.setToastInterceptor(object : ToastInterceptor() {
             override fun intercept(toast: Toast, text: CharSequence): Boolean {
