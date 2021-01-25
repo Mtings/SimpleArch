@@ -68,13 +68,13 @@
 <!--                android:layout_marginTop="30dp"-->
 <!--                android:text="弹出多项选择框" />-->
 
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/btn_dialog_succeed_toast"-->
-<!--                style="@style/ButtonStyle"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="30dp"-->
-<!--                android:text="弹出完成对话框" />-->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_dialog_succeed_toast"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="弹出完成对话框" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_dialog_fail_toast"
@@ -84,13 +84,13 @@
                 android:layout_marginTop="30dp"
                 android:text="弹出错误对话框" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_dialog_warn_toast"
-                style="@style/ButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="弹出警告对话框" />
+<!--            <androidx.appcompat.widget.AppCompatButton-->
+<!--                android:id="@+id/btn_dialog_warn_toast"-->
+<!--                style="@style/ButtonStyle"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:text="弹出警告对话框" />-->
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_dialog_wait"

@@ -11,7 +11,7 @@ import com.song.sakura.widget.HintLayout
 import com.ui.action.HandlerAction
 import kotlinx.android.synthetic.main.activity_status.*
 
-class LottieActivity : IBaseActivity<IBaseViewModel>(), StatusAction, HandlerAction {
+class LottieActivity : IBaseActivity<IBaseViewModel>(), StatusAction {
 
     override fun isImmersionBarEnabled(): Boolean {
         return true

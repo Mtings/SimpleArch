@@ -38,7 +38,7 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, HandlerAction, ClickAction, BundleAction,
+class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, ClickAction, BundleAction,
     Toolbar.OnMenuItemClickListener {
 
     private lateinit var mAdapter: ImageSelectAdapter

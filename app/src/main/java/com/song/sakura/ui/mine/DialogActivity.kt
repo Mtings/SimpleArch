@@ -279,6 +279,17 @@ class DialogActivity : IBaseActivity<IBaseViewModel>() {
             error("这就是错误提示")
         }
 
+        bindUi(RxUtil.click(btn_dialog_succeed_toast)) {
+            complete("完成啦")
+        }
+
+        bindUi(RxUtil.click(btn_dialog_wait)) {
+            setProgressVisible(true)
+            postDelayed({
+                setProgressVisible(false)
+            }, 3000)
+        }
+
         bindUi(RxUtil.click(btnDialogUpdate)) {
             val manager = DownloadManager.getInstance(this@DialogActivity)
             manager.setApkName("testName.apk")

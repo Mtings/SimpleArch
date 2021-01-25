@@ -8,6 +8,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.ui.action.HandlerAction;
 import com.ui.util.Lists;
 
 import com.ui.R;
@@ -21,15 +22,17 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.ui.widget.Toolbar;
+import com.ui.widget.view.SmartTextView;
 
 import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("unused")
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements HandlerAction {
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -37,12 +40,13 @@ public class BaseActivity extends AppCompatActivity {
 
     protected ViewGroup rootView;
     protected View mProgressView;
+    private View hintView;
+    private ImageView hintImg;
+    private SmartTextView hintMsg;
 
     @Nullable
     protected Toolbar mToolbar;
     protected List<FragmentBackHelper> fragmentBackHelperList;
-    protected BaseDialog mDialogError;
-
 
     public void setFragmentBackHelper(FragmentBackHelper i) {
         if (i != null)
@@ -71,6 +75,23 @@ public class BaseActivity extends AppCompatActivity {
             });
             setProgressVisible(false);
             rootView.addView(mProgressView);
+        }
+    }
+
+    private void initHintLayout() {
+        if (hintView == null) {
+            hintView = getLayoutInflater().inflate(R.layout.dialog_finish, rootView
+                    , false);
+            hintImg = hintView.findViewById(R.id.hintImg);
+            hintMsg = hintView.findViewById(R.id.hintMsg);
+            setHintVisible(false);
+            rootView.addView(hintView);
+        }
+    }
+
+    public void setHintVisible(boolean show) {
+        if (hintView != null) {
+            hintView.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -107,6 +128,7 @@ public class BaseActivity extends AppCompatActivity {
         setToolbarBackDrawable(mToolbar);
         rootView = (ViewGroup) getWindow().getDecorView();
         initProgressLayout();
+        initHintLayout();
     }
 
     @Override
@@ -116,6 +138,7 @@ public class BaseActivity extends AppCompatActivity {
         setToolbarBackDrawable(mToolbar);
         rootView = (ViewGroup) getWindow().getDecorView();
         initProgressLayout();
+        initHintLayout();
     }
 
 
@@ -142,28 +165,33 @@ public class BaseActivity extends AppCompatActivity {
     public void error(String error) {
         setProgressVisible(false);
         if (!TextUtils.isEmpty(error)) {
-            dismissErrorDialog();
-            mDialogError = new HintDialog.Builder(this)
-                    .setIcon(HintDialog.ICON_ERROR)
-                    .setCancelable(true)
-                    .setMessage(error)
-                    .create();
-            mDialogError.show();
+            hintImg.setImageResource(R.drawable.ic_error);
+            hintMsg.setText(error);
+            setHintVisible(true);
+            postDelayed(() -> {
+                setHintVisible(false);
+                hintMsg.setText("");
+            },1500);
+        }
+    }
+
+    public void complete(String msg) {
+        setProgressVisible(false);
+        if (!TextUtils.isEmpty(msg)) {
+            hintImg.setImageResource(R.drawable.ic_finish);
+            hintMsg.setText(msg);
+            setHintVisible(true);
+            postDelayed(() -> {
+                setHintVisible(false);
+                hintMsg.setText("");
+            },1500);
         }
     }
 
     @Override
     protected void onDestroy() {
-        dismissErrorDialog();
+        removeCallbacks();
         super.onDestroy();
-    }
-
-    public void dismissErrorDialog() {
-        if (mDialogError != null && mDialogError.isShowing()) {
-            mDialogError.dismiss();
-            mDialogError.cancel();
-            mDialogError = null;
-        }
     }
 
     @SuppressLint("MissingSuperCall")

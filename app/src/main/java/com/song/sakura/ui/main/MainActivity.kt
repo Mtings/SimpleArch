@@ -25,7 +25,7 @@ import com.ui.util.RxUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : IBaseActivity<HomeViewModel>(),
-    BottomNavigationView.OnNavigationItemSelectedListener, HandlerAction {
+    BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Autowired(name = IntentBuilder.INDEX)
     @JvmField

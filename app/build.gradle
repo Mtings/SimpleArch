@@ -131,7 +131,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    //MultiDex(for androidx)
+    // MultiDex(for androidx)
+    // https://developer.android.google.cn/studio/build/multidex
 //    implementation 'androidx.multidex:multidex:2.0.1'
 
     //kotlin协程
