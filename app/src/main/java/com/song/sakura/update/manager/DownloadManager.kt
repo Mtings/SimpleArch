@@ -266,10 +266,10 @@ class DownloadManager {
         return this.httpManager
     }
 
-    /*** 开始下载 */
+    /*** 弹出更新框判断 */
     @CheckNet
     @Permissions(Permission.MANAGE_EXTERNAL_STORAGE)
-    fun download() {
+    fun show() {
         if (!checkParams()) {
             return
         }

@@ -291,15 +291,15 @@ class DialogActivity : IBaseActivity<IBaseViewModel>() {
         }
 
         bindUi(RxUtil.click(btnDialogUpdate)) {
-            val manager = DownloadManager.getInstance(this@DialogActivity)
-            manager.setApkName("testName.apk")
+            DownloadManager.getInstance(this)
+                .setApkName("testName.apk")
                 .setApkUrl("http://static.ws.126.net/163/apk/newsapp/newsreader_netease_gw.apk")
                 .setApkVersionCode(21)
                 .setApkVersionName("2.1.0")
                 .setApkDescription("这里是描述信息\n这里是描述信息2")
                 .setForcedUpgrade(false)
                 .setSmallIcon(R.drawable.ic_app)
-                .download()
+                .show()
         }
 
         bindUi(RxUtil.click(jumpWeixin)) {
