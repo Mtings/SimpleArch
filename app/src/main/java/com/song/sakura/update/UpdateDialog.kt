@@ -86,7 +86,7 @@ class UpdateDialog {
         @SingleClick
         override fun onClick(v: View) {
             if (v === mCloseView) {
-                dismiss()
+                cancel()
             } else if (v === mUpdateView) {
                 // 判断下载状态
                 if (mDownloadComplete) {
@@ -153,7 +153,11 @@ class UpdateDialog {
         }
 
         override fun cancel() {
+            if (mApkFile != null && mApkFile!!.exists()) {
+                mApkFile?.delete()
+            }
+            DownloadManager.manager?.getHttpManager()?.cancel()
+            dismiss()
         }
-
     }
 }

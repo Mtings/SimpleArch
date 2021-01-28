@@ -102,6 +102,7 @@ public final class DownloadService extends Service implements OnDownloadListener
         }
         if (httpManager == null) {
             httpManager = new HttpDownloadManager(downloadPath);
+            downloadManager.setHttpManager(httpManager);
         }
         //如果用户自己定义了下载过程
         httpManager.download(apkUrl, apkName, this);
@@ -123,7 +124,6 @@ public final class DownloadService extends Service implements OnDownloadListener
 
     @Override
     public void downloading(int max, int progress) {
-        LogUtils.eTag(TAG, "max: " + max + " --- progress: " + progress);
         if (showNotification) {
             //优化通知栏更新，减少通知栏更新次数
             int curr = (int) (progress / (double) max * 100.0);
@@ -206,6 +206,7 @@ public final class DownloadService extends Service implements OnDownloadListener
                     for (OnDownloadListener listener : listeners) {
                         listener.cancel();
                     }
+                    releaseResources();
                     break;
                 case 5:
                     for (OnDownloadListener listener : listeners) {
@@ -228,6 +229,7 @@ public final class DownloadService extends Service implements OnDownloadListener
         }
         if (httpManager != null) {
             httpManager.release();
+            httpManager = null;
         }
         stopSelf();
         downloadManager.release();

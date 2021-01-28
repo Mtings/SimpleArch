@@ -86,6 +86,9 @@ class DownloadManager {
     /*** 兼容Android N Uri 授权 */
     private var AUTHORITIES: String = ""
 
+    /*** 下载管理 */
+    private var httpManager: BaseHttpDownloadManager? = null
+
     /*** 设置下载监听器 */
     fun setOnDownloadListener(onDownloadListener: OnDownloadListener): DownloadManager {
         onDownloadListeners.add(onDownloadListener)
@@ -250,6 +253,17 @@ class DownloadManager {
      */
     fun getNotificationChannel(): NotificationChannel? {
         return notificationChannel
+    }
+
+    /*** 设置下载管理器 */
+    fun setHttpManager(httpManager: BaseHttpDownloadManager): DownloadManager {
+        this.httpManager = httpManager
+        return this;
+    }
+
+    /*** 获取下载管理器 */
+    fun getHttpManager(): BaseHttpDownloadManager? {
+        return this.httpManager
     }
 
     /*** 开始下载 */

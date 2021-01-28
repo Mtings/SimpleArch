@@ -176,6 +176,7 @@ public class BaseActivity extends AppCompatActivity implements HandlerAction {
 
     public void error(String error) {
         setProgressVisible(false);
+        setFinishViewVisible(false);
         if (!TextUtils.isEmpty(error)) {
             errorMsg.setText(error);
             setErrorViewVisible(true);
@@ -188,6 +189,7 @@ public class BaseActivity extends AppCompatActivity implements HandlerAction {
 
     public void complete(String msg) {
         setProgressVisible(false);
+        setErrorViewVisible(false);
         if (!TextUtils.isEmpty(msg)) {
             hintMsg.setText(msg);
             setFinishViewVisible(true);
