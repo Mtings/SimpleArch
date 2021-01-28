@@ -31,11 +31,11 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                app:srcCompat="@drawable/ic_finish"
+                app:srcCompat="@drawable/ic_error"
                 />
 
             <com.ui.widget.view.SmartTextView
-                android:id="@+id/hintMsg"
+                android:id="@+id/errorMsg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"

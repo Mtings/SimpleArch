@@ -22,7 +22,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.ui.widget.Toolbar;
@@ -40,9 +39,10 @@ public class BaseActivity extends AppCompatActivity implements HandlerAction {
 
     protected ViewGroup rootView;
     protected View mProgressView;
-    private View hintView;
-    private ImageView hintImg;
+    private View finishView;
+    private View errorView;
     private SmartTextView hintMsg;
+    private SmartTextView errorMsg;
 
     @Nullable
     protected Toolbar mToolbar;
@@ -79,19 +79,31 @@ public class BaseActivity extends AppCompatActivity implements HandlerAction {
     }
 
     private void initHintLayout() {
-        if (hintView == null) {
-            hintView = getLayoutInflater().inflate(R.layout.dialog_finish, rootView
+        if (finishView == null) {
+            finishView = getLayoutInflater().inflate(R.layout.dialog_finish, rootView
                     , false);
-            hintImg = hintView.findViewById(R.id.hintImg);
-            hintMsg = hintView.findViewById(R.id.hintMsg);
-            setHintVisible(false);
-            rootView.addView(hintView);
+            hintMsg = finishView.findViewById(R.id.hintMsg);
+            setFinishViewVisible(false);
+            rootView.addView(finishView);
+        }
+        if (errorView == null) {
+            errorView = getLayoutInflater().inflate(R.layout.dialog_error, rootView
+                    , false);
+            errorMsg = errorView.findViewById(R.id.errorMsg);
+            setErrorViewVisible(false);
+            rootView.addView(errorView);
         }
     }
 
-    public void setHintVisible(boolean show) {
-        if (hintView != null) {
-            hintView.setVisibility(show ? View.VISIBLE : View.GONE);
+    public void setFinishViewVisible(boolean show) {
+        if (finishView != null) {
+            finishView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    public void setErrorViewVisible(boolean show) {
+        if (errorView != null) {
+            errorView.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -165,26 +177,24 @@ public class BaseActivity extends AppCompatActivity implements HandlerAction {
     public void error(String error) {
         setProgressVisible(false);
         if (!TextUtils.isEmpty(error)) {
-            hintImg.setImageResource(R.drawable.ic_error);
-            hintMsg.setText(error);
-            setHintVisible(true);
+            errorMsg.setText(error);
+            setErrorViewVisible(true);
             postDelayed(() -> {
-                setHintVisible(false);
-                hintMsg.setText("");
-            },1500);
+                setErrorViewVisible(false);
+                errorMsg.setText("");
+            }, 1500);
         }
     }
 
     public void complete(String msg) {
         setProgressVisible(false);
         if (!TextUtils.isEmpty(msg)) {
-            hintImg.setImageResource(R.drawable.ic_finish);
             hintMsg.setText(msg);
-            setHintVisible(true);
+            setFinishViewVisible(true);
             postDelayed(() -> {
-                setHintVisible(false);
+                setFinishViewVisible(false);
                 hintMsg.setText("");
-            },1500);
+            }, 1500);
         }
     }
 
@@ -266,8 +276,8 @@ public class BaseActivity extends AppCompatActivity implements HandlerAction {
         /**
          * 结果回调
          *
-         * @param resultCode        结果码
-         * @param data              数据
+         * @param resultCode 结果码
+         * @param data       数据
          */
         void onActivityResult(int resultCode, @Nullable Intent data);
     }
