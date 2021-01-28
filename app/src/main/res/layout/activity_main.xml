@@ -28,7 +28,7 @@
         android:id="@+id/bottomNav"
         style="@style/Widget.MaterialComponents.BottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?actionBarSize"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         app:itemIconTint="@color/black"
@@ -38,13 +38,14 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_camera_gray_24dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="16dp"
-        app:fabCustomSize="60dp"
+        app:fabCustomSize="55dp"
         app:backgroundTint="@android:color/white"
         app:borderWidth="0dp"
         app:elevation="9dp" />

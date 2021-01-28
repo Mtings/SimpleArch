@@ -6,6 +6,7 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import com.song.sakura.R
 import com.song.sakura.ui.base.IBaseActivity
@@ -18,6 +19,7 @@ class MotionLayoutActivity : IBaseActivity<IBaseViewModel>(), ClickAction {
     override fun initImmersionBar() {
         ImmersionBar.with(this).keyboardEnable(true)
 //            .titleBar(R.id.appbar)
+            .hideBar(BarHide.FLAG_HIDE_STATUS_BAR)
             .statusBarDarkFont(false)
             .init()
     }
@@ -26,10 +28,10 @@ class MotionLayoutActivity : IBaseActivity<IBaseViewModel>(), ClickAction {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coordinatorlayout)
         initImmersionBar()
-        ImmersionBar.with(this).titleBar(titleBar).init()
+//        ImmersionBar.with(this).titleBar(titleBar).init()
 //        ViewCompat.getWindowInsetsController(window.decorView)?.hide(WindowInsetsCompat.Type.statusBars())
-        setSupportActionBar(titleBar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        setSupportActionBar(titleBar)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
 }

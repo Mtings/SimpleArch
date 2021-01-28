@@ -3,10 +3,7 @@ package com.song.sakura.ui.center
 import android.app.Application
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -98,7 +95,7 @@ class CenterFragment : IBaseFragment<CenterViewModel>(), ClickAction {
     @SingleClick
     override fun onClick(v: View?) {
         if (v == floating) {
-            InputDialog.Builder(requireContext())
+            InputDialog.Builder(baseActivity)
                 .setTitle("输入单词")
                 .setConfirm(getString(R.string.common_confirm))
                 .setCancel(getString(R.string.common_cancel))

@@ -298,7 +298,7 @@ class DialogActivity : IBaseActivity<IBaseViewModel>() {
                 .setApkVersionName("2.1.0")
                 .setApkDescription("这里是描述信息\n这里是描述信息2")
                 .setForcedUpgrade(false)
-                .setSmallIcon(R.drawable.ic_app)
+                .setSmallIcon(R.mipmap.appic)
                 .show()
         }
 
