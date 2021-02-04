@@ -6,10 +6,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.OverScroller;
 
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.google.android.material.appbar.AppBarLayout;
-import com.youth.banner.util.LogUtils;
 
 import java.lang.reflect.Field;
 
@@ -21,8 +23,6 @@ import java.lang.reflect.Field;
  */
 public class AppBarLayoutBehavior extends AppBarLayout.Behavior {
 
-    private static final int TYPE_FLING = 1;
-
     private boolean isFlinging;
     private boolean shouldBlockNestedScroll;
 
@@ -31,12 +31,10 @@ public class AppBarLayoutBehavior extends AppBarLayout.Behavior {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(CoordinatorLayout parent, AppBarLayout child, MotionEvent ev) {
-        shouldBlockNestedScroll = false;
-        if (isFlinging) {
-            shouldBlockNestedScroll = true;
-        }
+    public boolean onInterceptTouchEvent(@NonNull CoordinatorLayout parent, AppBarLayout child, @NonNull MotionEvent ev) {
+        shouldBlockNestedScroll = isFlinging;
 
+        LogUtils.e("onInterceptTouchEvent: " + "shouldBlockNestedScroll: " + shouldBlockNestedScroll + "    isFlinging:  " + isFlinging);
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 stopAppbarLayoutFling(child);  //手指触摸屏幕的时候停止fling事件
@@ -48,8 +46,6 @@ public class AppBarLayoutBehavior extends AppBarLayout.Behavior {
 
     /**
      * 反射获取私有的flingRunnable 属性，考虑support 28以后变量名修改的问题
-     *
-     * @return Field
      */
     private Field getFlingRunnableField() throws NoSuchFieldException {
         try {
@@ -65,8 +61,6 @@ public class AppBarLayoutBehavior extends AppBarLayout.Behavior {
 
     /**
      * 反射获取私有的scroller 属性，考虑support 28以后变量名修改的问题
-     *
-     * @return Field
      */
     private Field getScrollerField() throws NoSuchFieldException {
         try {
@@ -82,8 +76,6 @@ public class AppBarLayoutBehavior extends AppBarLayout.Behavior {
 
     /**
      * 停止appbarLayout的fling事件
-     *
-     * @param appBarLayout
      */
     private void stopAppbarLayoutFling(AppBarLayout appBarLayout) {
         //通过反射拿到HeaderBehavior中的flingRunnable变量
@@ -102,30 +94,28 @@ public class AppBarLayoutBehavior extends AppBarLayout.Behavior {
             }
             if (overScroller != null && !overScroller.isFinished()) {
                 overScroller.abortAnimation();
+                LogUtils.e("存在overScroller");
             }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
 
 
     @Override
-    public boolean onStartNestedScroll(CoordinatorLayout parent, AppBarLayout child, View directTargetChild, View target, int nestedScrollAxes, int type) {
-        LogUtils.e("onStartNestedScroll");
+    public boolean onStartNestedScroll(@NonNull CoordinatorLayout parent, @NonNull AppBarLayout child, @NonNull View directTargetChild, View target, int nestedScrollAxes, int type) {
         stopAppbarLayoutFling(child);
         return super.onStartNestedScroll(parent, child, directTargetChild, target, nestedScrollAxes, type);
     }
 
     @Override
-    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, AppBarLayout child, View target, int dx, int dy, int[] consumed, int type) {
+    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, @NonNull AppBarLayout child, View target, int dx, int dy, int[] consumed, int type) {
         LogUtils.e("onNestedPreScroll:" + child.getTotalScrollRange() + " ,dx:" + dx + " ,dy:" + dy + " ,type:" + type);
 
         //type返回1时，表示当前target处于非touch的滑动，
         //该bug的引起是因为appbar在滑动时，CoordinatorLayout内的实现NestedScrollingChild2接口的滑动子类还未结束其自身的fling
         //所以这里监听子类的非touch时的滑动，然后block掉滑动事件传递给AppBarLayout
-        if (type == TYPE_FLING) {
+        if (type == ViewCompat.TYPE_NON_TOUCH) {
             isFlinging = true;
         }
         if (!shouldBlockNestedScroll) {
@@ -134,17 +124,17 @@ public class AppBarLayoutBehavior extends AppBarLayout.Behavior {
     }
 
     @Override
-    public void onNestedScroll(CoordinatorLayout coordinatorLayout, AppBarLayout child, View target, int dxConsumed, int dyConsumed, int
-            dxUnconsumed, int dyUnconsumed, int type) {
+    public void onNestedScroll(CoordinatorLayout coordinatorLayout, @NonNull AppBarLayout child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, int[] consumed) {
+        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
         LogUtils.e("onNestedScroll: target:" + target.getClass() + " ," + child.getTotalScrollRange() + " ,dxConsumed:"
                 + dxConsumed + " ,dyConsumed:" + dyConsumed + " " + ",type:" + type);
         if (!shouldBlockNestedScroll) {
-            super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type);
+            super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
         }
     }
 
     @Override
-    public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, AppBarLayout abl, View target, int type) {
+    public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, @NonNull AppBarLayout abl, View target, int type) {
         LogUtils.e("onStopNestedScroll");
         super.onStopNestedScroll(coordinatorLayout, abl, target, type);
         isFlinging = false;
