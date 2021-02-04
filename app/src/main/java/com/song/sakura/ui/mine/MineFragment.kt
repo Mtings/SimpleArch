@@ -30,6 +30,7 @@ class MineFragment : IBaseFragment<IBaseViewModel>(), View.OnClickListener {
         btnDialog.setOnClickListener(this)
         btnFlow.setOnClickListener(this)
         btnMotion.setOnClickListener(this)
+        btnHomePage.setOnClickListener(this)
     }
 
     @SingleClick
@@ -50,6 +51,10 @@ class MineFragment : IBaseFragment<IBaseViewModel>(), View.OnClickListener {
             }
             R.id.btnMotion -> {
                 val intent = Intent(baseActivity, MotionLayoutActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.btnHomePage -> {
+                val intent = Intent(baseActivity, HomePageActivity::class.java)
                 startActivity(intent)
             }
         }

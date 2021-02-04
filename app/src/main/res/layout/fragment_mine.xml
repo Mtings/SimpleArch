@@ -50,6 +50,14 @@
                 android:layout_marginTop="30dp"
                 android:text="MotionLayout" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnHomePage"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="HomePage" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -127,6 +127,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/CoordinatorLayoutTheme"/>
 
+        <activity
+            android:name=".ui.mine.HomePageActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+
         <service android:name=".update.service.DownloadService" />
 
         <!-- 适配 Android 7.0 文件意图 -->

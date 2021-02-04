@@ -239,8 +239,8 @@
 -dontwarn com.song.sakura.bean.**
 
 # 不混淆entity类
--keep class com.song.sakura.bean.** {*;}
--dontwarn com.song.sakura.bean.**
+-keep class com.song.sakura.entity.** {*;}
+-dontwarn com.song.sakura.entity.**
 
 # 不混淆dao类
 -keep class com.song.sakura.dao.** {*;}
