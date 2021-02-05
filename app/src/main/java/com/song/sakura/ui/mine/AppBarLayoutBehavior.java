@@ -134,7 +134,7 @@ public class AppBarLayoutBehavior extends AppBarLayout.Behavior {
                     && Math.abs(getTopAndBottomOffset()) == child.getTotalScrollRange()
                     && type == ViewCompat.TYPE_NON_TOUCH) {
                 ViewCompat.stopNestedScroll(target, ViewCompat.TYPE_NON_TOUCH);
-                stopAppbarLayoutFling(child);
+//                stopAppbarLayoutFling(child);
             }
         }
     }
