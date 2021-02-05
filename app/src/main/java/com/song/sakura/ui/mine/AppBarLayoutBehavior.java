@@ -9,11 +9,13 @@ import android.widget.OverScroller;
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 /**
  * 解决appbarLayout若干问题：
@@ -31,7 +33,7 @@ public class AppBarLayoutBehavior extends AppBarLayout.Behavior {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(@NonNull CoordinatorLayout parent, AppBarLayout child, @NonNull MotionEvent ev) {
+    public boolean onInterceptTouchEvent(@NonNull CoordinatorLayout parent, @NonNull AppBarLayout child, @NonNull MotionEvent ev) {
         shouldBlockNestedScroll = isFlinging;
 
         LogUtils.e("onInterceptTouchEvent: " + "shouldBlockNestedScroll: " + shouldBlockNestedScroll + "    isFlinging:  " + isFlinging);
@@ -101,7 +103,6 @@ public class AppBarLayoutBehavior extends AppBarLayout.Behavior {
         }
     }
 
-
     @Override
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout parent, @NonNull AppBarLayout child, @NonNull View directTargetChild, View target, int nestedScrollAxes, int type) {
         stopAppbarLayoutFling(child);
@@ -110,7 +111,7 @@ public class AppBarLayoutBehavior extends AppBarLayout.Behavior {
 
     @Override
     public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, @NonNull AppBarLayout child, View target, int dx, int dy, int[] consumed, int type) {
-        LogUtils.e("onNestedPreScroll:" + child.getTotalScrollRange() + " ,dx:" + dx + " ,dy:" + dy + " ,type:" + type);
+        LogUtils.e("onNestedPreScroll:  target:" + target.getClass() + " ," + " child: " + child.getClass() + "  ,consumed[1]: " + consumed[1] + " ," + " ,dy:" + dy + " ,type:" + type);
 
         //type返回1时，表示当前target处于非touch的滑动，
         //该bug的引起是因为appbar在滑动时，CoordinatorLayout内的实现NestedScrollingChild2接口的滑动子类还未结束其自身的fling
@@ -118,19 +119,40 @@ public class AppBarLayoutBehavior extends AppBarLayout.Behavior {
         if (type == ViewCompat.TYPE_NON_TOUCH) {
             isFlinging = true;
         }
+        LogUtils.e("Offset: " + getTopAndBottomOffset() + "   ,TotalScrollRange: " + child.getTotalScrollRange());
+
+        //修复AppBarLayout在折叠和展开的中间状态时下滑ViewPager内的RecyclerView的滑动速度问题
+        if (target instanceof RecyclerView
+                && dy < 0 && Math.abs(getTopAndBottomOffset()) < child.getTotalScrollRange()) {
+            consumed[1] = dy / 2;
+        }
         if (!shouldBlockNestedScroll) {
             super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type);
+        } else {
+            //修复滑动RecyclerView的回弹问题
+            if (target instanceof RecyclerView
+                    && Math.abs(getTopAndBottomOffset()) == child.getTotalScrollRange()
+                    && type == ViewCompat.TYPE_NON_TOUCH) {
+                ViewCompat.stopNestedScroll(target, ViewCompat.TYPE_NON_TOUCH);
+                stopAppbarLayoutFling(child);
+            }
         }
     }
 
     @Override
     public void onNestedScroll(CoordinatorLayout coordinatorLayout, @NonNull AppBarLayout child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, int[] consumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
-        LogUtils.e("onNestedScroll: target:" + target.getClass() + " ," + child.getTotalScrollRange() + " ,dxConsumed:"
-                + dxConsumed + " ,dyConsumed:" + dyConsumed + " " + ",type:" + type);
+//        LogUtils.e("onNestedScroll: target:" + target.getClass() + "  ,child:"
+//                + child + " ,dyConsumed:" + dyConsumed + " " + ",type:" + type + " " + ",consumed:" + Arrays.toString(consumed));
         if (!shouldBlockNestedScroll) {
             super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
         }
+    }
+
+    @Override
+    public boolean onNestedPreFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull AppBarLayout child, @NonNull View target, float velocityX, float velocityY) {
+        LogUtils.e("onNestedPreFling: target:" + target.getClass() + "  , velocityY:" + velocityY);
+        return super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY);
     }
 
     @Override
