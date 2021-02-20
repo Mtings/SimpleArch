@@ -24,6 +24,7 @@ import com.song.sakura.bean.response.BannerVO
 import com.song.sakura.bean.response.HomeRefreshControl
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewModel
+import com.song.sakura.ui.mine.ColorfulFragment
 import com.song.sakura.util.LiveDataUtil
 import com.song.sakura.util.RouterUtil
 import com.ui.base.FragmentAdapter

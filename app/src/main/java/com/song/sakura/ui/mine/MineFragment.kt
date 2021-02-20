@@ -31,6 +31,7 @@ class MineFragment : IBaseFragment<IBaseViewModel>(), View.OnClickListener {
         btnFlow.setOnClickListener(this)
         btnMotion.setOnClickListener(this)
         btnHomePage.setOnClickListener(this)
+        btnHomePage2.setOnClickListener(this)
     }
 
     @SingleClick
@@ -55,6 +56,11 @@ class MineFragment : IBaseFragment<IBaseViewModel>(), View.OnClickListener {
             }
             R.id.btnHomePage -> {
                 val intent = Intent(baseActivity, HomePageActivity::class.java)
+                startActivity(intent)
+            }
+
+            R.id.btnHomePage2 -> {
+                val intent = Intent(baseActivity, HomePageActivity2::class.java)
                 startActivity(intent)
             }
         }

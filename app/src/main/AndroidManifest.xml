@@ -132,6 +132,11 @@
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
+        <activity
+            android:name=".ui.mine.HomePageActivity2"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+
         <service android:name=".update.service.DownloadService" />
 
         <!-- 适配 Android 7.0 文件意图 -->

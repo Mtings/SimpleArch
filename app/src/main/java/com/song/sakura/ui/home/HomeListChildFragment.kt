@@ -22,7 +22,13 @@ import com.ui.decoration.Y_DividerItemDecoration
 import kotlinx.android.synthetic.main.item_article.view.*
 import kotlinx.android.synthetic.main.list.*
 
-class HomeListChildFragment : IBaseFragment<HomeViewModel>() {
+class HomeListChildFragment(isNestedScrollingEnabled: Boolean = true) : IBaseFragment<HomeViewModel>() {
+
+    private var canNestedScrolling: Boolean = true
+
+    init {
+        canNestedScrolling = isNestedScrollingEnabled
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +44,7 @@ class HomeListChildFragment : IBaseFragment<HomeViewModel>() {
 
         val mAdapter = ListAdapter()
         list.adapter = mAdapter
+        list.isNestedScrollingEnabled = canNestedScrolling
         list.addItemDecoration(DividerItemDecoration(list.context))
 
         mAdapter.setOnItemClickListener { _, _, position ->

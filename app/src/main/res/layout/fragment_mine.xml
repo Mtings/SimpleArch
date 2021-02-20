@@ -58,6 +58,14 @@
                 android:layout_marginTop="30dp"
                 android:text="HomePage" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnHomePage2"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="HomePage2" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
