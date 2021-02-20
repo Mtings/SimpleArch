@@ -262,6 +262,12 @@
 -keep class com.song.sakura.update.** {*;}
 -dontwarn com.song.sakura.update.**
 
+-keep class com.song.sakura.widget.coordinator.** {*;}
+-dontwarn com.song.sakura.widget.coordinator.**
+
+-keep class me.weishu.** {*;}
+-dontwarn me.weishu.**
+
 # ServiceLoader support
 -keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
 -keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}

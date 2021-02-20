@@ -1,13 +1,11 @@
-package com.ui.widget.coordinator
+package com.song.sakura.widget.coordinator
 
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.WindowManager
 import android.widget.OverScroller
-import com.ui.util.LogUtil
 import java.lang.reflect.Field
-import java.lang.reflect.InvocationTargetException
 
 /**
  * 这是注入到Behavior的scroller

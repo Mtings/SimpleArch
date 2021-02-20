@@ -1,4 +1,4 @@
-package com.ui.widget.coordinator
+package com.song.sakura.widget.coordinator
 
 import android.content.Context
 import android.util.AttributeSet

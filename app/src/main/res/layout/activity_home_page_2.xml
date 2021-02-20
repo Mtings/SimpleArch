@@ -89,7 +89,7 @@
         app:srlEnableOverScrollBounce="false"
         app:srlReboundDuration="600">
 
-        <com.ui.widget.coordinator.PersistentCoordinatorLayout
+        <com.song.sakura.widget.coordinator.PersistentCoordinatorLayout
             android:id="@+id/main_coordinator_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -143,7 +143,7 @@
                 android:background="#f3f3f3"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        </com.ui.widget.coordinator.PersistentCoordinatorLayout>
+        </com.song.sakura.widget.coordinator.PersistentCoordinatorLayout>
 
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
