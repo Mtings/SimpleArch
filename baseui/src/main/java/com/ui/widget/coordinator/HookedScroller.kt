@@ -5,7 +5,9 @@ import android.os.Handler
 import android.os.Looper
 import android.view.WindowManager
 import android.widget.OverScroller
+import com.ui.util.LogUtil
 import java.lang.reflect.Field
+import java.lang.reflect.InvocationTargetException
 
 /**
  * 这是注入到Behavior的scroller
@@ -37,8 +39,10 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
 
         // Android 9.0及以上，非公开Api接口被禁用，无法获取mDuration字段
         // 此处伪装成系统身份，绕过 @hide 检查
-        val metaGetDeclaredField = Class::class.java.getDeclaredMethod("getDeclaredField", String::class.java)
-        durationField = metaGetDeclaredField.invoke(scrollerYObj.javaClass, "mDuration") as Field
+//        val metaGetDeclaredField = Class::class.java.getDeclaredMethod("getDeclaredField", String::class.java)
+//        durationField = metaGetDeclaredField.invoke(scrollerYObj.javaClass, "mDuration") as Field
+//        durationField.isAccessible = true
+        durationField = scrollerYObj.javaClass.getDeclaredField("mDuration")
         durationField.isAccessible = true
 
         uiHandler = Handler(Looper.getMainLooper()) {

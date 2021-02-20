@@ -22,6 +22,7 @@ import com.song.sakura.database.WordRepository
 import com.song.sakura.database.WordRoomDatabase
 import com.song.sakura.helper.ActivityStackManager
 import com.ui.util.LogUtil
+import me.weishu.reflection.Reflection
 
 class App : Application(), ViewModelStoreOwner, LifecycleOwner {
 
@@ -65,6 +66,11 @@ class App : Application(), ViewModelStoreOwner, LifecycleOwner {
     private lateinit var mAppViewModelStore: ViewModelStore
     private var mFactory: ViewModelProvider.Factory? = null
     private val mLifecycle = LifecycleRegistry(this)
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        Reflection.unseal(base)
+    }
 
     override fun onCreate() {
         super.onCreate()
