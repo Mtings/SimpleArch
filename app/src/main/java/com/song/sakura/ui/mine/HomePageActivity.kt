@@ -57,7 +57,7 @@ class HomePageActivity : IBaseActivity<HomeViewModel>(), ClickAction {
 
     private fun initView() {
         val titles = listOf("热门推荐", "商品促销")
-        val fragments = listOf(HomeListChildFragment(), Fragment())
+        val fragments = listOf(HomeListChildFragment(), ColorfulFragment2())
 
         viewPager.offscreenPageLimit = fragments.size
         viewPager.adapter = FragmentAdapter(

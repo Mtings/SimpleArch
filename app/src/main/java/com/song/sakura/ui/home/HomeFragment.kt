@@ -25,6 +25,7 @@ import com.song.sakura.bean.response.HomeRefreshControl
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.base.IBaseViewModel
 import com.song.sakura.ui.mine.ColorfulFragment
+import com.song.sakura.ui.mine.ColorfulFragment2
 import com.song.sakura.util.LiveDataUtil
 import com.song.sakura.util.RouterUtil
 import com.ui.base.FragmentAdapter
@@ -92,7 +93,7 @@ class HomeFragment : IBaseFragment<HomeViewModel>(), View.OnClickListener {
 
     private fun initView() {
         val titles = listOf("热门", "其他")
-        val fragments = listOf(HomeListChildFragment(), Fragment())
+        val fragments = listOf(HomeListChildFragment(), ColorfulFragment2())
 
         viewPager.offscreenPageLimit = fragments.size
         viewPager.adapter = FragmentAdapter(
@@ -209,6 +210,12 @@ class HomeViewModel(app: Application) : IBaseViewModel(app) {
 
     fun refreshControlSwitch(isSuccess: Boolean, isRefresh: Boolean, isOver: Boolean) {
         refreshControl.value = HomeRefreshControl(isSuccess, isRefresh, isOver)
+    }
+
+    val index = MutableLiveData<Int>()
+
+    fun collapsedIndex(i: Int) {
+        index.value = i
     }
 
 }

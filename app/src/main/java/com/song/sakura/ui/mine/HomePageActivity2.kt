@@ -1,6 +1,8 @@
 package com.song.sakura.ui.mine
 
 import android.os.Bundle
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.gyf.immersionbar.ImmersionBar
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
@@ -9,7 +11,8 @@ import com.song.sakura.ui.base.IBaseActivity
 import com.song.sakura.ui.home.HomeViewModel
 import com.ui.action.ClickAction
 import com.ui.base.FragmentAdapter
-import kotlinx.android.synthetic.main.activity_home_page.*
+import kotlinx.android.synthetic.main.activity_home_page_2.*
+import kotlin.math.abs
 
 class HomePageActivity2 : IBaseActivity<HomeViewModel>(), ClickAction {
 
@@ -46,6 +49,17 @@ class HomePageActivity2 : IBaseActivity<HomeViewModel>(), ClickAction {
                 refreshLayout.finishLoadMore(500)
             }
         })
+
+        appbar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
+
+            override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
+                if (state == State.IDLE) {
+                    //中间
+                    mViewModel.collapsedIndex(tabLayout.selectedTabPosition)
+                }
+            }
+
+        })
     }
 
     override fun initImmersionBar() {
@@ -54,4 +68,36 @@ class HomePageActivity2 : IBaseActivity<HomeViewModel>(), ClickAction {
             .titleBar(R.id.topBar)
             .init()
     }
+}
+
+abstract class AppBarStateChangeListener : OnOffsetChangedListener {
+    enum class State {
+        EXPANDED, COLLAPSED, IDLE
+    }
+
+    private var mCurrentState = State.IDLE
+    override fun onOffsetChanged(appBarLayout: AppBarLayout, i: Int) {
+        mCurrentState = when {
+            i == 0 -> {
+                if (mCurrentState != State.EXPANDED) {
+                    onStateChanged(appBarLayout, State.EXPANDED)
+                }
+                State.EXPANDED
+            }
+            abs(i) >= appBarLayout.totalScrollRange -> {
+                if (mCurrentState != State.COLLAPSED) {
+                    onStateChanged(appBarLayout, State.COLLAPSED)
+                }
+                State.COLLAPSED
+            }
+            else -> {
+                if (mCurrentState != State.IDLE) {
+                    onStateChanged(appBarLayout, State.IDLE)
+                }
+                State.IDLE
+            }
+        }
+    }
+
+    abstract fun onStateChanged(appBarLayout: AppBarLayout, state: State)
 }

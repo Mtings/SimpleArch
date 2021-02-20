@@ -8,10 +8,10 @@ import com.song.sakura.R
 import com.song.sakura.bean.QuickMultipleEntity
 import com.song.sakura.ui.base.IBaseFragment
 import com.song.sakura.ui.home.HomeViewModel
-import kotlinx.android.synthetic.main.persistent_list.*
+import kotlinx.android.synthetic.main.activity_home_page.*
 import java.util.ArrayList
 
-class ColorfulFragment : IBaseFragment<HomeViewModel>() {
+class ColorfulFragment2 : IBaseFragment<HomeViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,17 +19,13 @@ class ColorfulFragment : IBaseFragment<HomeViewModel>() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.persistent_list, container, false)
+        return inflater.inflate(R.layout.list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mAdapter = MultipleItemQuickAdapter(getMultipleItemData())
         list.adapter = mAdapter
-
-        mViewModel.index.observe(viewLifecycleOwner, {
-            list.scrollToPosition(0)
-        })
     }
 
     private fun getMultipleItemData(): List<QuickMultipleEntity> {
