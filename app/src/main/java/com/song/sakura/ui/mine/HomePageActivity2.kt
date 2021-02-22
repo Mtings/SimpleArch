@@ -3,6 +3,7 @@ package com.song.sakura.ui.mine
 import android.os.Bundle
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
+import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
@@ -15,6 +16,8 @@ import kotlinx.android.synthetic.main.activity_home_page_2.*
 import kotlin.math.abs
 
 class HomePageActivity2 : IBaseActivity<HomeViewModel>(), ClickAction {
+
+    private var currentState = AppBarStateChangeListener.State.EXPANDED
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,13 +53,24 @@ class HomePageActivity2 : IBaseActivity<HomeViewModel>(), ClickAction {
             }
         })
 
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (AppBarStateChangeListener.State.COLLAPSED != currentState) {
+                    mViewModel.collapsedIndex(tabLayout.selectedTabPosition)
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+        })
+
         appbar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
 
             override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
-                if (state == State.IDLE) {
-                    //中间
-                    mViewModel.collapsedIndex(tabLayout.selectedTabPosition)
-                }
+                currentState = state
             }
 
         })
