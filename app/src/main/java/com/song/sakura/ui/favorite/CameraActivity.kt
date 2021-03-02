@@ -97,8 +97,10 @@ class CameraActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
         }
         if (XXPermissions.isGrantedPermission(
                 this,
-                Permission.MANAGE_EXTERNAL_STORAGE,
-                Permission.CAMERA
+                mutableListOf(
+                    Permission.MANAGE_EXTERNAL_STORAGE,
+                    Permission.CAMERA
+                )
             ) && intent.resolveActivity(packageManager) != null
         ) {
             mFile = getSerializable(IntentBuilder.FILE)
