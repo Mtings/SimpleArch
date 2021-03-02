@@ -7,13 +7,4 @@
     <external-path
         path="."
         name="external_storage_root" />
-
-    <!-- bili -->
-    <cache-path
-        name="internal"
-        path="boxing" />
-    <external-path
-        name="external"
-        path="DCIM/bili/boxing" />
-    <!-- bili -->
 </paths>
