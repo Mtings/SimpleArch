@@ -7,12 +7,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public final class NoScrollViewPager extends ViewPager {
-
-    private boolean isCanSmoothScroll = true;
 
     public NoScrollViewPager(Context context) {
         super(context);
@@ -41,33 +38,9 @@ public final class NoScrollViewPager extends ViewPager {
         return false;
     }
 
-    public void setCanSmoothScroll(boolean isCanSmoothScroll) {
-        this.isCanSmoothScroll = isCanSmoothScroll;
-    }
-
     @Override
     public void setCurrentItem(int item) {
-        boolean smoothScroll;
-        if (isCanSmoothScroll) {
-            int currentItem = getCurrentItem();
-            if (currentItem == 0) {
-                // 如果当前是第一页，只有第二页才会有动画
-                smoothScroll = item == currentItem + 1;
-            } else if (currentItem == getCount() - 1) {
-                // 如果当前是最后一页，只有最后第二页才会有动画
-                smoothScroll = item == currentItem - 1;
-            } else {
-                // 如果当前是中间页，只有相邻页才会有动画
-                smoothScroll = Math.abs(currentItem - item) == 1;
-            }
-        } else {
-            smoothScroll = false;
-        }
-        super.setCurrentItem(item, smoothScroll);
-    }
-
-    public int getCount() {
-        PagerAdapter adapter = getAdapter();
-        return adapter != null ? adapter.getCount() : 0;
+        // 只有相邻页才会有动画
+        super.setCurrentItem(item, Math.abs(getCurrentItem() - item) == 1);
     }
 }

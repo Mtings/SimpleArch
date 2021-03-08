@@ -21,7 +21,6 @@ import com.ui.action.BundleAction
 import com.ui.base.BaseActivity
 import com.ui.util.IntentBuilder
 import java.io.File
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +35,7 @@ class CameraActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
 
         @Permissions(Permission.MANAGE_EXTERNAL_STORAGE, Permission.CAMERA)
         fun start(activity: BaseActivity, video: Boolean, listener: OnCameraListener?) {
-            val file: File? = createCameraFile(video)
+            val file: File = createCameraFile(video)
             val intent = Intent(activity, CameraActivity::class.java)
             intent.putExtra(IntentBuilder.FILE, file)
             intent.putExtra(IntentBuilder.VIDEO, video)
@@ -44,8 +43,9 @@ class CameraActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
                 if (listener == null) {
                     return@startActivityForResult
                 }
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK && file.isFile) {
                     listener.onSelected(file)
+                    return@startActivityForResult
                 } else {
                     listener.onCancel()
                 }
@@ -55,27 +55,20 @@ class CameraActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
         /**
          * 创建一个拍照图片文件对象
          */
-        private fun createCameraFile(video: Boolean): File? {
+        private fun createCameraFile(video: Boolean): File {
             var folder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera")
             if (!folder.exists() || !folder.isDirectory) {
                 if (!folder.mkdirs()) {
                     folder = Environment.getExternalStorageDirectory()
                 }
             }
-            return try {
-                val file = File(
-                    folder,
-                    (if (video) "IMG_" else "VID") + SimpleDateFormat(
-                        "_yyyyMMdd_HHmmss.",
-                        Locale.getDefault()
-                    ).format(Date()) + if (video) "mp4" else "jpg"
-                )
-                file.createNewFile()
-                file
-            } catch (e: IOException) {
-                e.printStackTrace()
-                null
-            }
+            val file = File(
+                folder, (if (video) "VID" else "IMG") + "_" +
+                        SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date()) +
+                        if (video) ".mp4" else ".jpg"
+            )
+            file.createNewFile()
+            return file
         }
     }
 
@@ -104,6 +97,12 @@ class CameraActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
             ) && intent.resolveActivity(packageManager) != null
         ) {
             mFile = getSerializable(IntentBuilder.FILE)
+            if (mFile == null) {
+                ToastUtils.show(R.string.camera_image_error)
+                setResult(RESULT_CANCELED)
+                finish()
+                return
+            }
             if (mFile != null && mFile!!.exists()) {
                 val imageUri: Uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     // 通过 FileProvider 创建一个 Content 类型的 Uri 文件
@@ -115,7 +114,14 @@ class CameraActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 // 将拍取的照片保存到指定 Uri
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-                startActivityForResult(intent, CAMERA_REQUEST_CODE)
+                startActivityForResult(intent) { resultCode, data ->
+                    if (resultCode == RESULT_OK) {
+                        // 通知系统多媒体扫描该文件，否则会导致拍摄出来的图片或者视频没有及时显示到相册中，而需要通过重启手机才能看到
+                        MediaScannerConnection.scanFile(applicationContext, arrayOf(mFile?.path), null, null)
+                    }
+                    setResult(resultCode)
+                    finish()
+                }
             } else {
                 ToastUtils.show(R.string.camera_image_error)
             }

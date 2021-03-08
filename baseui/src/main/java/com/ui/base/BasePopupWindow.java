@@ -32,6 +32,7 @@ import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.PopupWindowCompat;
 
+import com.ui.action.ActivityAction;
 import com.ui.action.AnimAction;
 import com.ui.action.ClickAction;
 import com.ui.action.ResourcesAction;
@@ -50,14 +51,14 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class BasePopupWindow extends PopupWindow
-        implements ResourcesAction, HandlerAction, ClickAction,
+        implements ActivityAction, ResourcesAction, HandlerAction, ClickAction, AnimAction,
         PopupWindow.OnDismissListener {
 
     private final Context mContext;
     private PopupBackground mPopupBackground;
 
-    private List<OnShowListener> mShowListeners;
-    private List<OnDismissListener> mDismissListeners;
+    private List<BasePopupWindow.OnShowListener> mShowListeners;
+    private List<BasePopupWindow.OnDismissListener> mDismissListeners;
 
     public BasePopupWindow(@NonNull Context context) {
         super(context);
@@ -134,14 +135,14 @@ public class BasePopupWindow extends PopupWindow
     /**
      * 设置显示监听器集合
      */
-    private void setOnShowListeners(@Nullable List<OnShowListener> listeners) {
+    private void setOnShowListeners(@Nullable List<BasePopupWindow.OnShowListener> listeners) {
         mShowListeners = listeners;
     }
 
     /**
      * 设置销毁监听器集合
      */
-    private void setOnDismissListeners(@Nullable List<OnDismissListener> listeners) {
+    private void setOnDismissListeners(@Nullable List<BasePopupWindow.OnDismissListener> listeners) {
         super.setOnDismissListener(this);
         mDismissListeners = listeners;
     }
@@ -159,7 +160,7 @@ public class BasePopupWindow extends PopupWindow
     }
 
     @Override
-    public void showAsDropDown(View anchor, int xoff, int yoff, int gravity) {
+    public void showAsDropDown(View anchor, int xOff, int yOff, int gravity) {
         if (isShowing() || getContentView() == null) {
             return;
         }
@@ -169,7 +170,7 @@ public class BasePopupWindow extends PopupWindow
                 listener.onShow(this);
             }
         }
-        super.showAsDropDown(anchor, xoff, yoff, gravity);
+        super.showAsDropDown(anchor, xOff, yOff, gravity);
     }
 
     @Override
@@ -188,8 +189,8 @@ public class BasePopupWindow extends PopupWindow
 
     @Override
     public void dismiss() {
-        removeCallbacks();
         super.dismiss();
+        removeCallbacks();
     }
 
     @Override
@@ -227,7 +228,7 @@ public class BasePopupWindow extends PopupWindow
     /**
      * 设置背景遮盖层的透明度
      */
-    public void setBackgroundDimAmount(@FloatRange(from = 0, to = 1.0) float dimAmount) {
+    public void setBackgroundDimAmount(@FloatRange(from = 0.0, to = 1.0) float dimAmount) {
         float alpha = 1 - dimAmount;
         if (isShowing()) {
             setActivityAlpha(alpha);
@@ -246,28 +247,35 @@ public class BasePopupWindow extends PopupWindow
      * 设置 Activity 窗口透明度
      */
     private void setActivityAlpha(float alpha) {
-        if (mContext instanceof Activity) {
-            Activity activity = (Activity) mContext;
-            WindowManager.LayoutParams params = activity.getWindow().getAttributes();
-
-            final ValueAnimator animator = ValueAnimator.ofFloat(params.alpha, alpha);
-            animator.setDuration(300);
-            animator.addUpdateListener(animation -> {
-                float value = (float) animation.getAnimatedValue();
-                if (value != params.alpha) {
-                    params.alpha = value;
-                    activity.getWindow().setAttributes(params);
-                }
-            });
-            animator.start();
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
         }
+
+        WindowManager.LayoutParams params = activity.getWindow().getAttributes();
+
+        final ValueAnimator animator = ValueAnimator.ofFloat(params.alpha, alpha);
+        animator.setDuration(300);
+        animator.addUpdateListener(animation -> {
+            float value = (float) animation.getAnimatedValue();
+            if (value != params.alpha) {
+                params.alpha = value;
+                activity.getWindow().setAttributes(params);
+            }
+        });
+        animator.start();
     }
 
     @SuppressWarnings("unchecked")
-    public static class Builder<B extends BasePopupWindow.Builder> implements ResourcesAction, ClickAction {
+    public static class Builder<B extends BasePopupWindow.Builder<?>> implements
+            ActivityAction, ResourcesAction, ClickAction {
 
         private static final int DEFAULT_ANCHORED_GRAVITY = Gravity.TOP | Gravity.START;
 
+        /**
+         * Activity 对象
+         */
+        private final Activity mActivity;
         /**
          * Context 对象
          */
@@ -282,27 +290,32 @@ public class BasePopupWindow extends PopupWindow
         private BasePopupWindow mPopupWindow;
 
         /**
-         * PopupWindow Show 监听
+         * PopupWindow 创建监听
          */
-        private List<OnShowListener> mOnShowListeners;
+        private BasePopupWindow.OnCreateListener mCreateListener;
         /**
-         * PopupWindow Dismiss 监听
+         * PopupWindow 显示监听
          */
-        private List<OnDismissListener> mOnDismissListeners;
+        private final List<BasePopupWindow.OnShowListener> mShowListeners = new ArrayList<>();
+        /**
+         * PopupWindow 销毁监听
+         */
+        private final List<BasePopupWindow.OnDismissListener> mDismissListeners = new ArrayList<>();
 
         /**
-         * 动画
+         * 动画样式
          */
-        private int mAnimations = AnimAction.NO_ANIM;
+        private int mAnimations = BasePopupWindow.ANIM_DEFAULT;
         /**
-         * 位置
+         * 重心位置
          */
         private int mGravity = DEFAULT_ANCHORED_GRAVITY;
+
         /**
          * 宽度和高度
          */
-        private int mWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
-        private int mHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
+        private int mWidth = WindowManager.LayoutParams.WRAP_CONTENT;
+        private int mHeight = WindowManager.LayoutParams.WRAP_CONTENT;
 
         /**
          * 是否可触摸
@@ -323,21 +336,26 @@ public class BasePopupWindow extends PopupWindow
         private float mBackgroundDimAmount;
 
         /**
-         * X 轴偏移
+         * 水平偏移
          */
         private int mXOffset;
         /**
-         * Y 轴偏移
+         * 垂直偏移
          */
         private int mYOffset;
 
         /**
          * 点击事件集合
          */
-        private SparseArray<OnClickListener> mClickArray;
+        private SparseArray<BasePopupWindow.OnClickListener<? extends View>> mClickArray;
+
+        public Builder(Activity activity) {
+            this((Context) activity);
+        }
 
         public Builder(Context context) {
             mContext = context;
+            mActivity = getActivity();
         }
 
         /**
@@ -349,30 +367,36 @@ public class BasePopupWindow extends PopupWindow
         }
 
         public B setContentView(View view) {
+            // 请不要传入空的布局
+            if (view == null) {
+                throw new IllegalArgumentException("are you ok?");
+            }
+
             mContentView = view;
 
             if (isCreated()) {
                 mPopupWindow.setContentView(view);
-            } else {
-                if (mContentView != null) {
-                    ViewGroup.LayoutParams params = mContentView.getLayoutParams();
-                    if (params != null && mWidth == ViewGroup.LayoutParams.WRAP_CONTENT && mHeight == ViewGroup.LayoutParams.WRAP_CONTENT) {
-                        // 如果当前 PopupWindow 的宽高设置了自适应，就以布局中设置的宽高为主
-                        setWidth(params.width);
-                        setHeight(params.height);
-                    }
+                return (B) this;
+            }
 
-                    // 如果当前没有设置重心，就自动获取布局重心
-                    if (mGravity == DEFAULT_ANCHORED_GRAVITY) {
-                        if (params instanceof FrameLayout.LayoutParams) {
-                            setGravity(((FrameLayout.LayoutParams) params).gravity);
-                        } else if (params instanceof LinearLayout.LayoutParams) {
-                            setGravity(((LinearLayout.LayoutParams) params).gravity);
-                        } else {
-                            // 默认重心是居中
-                            setGravity(Gravity.CENTER);
-                        }
-                    }
+            ViewGroup.LayoutParams params = mContentView.getLayoutParams();
+            if (params != null &&
+                    mWidth == ViewGroup.LayoutParams.WRAP_CONTENT &&
+                    mHeight == ViewGroup.LayoutParams.WRAP_CONTENT) {
+                // 如果当前 PopupWindow 的宽高设置了自适应，就以布局中设置的宽高为主
+                setWidth(params.width);
+                setHeight(params.height);
+            }
+
+            // 如果当前没有设置重心，就自动获取布局重心
+            if (mGravity == DEFAULT_ANCHORED_GRAVITY) {
+                if (params instanceof FrameLayout.LayoutParams) {
+                    setGravity(((FrameLayout.LayoutParams) params).gravity);
+                } else if (params instanceof LinearLayout.LayoutParams) {
+                    setGravity(((LinearLayout.LayoutParams) params).gravity);
+                } else {
+                    // 默认重心是居中
+                    setGravity(Gravity.CENTER);
                 }
             }
             return (B) this;
@@ -382,7 +406,7 @@ public class BasePopupWindow extends PopupWindow
          * 设置重心位置
          */
         public B setGravity(int gravity) {
-            // 适配 Android 4.2 新特性，布局反方向（开发者选项 - 强制使用从右到左的布局方向）
+            // 适配布局反方向
             mGravity = Gravity.getAbsoluteGravity(gravity, getResources().getConfiguration().getLayoutDirection());
             return (B) this;
         }
@@ -394,12 +418,13 @@ public class BasePopupWindow extends PopupWindow
             mWidth = width;
             if (isCreated()) {
                 mPopupWindow.setWidth(width);
-            } else {
-                ViewGroup.LayoutParams params = mContentView != null ? mContentView.getLayoutParams() : null;
-                if (params != null) {
-                    params.width = width;
-                    mContentView.setLayoutParams(params);
-                }
+                return (B) this;
+            }
+
+            ViewGroup.LayoutParams params = mContentView != null ? mContentView.getLayoutParams() : null;
+            if (params != null) {
+                params.width = width;
+                mContentView.setLayoutParams(params);
             }
             return (B) this;
         }
@@ -411,16 +436,17 @@ public class BasePopupWindow extends PopupWindow
             mHeight = height;
             if (isCreated()) {
                 mPopupWindow.setHeight(height);
-            } else {
-                // 这里解释一下为什么要重新设置 LayoutParams
-                // 因为如果不这样设置的话，第一次显示的时候会按照 PopupWindow 宽高显示
-                // 但是 Layout 内容变更之后就不会按照之前的设置宽高来显示
-                // 所以这里我们需要对 View 的 LayoutParams 也进行设置
-                ViewGroup.LayoutParams params = mContentView != null ? mContentView.getLayoutParams() : null;
-                if (params != null) {
-                    params.height = height;
-                    mContentView.setLayoutParams(params);
-                }
+                return (B) this;
+            }
+
+            // 这里解释一下为什么要重新设置 LayoutParams
+            // 因为如果不这样设置的话，第一次显示的时候会按照 PopupWindow 宽高显示
+            // 但是 Layout 内容变更之后就不会按照之前的设置宽高来显示
+            // 所以这里我们需要对 View 的 LayoutParams 也进行设置
+            ViewGroup.LayoutParams params = mContentView != null ? mContentView.getLayoutParams() : null;
+            if (params != null) {
+                params.height = height;
+                mContentView.setLayoutParams(params);
             }
             return (B) this;
         }
@@ -430,6 +456,9 @@ public class BasePopupWindow extends PopupWindow
          */
         public B setTouchable(boolean touchable) {
             mTouchable = touchable;
+            if (isCreated()) {
+                mPopupWindow.setTouchable(touchable);
+            }
             return (B) this;
         }
 
@@ -438,14 +467,20 @@ public class BasePopupWindow extends PopupWindow
          */
         public B setFocusable(boolean focusable) {
             mFocusable = focusable;
+            if (isCreated()) {
+                mPopupWindow.setFocusable(focusable);
+            }
             return (B) this;
         }
 
         /**
          * 是否外层可触摸
          */
-        public B setOutsideTouchable(boolean touchable) {
-            mOutsideTouchable = touchable;
+        public B setOutsideTouchable(boolean outsideTouchable) {
+            mOutsideTouchable = outsideTouchable;
+            if (isCreated()) {
+                mPopupWindow.setOutsideTouchable(outsideTouchable);
+            }
             return (B) this;
         }
 
@@ -479,11 +514,19 @@ public class BasePopupWindow extends PopupWindow
         /**
          * 设置背景遮盖层的透明度
          */
-        public B setBackgroundDimAmount(@FloatRange(from = 0, to = 1.0) float dimAmount) {
+        public B setBackgroundDimAmount(@FloatRange(from = 0.0, to = 1.0) float dimAmount) {
             mBackgroundDimAmount = dimAmount;
-            if (isShowing()) {
+            if (isCreated()) {
                 mPopupWindow.setBackgroundDimAmount(dimAmount);
             }
+            return (B) this;
+        }
+
+        /**
+         * 设置创建监听
+         */
+        public B setOnCreateListener(@NonNull BasePopupWindow.OnCreateListener listener) {
+            mCreateListener = listener;
             return (B) this;
         }
 
@@ -491,14 +534,7 @@ public class BasePopupWindow extends PopupWindow
          * 添加显示监听
          */
         public B addOnShowListener(@NonNull BasePopupWindow.OnShowListener listener) {
-            if (isCreated()) {
-                mPopupWindow.addOnShowListener(listener);
-            } else {
-                if (mOnShowListeners == null) {
-                    mOnShowListeners = new ArrayList<>();
-                }
-                mOnShowListeners.add(listener);
-            }
+            mShowListeners.add(listener);
             return (B) this;
         }
 
@@ -506,14 +542,7 @@ public class BasePopupWindow extends PopupWindow
          * 添加销毁监听
          */
         public B addOnDismissListener(@NonNull BasePopupWindow.OnDismissListener listener) {
-            if (isCreated()) {
-                mPopupWindow.addOnDismissListener(listener);
-            } else {
-                if (mOnDismissListeners == null) {
-                    mOnDismissListeners = new ArrayList<>();
-                }
-                mOnDismissListeners.add(listener);
-            }
+            mDismissListeners.add(listener);
             return (B) this;
         }
 
@@ -584,17 +613,17 @@ public class BasePopupWindow extends PopupWindow
         /**
          * 设置点击事件
          */
-        public B setOnClickListener(@IdRes int id, @NonNull BasePopupWindow.OnClickListener listener) {
+        public B setOnClickListener(@IdRes int id, @NonNull BasePopupWindow.OnClickListener<? extends View> listener) {
+            if (mClickArray == null) {
+                mClickArray = new SparseArray<>();
+            }
+            mClickArray.put(id, listener);
+
             if (isCreated()) {
                 View view = mPopupWindow.findViewById(id);
                 if (view != null) {
                     view.setOnClickListener(new ViewClickWrapper(mPopupWindow, listener));
                 }
-            } else {
-                if (mClickArray == null) {
-                    mClickArray = new SparseArray<>();
-                }
-                mClickArray.put(id, listener);
             }
             return (B) this;
         }
@@ -604,10 +633,14 @@ public class BasePopupWindow extends PopupWindow
          */
         @SuppressLint("RtlHardcoded")
         public BasePopupWindow create() {
-
             // 判断布局是否为空
             if (mContentView == null) {
                 throw new IllegalArgumentException("are you ok?");
+            }
+
+            // 如果当前正在显示
+            if (isShowing()) {
+                dismiss();
             }
 
             // 如果当前没有设置重心，就设置一个默认的重心
@@ -616,22 +649,22 @@ public class BasePopupWindow extends PopupWindow
             }
 
             // 如果当前没有设置动画效果，就设置一个默认的动画效果
-            if (mAnimations == AnimAction.NO_ANIM) {
+            if (mAnimations == BasePopupWindow.ANIM_DEFAULT) {
                 switch (mGravity) {
                     case Gravity.TOP:
-                        mAnimations = AnimAction.TOP;
+                        mAnimations = BasePopupWindow.ANIM_TOP;
                         break;
                     case Gravity.BOTTOM:
-                        mAnimations = AnimAction.BOTTOM;
+                        mAnimations = BasePopupWindow.ANIM_BOTTOM;
                         break;
                     case Gravity.LEFT:
-                        mAnimations = AnimAction.LEFT;
+                        mAnimations = BasePopupWindow.ANIM_LEFT;
                         break;
                     case Gravity.RIGHT:
-                        mAnimations = AnimAction.RIGHT;
+                        mAnimations = BasePopupWindow.ANIM_RIGHT;
                         break;
                     default:
-                        mAnimations = AnimAction.DEFAULT;
+                        mAnimations = BasePopupWindow.ANIM_DEFAULT;
                         break;
                 }
             }
@@ -641,46 +674,64 @@ public class BasePopupWindow extends PopupWindow
             mPopupWindow.setWidth(mWidth);
             mPopupWindow.setHeight(mHeight);
             mPopupWindow.setAnimationStyle(mAnimations);
-            mPopupWindow.setTouchable(mTouchable);
             mPopupWindow.setFocusable(mFocusable);
+            mPopupWindow.setTouchable(mTouchable);
             mPopupWindow.setOutsideTouchable(mOutsideTouchable);
             mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            mPopupWindow.setOnShowListeners(mShowListeners);
+            mPopupWindow.setOnDismissListeners(mDismissListeners);
+
             mPopupWindow.setBackgroundDimAmount(mBackgroundDimAmount);
 
-            if (mOnShowListeners != null) {
-                mPopupWindow.setOnShowListeners(mOnShowListeners);
-            }
-
-            if (mOnDismissListeners != null) {
-                mPopupWindow.setOnDismissListeners(mOnDismissListeners);
-            }
-
             for (int i = 0; mClickArray != null && i < mClickArray.size(); i++) {
-                mContentView.findViewById(mClickArray.keyAt(i)).setOnClickListener(new BasePopupWindow.ViewClickWrapper(mPopupWindow, mClickArray.valueAt(i)));
+                View view = mContentView.findViewById(mClickArray.keyAt(i));
+                if (view != null) {
+                    view.setOnClickListener(new BasePopupWindow.ViewClickWrapper(mPopupWindow, mClickArray.valueAt(i)));
+                }
             }
+
+            if (mCreateListener != null) {
+                mCreateListener.onCreate(mPopupWindow);
+            }
+
             return mPopupWindow;
         }
 
         /**
          * 显示为下拉
          */
-        public BasePopupWindow showAsDropDown(View anchor) {
+        public void showAsDropDown(View anchor) {
+            if (mActivity == null) {
+                return;
+            }
+
+            if (mActivity.isFinishing() || mActivity.isDestroyed()) {
+                return;
+            }
+
             if (!isCreated()) {
                 create();
             }
             mPopupWindow.showAsDropDown(anchor, mXOffset, mYOffset, mGravity);
-            return mPopupWindow;
         }
 
         /**
          * 显示在指定位置
          */
-        public BasePopupWindow showAtLocation(View parent) {
+        public void showAtLocation(View parent) {
+            if (mActivity == null) {
+                return;
+            }
+
+            if (mActivity.isFinishing() || mActivity.isDestroyed()) {
+                return;
+            }
+
             if (!isCreated()) {
                 create();
             }
             mPopupWindow.showAtLocation(parent, mGravity, mXOffset, mYOffset);
-            return mPopupWindow;
         }
 
         @Override
@@ -706,14 +757,24 @@ public class BasePopupWindow extends PopupWindow
          * 销毁当前 PopupWindow
          */
         public void dismiss() {
-            if (mPopupWindow != null) {
-                mPopupWindow.dismiss();
+            if (mActivity == null) {
+                return;
             }
+
+            if (mActivity.isFinishing() || mActivity.isDestroyed()) {
+                return;
+            }
+
+            if (mPopupWindow == null) {
+                return;
+            }
+            mPopupWindow.dismiss();
         }
 
         /**
          * 创建 PopupWindow 对象（子类可以重写此方法来改变 PopupWindow 类型）
          */
+        @NonNull
         protected BasePopupWindow createPopupWindow(Context context) {
             return new BasePopupWindow(context);
         }
@@ -826,6 +887,7 @@ public class BasePopupWindow extends PopupWindow
     /**
      * 点击事件包装类
      */
+    @SuppressWarnings("rawtypes")
     private static final class ViewClickWrapper
             implements View.OnClickListener {
 
@@ -839,8 +901,8 @@ public class BasePopupWindow extends PopupWindow
 
         @SuppressWarnings("unchecked")
         @Override
-        public final void onClick(View v) {
-            mListener.onClick(mBasePopupWindow, v);
+        public final void onClick(View view) {
+            mListener.onClick(mBasePopupWindow, view);
         }
     }
 
@@ -913,6 +975,17 @@ public class BasePopupWindow extends PopupWindow
      */
     public interface OnClickListener<V extends View> {
         void onClick(BasePopupWindow popupWindow, V view);
+    }
+
+    /**
+     * 创建监听器
+     */
+    public interface OnCreateListener {
+
+        /**
+         * PopupWindow 创建了
+         */
+        void onCreate(BasePopupWindow popupWindow);
     }
 
     /**

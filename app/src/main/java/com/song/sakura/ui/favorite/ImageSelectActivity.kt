@@ -27,7 +27,6 @@ import com.song.sakura.widget.GridSpaceDecoration
 import com.song.sakura.widget.HintLayout
 import com.ui.action.BundleAction
 import com.ui.action.ClickAction
-import com.ui.action.HandlerAction
 import com.ui.base.BaseActivity
 import com.ui.util.IntentBuilder
 import com.ui.util.RxUtil
@@ -289,8 +288,8 @@ class ImageSelectActivity : IBaseActivity<IBaseViewModel>(), StatusAction, Click
                 val sizeIndex = cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)
                 do {
                     val size = cursor.getLong(sizeIndex)
-                    // 图片大小不得小于 10 KB
-                    if (size < 1024 * 10) {
+                    // 图片大小不得小于 1 KB
+                    if (size < 1024) {
                         continue
                     }
                     val type = cursor.getString(mimeTypeIndex)

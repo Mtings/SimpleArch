@@ -39,7 +39,7 @@ public final class UIDialog {
             super(context);
 
             setContentView(R.layout.dialog_ui);
-            setAnimStyle(AnimAction.IOS);
+            setAnimStyle(AnimAction.ANIM_IOS);
             setGravity(Gravity.CENTER);
 
             mContainerLayout = findViewById(R.id.ll_ui_container);

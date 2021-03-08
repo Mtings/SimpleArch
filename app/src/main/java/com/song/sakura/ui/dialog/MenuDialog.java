@@ -48,7 +48,7 @@ public final class MenuDialog {
         public Builder(Context context) {
             super(context);
             setContentView(R.layout.dialog_menu);
-            setAnimStyle(AnimAction.BOTTOM);
+            setAnimStyle(AnimAction.ANIM_BOTTOM);
 
 
             mRecyclerView = findViewById(R.id.rv_menu_list);
@@ -71,7 +71,7 @@ public final class MenuDialog {
                     // 不显示取消按钮
                     setCancel(null);
                     // 重新设置动画
-                    setAnimStyle(AnimAction.TOAST);
+                    setAnimStyle(AnimAction.ANIM_TOAST);
                     break;
                 default:
                     break;

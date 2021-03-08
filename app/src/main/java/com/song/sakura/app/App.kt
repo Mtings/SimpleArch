@@ -20,7 +20,7 @@ import com.song.sakura.BuildConfig
 import com.song.sakura.R
 import com.song.sakura.database.WordRepository
 import com.song.sakura.database.WordRoomDatabase
-import com.song.sakura.helper.ActivityStackManager
+import com.song.sakura.helper.ActivityManager
 import com.ui.util.LogUtil
 import me.weishu.reflection.Reflection
 
@@ -99,7 +99,7 @@ class App : Application(), ViewModelStoreOwner, LifecycleOwner {
         })
 
         // Activity 栈管理初始化
-        ActivityStackManager.getInstance().init(this)
+        ActivityManager.getInstance().init(this)
     }
 
 

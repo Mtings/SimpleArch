@@ -26,7 +26,7 @@ public final class WaitDialog {
         public Builder(Context context) {
             super(context);
             setContentView(R.layout.dialog_wait);
-            setAnimStyle(BaseDialog.TOAST);
+            setAnimStyle(BaseDialog.ANIM_TOAST);
             setBackgroundDimEnabled(false);
             setCancelable(false);
 

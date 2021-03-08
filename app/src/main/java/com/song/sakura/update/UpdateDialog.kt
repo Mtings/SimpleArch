@@ -29,7 +29,7 @@ class UpdateDialog {
 
         init {
             setContentView(R.layout.dialog_update)
-            setAnimStyle(BaseDialog.BOTTOM)
+            setAnimStyle(BaseDialog.ANIM_BOTTOM)
             setCancelable(false)
             mNameView = findViewById(R.id.versionName)
             mContentView = findViewById(R.id.updateContent)

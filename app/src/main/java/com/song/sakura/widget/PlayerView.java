@@ -638,7 +638,7 @@ public final class PlayerView extends SimpleLayout
         if (mToastDialog == null) {
             mToastDialog = new HintDialog.Builder(getActivity())
                     .setDuration(Integer.MAX_VALUE)
-                    .setAnimStyle(BaseDialog.NO_ANIM)
+                    .setAnimStyle(BaseDialog.ANIM_EMPTY)
                     .addOnShowListener(dialog -> mControlView.setVisibility(INVISIBLE))
                     .addOnDismissListener(dialog -> mControlView.setVisibility(VISIBLE));
         }

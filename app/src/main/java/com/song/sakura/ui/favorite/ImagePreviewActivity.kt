@@ -1,5 +1,6 @@
 package com.song.sakura.ui.favorite
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -31,8 +32,19 @@ class ImagePreviewActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
         @CheckNet
         fun start(context: Context, urls: ArrayList<String>, index: Int) {
             val intent = Intent(context, ImagePreviewActivity::class.java)
-            intent.putExtra(IntentBuilder.IMAGE, urls)
+            var urlList = urls
+            if (urlList.size > 2500) {
+                // 请注意：如果传输的数据量过大，会抛出此异常，并且这种异常是不能被捕获的
+                // 所以当图片数量过多的时候，我们应当只显示一张，这种一般是手机图片过多导致的
+                // 经过测试，传入 3121 张图片集合的时候会抛出此异常，所以保险值应当是 2500
+                // android.os.TransactionTooLargeException: data parcel size 521984 bytes
+                urlList = Collections.singletonList(urlList[index]) as ArrayList<String>
+            }
+            intent.putExtra(IntentBuilder.IMAGE, urlList)
             intent.putExtra(IntentBuilder.INDEX, index)
+            if (context !is Activity) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
             context.startActivity(intent)
         }
     }

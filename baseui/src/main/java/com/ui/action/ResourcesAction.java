@@ -60,24 +60,6 @@ public interface ResourcesAction {
     }
 
     /**
-     * 启动一个 Activity（简化版）
-     */
-    default void startActivity(Class<? extends Activity> clazz) {
-        startActivity(new Intent(getContext(), clazz));
-    }
-
-    /**
-     * 启动一个 Activity
-     */
-    default void startActivity(Intent intent) {
-        if (!(getContext() instanceof Activity)) {
-            // 如果当前的上下文不是 Activity，调用 startActivity 必须加入新任务栈的标记
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        getContext().startActivity(intent);
-    }
-
-    /**
      * 获取系统服务
      */
     default <S> S getSystemService(@NonNull Class<S> serviceClass) {

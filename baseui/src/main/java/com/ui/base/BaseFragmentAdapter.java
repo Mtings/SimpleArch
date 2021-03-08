@@ -48,6 +48,11 @@ public class BaseFragmentAdapter<F extends BaseFragment> extends FragmentPagerAd
     }
 
     @Override
+    public long getItemId(int position) {
+        return getItem(position).hashCode();
+    }
+
+    @Override
     public int getCount() {
         return mFragmentSet.size();
     }
@@ -61,11 +66,11 @@ public class BaseFragmentAdapter<F extends BaseFragment> extends FragmentPagerAd
     @SuppressWarnings("unchecked")
     @Override
     public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        super.setPrimaryItem(container, position, object);
         if (getShowFragment() != object) {
             // 记录当前的Fragment对象
             mShowFragment = (F) object;
         }
-        super.setPrimaryItem(container, position, object);
     }
 
     /**
@@ -82,6 +87,8 @@ public class BaseFragmentAdapter<F extends BaseFragment> extends FragmentPagerAd
             notifyDataSetChanged();
             if (mLazyMode) {
                 mViewPager.setOffscreenPageLimit(getCount());
+            } else {
+                mViewPager.setOffscreenPageLimit(1);
             }
         }
     }
@@ -91,6 +98,20 @@ public class BaseFragmentAdapter<F extends BaseFragment> extends FragmentPagerAd
      */
     public F getShowFragment() {
         return mShowFragment;
+    }
+
+    /**
+     * 获取某个 Fragment 的索引（没有就返回 -1）
+     */
+    public int getFragmentIndex(Class<? extends Fragment> clazz) {
+        if (clazz != null) {
+            for (int i = 0; i < mFragmentSet.size(); i++) {
+                if (clazz.getName().equals(mFragmentSet.get(i).getClass().getName())) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     @Override

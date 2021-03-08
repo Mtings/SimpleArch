@@ -68,10 +68,7 @@ public final class AddressDialog {
         public Builder(Context context) {
             super(context);
             setContentView(R.layout.dialog_address);
-
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getSystemService(WindowManager.class).getDefaultDisplay().getMetrics(displayMetrics);
-            setHeight(displayMetrics.heightPixels / 2);
+            setHeight(getResources().getDisplayMetrics().heightPixels / 2);
 
             mViewPager = findViewById(R.id.vp_address_province);
             mAdapter = new RecyclerViewAdapter();
@@ -133,7 +130,7 @@ public final class AddressDialog {
                 if (data != null && !data.isEmpty()) {
                     for (int i = 0; i < data.size(); i++) {
                         if (province.equals(data.get(i).getName())) {
-                            onSelected(0, i);
+                            selectedAddress(0, i, false);
                             break;
                         }
                     }
@@ -157,7 +154,7 @@ public final class AddressDialog {
                         if (city.equals(data.get(i).getName())) {
                             // 避开直辖市，因为选择省的时候已经自动跳过市区了
                             if (mAdapter.getItem(1).size() > 1) {
-                                onSelected(1, i);
+                                selectedAddress(1, i, false);
                             }
                             break;
                         }
@@ -187,55 +184,59 @@ public final class AddressDialog {
         /**
          * {@link RecyclerViewAdapter.OnSelectListener}
          */
-
-        @SuppressWarnings("all")
         @Override
         public void onSelected(int recyclerViewPosition, int clickItemPosition) {
-            switch (recyclerViewPosition) {
+            selectedAddress(recyclerViewPosition, clickItemPosition, true);
+        }
+
+        /**
+         * 选择地区
+         *
+         * @param type              类型（省、市、区）
+         * @param position          点击的位置
+         * @param smoothScroll      是否需要平滑滚动
+         */
+        @SuppressWarnings("all")
+        public void selectedAddress(int type, int position, boolean smoothScroll) {
+            switch (type) {
                 case 0:
                     // 记录当前选择的省份
-                    mProvince = mAdapter.getItem(recyclerViewPosition).get(clickItemPosition).getName();
+                    mProvince = mAdapter.getItem(type).get(position).getName();
                     mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).setText(mProvince);
 
                     mTabLayout.addTab(mTabLayout.newTab().setText("请选择"), true);
-                    mAdapter.addData(AddressManager.getCityList(mAdapter.getItem(recyclerViewPosition).get(clickItemPosition).getNext()));
-                    mViewPager.setCurrentItem(recyclerViewPosition + 1);
+                    mAdapter.addData(AddressManager.getCityList(mAdapter.getItem(type).get(position).getNext()));
+                    mViewPager.setCurrentItem(type + 1, smoothScroll);
 
                     // 如果当前选择的是直辖市，就直接跳过选择城市，直接选择区域
-                    if (mAdapter.getItem(recyclerViewPosition + 1).size() == 1) {
-                        onSelected(recyclerViewPosition + 1, 0);
+                    if (mAdapter.getItem(type + 1).size() == 1) {
+                        selectedAddress(type + 1, 0, false);
                     }
                     break;
                 case 1:
                     // 记录当前选择的城市
-                    mCity = mAdapter.getItem(recyclerViewPosition).get(clickItemPosition).getName();
+                    mCity = mAdapter.getItem(type).get(position).getName();
                     mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).setText(mCity);
 
                     if (mIgnoreArea) {
-
                         if (mListener != null) {
                             mListener.onSelected(getDialog(), mProvince, mCity, mArea);
                         }
-
                         // 延迟关闭
                         postDelayed(this::dismiss, 300);
-
                     } else {
                         mTabLayout.addTab(mTabLayout.newTab().setText("请选择"), true);
-                        mAdapter.addData(AddressManager.getAreaList(mAdapter.getItem(recyclerViewPosition).get(clickItemPosition).getNext()));
-                        mViewPager.setCurrentItem(recyclerViewPosition + 1);
+                        mAdapter.addData(AddressManager.getAreaList(mAdapter.getItem(type).get(position).getNext()));
+                        mViewPager.setCurrentItem(type + 1, smoothScroll);
                     }
-
                     break;
                 case 2:
                     // 记录当前选择的区域
-                    mArea = mAdapter.getItem(recyclerViewPosition).get(clickItemPosition).getName();
+                    mArea = mAdapter.getItem(type).get(position).getName();
                     mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).setText(mArea);
-
                     if (mListener != null) {
                         mListener.onSelected(getDialog(), mProvince, mCity, mArea);
                     }
-
                     // 延迟关闭
                     postDelayed(this::dismiss, 300);
                     break;
@@ -279,18 +280,18 @@ public final class AddressDialog {
                         mProvince = mCity = mArea = null;
                         if (mTabLayout.getTabAt(2) != null) {
                             mTabLayout.removeTabAt(2);
-                            mAdapter.remove(2);
+                            mAdapter.removeAt(2);
                         }
                         if (mTabLayout.getTabAt(1) != null) {
                             mTabLayout.removeTabAt(1);
-                            mAdapter.remove(1);
+                            mAdapter.removeAt(1);
                         }
                         break;
                     case 1:
                         mCity = mArea = null;
                         if (mTabLayout.getTabAt(2) != null) {
                             mTabLayout.removeTabAt(2);
-                            mAdapter.remove(2);
+                            mAdapter.removeAt(2);
                         }
                         break;
                     case 2:
