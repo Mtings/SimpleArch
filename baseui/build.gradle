@@ -29,10 +29,8 @@ android {
 }
 
 dependencies {
-    // 依赖 libs 目录下所有 jar 包
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    // 依赖 libs 目录下所有 aar 包
-    implementation fileTree(include: ['*.aar'], dir: 'libs')
+    // 依赖 libs 目录下所有 jar aar包
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

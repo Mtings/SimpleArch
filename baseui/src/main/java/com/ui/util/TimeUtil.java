@@ -9,11 +9,8 @@ public class TimeUtil {
 
     public static final String FORMAT_YYYYMM = "yyyy-MM";
     public static final String FORMAT_YYYYMMDD = "yyyy-MM-dd";
-    public static final String FORMAT_YYYYMMDD_ = "yyyy-MM-dd";
     public static final String FORMAT_YYYYMMDDS = "yyyy年MM月dd日";
     public static final String FORMAT_YYYYMMS = "yyyy年MM月";
-
-    public static final String FORMAT_YYYYM = "yyyy-M";
 
     public static final String FORMAT_YYYYMM01 = "yyyy-MM-01";
     public static final String FORMAT_YYYYMMDDHHMM = "yyyy-MM-dd HH:mm";
