@@ -2,7 +2,8 @@
 project.ext {
     compileSdkVersion = 30
     minSdkVersion = 21
-    lifecycle_version = "2.2.0"
+    lifecycle_version = "2.3.1"
+    lifecycle_extensions_version = "2.2.0"
 
     gson = 'com.google.code.gson:gson:2.8.6'
 

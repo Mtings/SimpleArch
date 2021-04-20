@@ -10,8 +10,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import com.alibaba.android.arouter.launcher.ARouter
 import com.blankj.utilcode.util.Utils
-import com.hjq.toast.ToastInterceptor
 import com.hjq.toast.ToastUtils
+import com.hjq.toast.config.IToastInterceptor
 import com.scwang.smart.refresh.footer.BallPulseFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -90,12 +90,8 @@ class App : Application(), ViewModelStoreOwner, LifecycleOwner {
         // 吐司工具类
         ToastUtils.init(this)
         // 设置 Toast 拦截器
-        ToastUtils.setToastInterceptor(object : ToastInterceptor() {
-            override fun intercept(toast: Toast, text: CharSequence): Boolean {
-                val intercept = super.intercept(toast, text)
-                if (intercept) Log.e("Toast", "空 Toast") else Log.i("Toast", text.toString())
-                return intercept
-            }
+        ToastUtils.setInterceptor(IToastInterceptor {
+            return@IToastInterceptor false
         })
 
         // Activity 栈管理初始化

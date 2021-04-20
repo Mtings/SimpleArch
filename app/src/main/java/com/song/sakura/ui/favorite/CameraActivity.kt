@@ -88,7 +88,7 @@ class CameraActivity : IBaseActivity<IBaseViewModel>(), BundleAction {
             // 拍摄照片
             Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         }
-        if (XXPermissions.isGrantedPermission(
+        if (XXPermissions.isGranted(
                 this,
                 mutableListOf(
                     Permission.MANAGE_EXTERNAL_STORAGE,

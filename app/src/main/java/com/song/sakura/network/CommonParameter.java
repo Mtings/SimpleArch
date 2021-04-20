@@ -13,7 +13,6 @@ import android.telephony.gsm.GsmCellLocation;
 
 import com.song.sakura.app.App;
 import com.ui.util.MIUIUtils;
-import com.ut.device.UTDevice;
 
 import java.util.UUID;
 
@@ -41,9 +40,9 @@ public class CommonParameter {
         init(context);
     }
 
-    public String getDeviceId() {
-        return deviceId = UTDevice.getUtdid(App.Companion.getApplication());
-    }
+//    public String getDeviceId() {
+//        return deviceId = UTDevice.getUtdid(App.Companion.getApplication());
+//    }
 
     private void init(Context context) {
         os = "androId";

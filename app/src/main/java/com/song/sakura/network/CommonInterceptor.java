@@ -46,7 +46,7 @@ public class CommonInterceptor implements Interceptor {
         Request oldRequest = chain.request();
         HttpUrl httpUrl = oldRequest.url();
         LogUtil.print(httpUrl.url());
-        filter.deviceId = filter.getDeviceId();
+//        filter.deviceId = filter.getDeviceId();
         filter.ts = String.valueOf(System.currentTimeMillis());
 //        filter.authToken = UserCache.INSTANCE.getAuthToken();
         if (filter.authToken == null) {
