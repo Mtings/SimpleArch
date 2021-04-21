@@ -12,7 +12,7 @@ public class RedirectInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        okhttp3.Request request = chain.request();
+        Request request = chain.request();
         Response response = chain.proceed(request);
         int code = response.code();
         if (code == 307 || code == 301) {

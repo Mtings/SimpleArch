@@ -129,8 +129,7 @@ dependencies {
     // https://developer.android.google.cn/studio/build/multidex
 //    implementation 'androidx.multidex:multidex:2.0.1'
 
-    implementation project(':basehttp')
-    implementation project(':baseui')
+    implementation project(':base')
 
     //kotlin协程
     def coroutines_version = "1.4.1"
