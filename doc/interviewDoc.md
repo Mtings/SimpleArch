@@ -198,14 +198,24 @@ HTTPS开发的主要目的，是提供对网站服务器的身份认证，保护
 主要涉及的角色如下所示:  
 * message:消息。  
 * MessageQueue:消息队列，负责消息的存储与管理，负责管理由 Handler 发送过来的 Message。读取会自动删除消息，单链表维护，插入和删除  
-上有优势。在其 next()方法中会无限循环，不断判断是否有消息，有就返 回这条消息并移除。  
+上有优势。在其 next()方法中会无限循环，不断判断是否有消息，有就返回这条消息并移除。  
 * Looper:消息循环器，负责关联线程以及消息的分发，在该线程下从 MessageQueue 获取 Message，分发给 Handler，Looper 创建的时候会  
 创建一个 MessageQueue，调用 loop()方法的时候消息循环开始，其中会不断调用 messageQueue 的 next()方法，当有消息就处理，否则阻塞在  
 messageQueue 的 next()方法中。当 Looper 的 quit()被调用的时候会调用messageQueue 的 quit()，此时 next()会返回 null，  
-然后 loop()方法也就跟 着退出。  
-* Handler:消息处理器，负责发送并处理消息，面向开发者，提供 API， 并隐藏背后实现的细节。  
+然后 loop()方法也就跟着退出。  
+* Handler:消息处理器，负责发送并处理消息，面向开发者，提供 API，并隐藏背后实现的细节。  
 
 整个消息的循环流程还是比较清晰的，具体说来:  
 1) Handler 通过 sendMessage()发送消息 Message 到消息队列 MessageQueue。  
 2) Looper 通过 loop()不断提取触发条件的 Message，并将 Message 交 给对应的 target handler 来处理。  
 3) target handler 调用自身的 handleMessage()方法来处理 Message。  
+
+## [Service和Activity的相互通信](https://www.jianshu.com/p/4b0cbe068555)
+
+## [深入理解JVM的内存结构及GC机制](https://juejin.cn/post/6844903513248497677)
+
+## [OkHttp源码分析](https://juejin.cn/post/6881436122950402056)
+
+## [事件分发机制](https://juejin.cn/post/6921238915143696392)
+
+## [深入浅出AIDL](https://juejin.cn/post/6844903498044162056)
