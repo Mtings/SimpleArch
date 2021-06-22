@@ -1,6 +1,7 @@
 package com.song.sakura.ui.launch
 
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import com.gyf.immersionbar.ImmersionBar
 import com.song.sakura.R
 import com.song.sakura.ui.base.IBaseActivity
@@ -20,11 +21,12 @@ class LaunchActivity : IBaseActivity<IBaseViewModel>() {
             return
         }
 
-        CoroutineScope(Dispatchers.Main)
-            .launch {
-                delay(500L)
+        lifecycleScope.launch {
+            delay(500L)
+            withContext(Dispatchers.Main) {
                 goMain(this@LaunchActivity)
             }
+        }
 
     }
 
