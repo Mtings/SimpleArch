@@ -219,3 +219,9 @@ messageQueue 的 next()方法中。当 Looper 的 quit()被调用的时候会调
 ## [事件分发机制](https://juejin.cn/post/6921238915143696392)
 
 ## [深入浅出AIDL](https://juejin.cn/post/6844903498044162056)
+
+## [View的绘制全流程](https://juejin.cn/post/6844904042175397902)
+
+## [Serializable 和Parcelable 的区别](https://juejin.cn/post/6883309627933458445)
+
+## [隐式跳转](https://juejin.cn/post/6844903506822840328)
