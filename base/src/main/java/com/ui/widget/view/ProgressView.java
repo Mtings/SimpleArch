@@ -87,7 +87,7 @@ public final class ProgressView extends View {
         mBarWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mBarWidth, getResources().getDisplayMetrics());
         mRimWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mRimWidth, getResources().getDisplayMetrics());
         mCircleRadius = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mCircleRadius, getResources().getDisplayMetrics());
-        mCircleRadius = (int) array.getDimension(R.styleable.ProgressView_circleRadius, mCircleRadius);
+        mCircleRadius = (int) array.getDimension(R.styleable.ProgressView_circleGRadius, mCircleRadius);
         mFillRadius = array.getBoolean(R.styleable.ProgressView_fillRadius, false);
         mBarWidth = (int) array.getDimension(R.styleable.ProgressView_barWidth, mBarWidth);
         mRimWidth = (int) array.getDimension(R.styleable.ProgressView_rimWidth, mRimWidth);
